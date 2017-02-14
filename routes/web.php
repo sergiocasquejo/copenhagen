@@ -246,8 +246,38 @@ Route::group(['prefix' => 'api/v1'], function() {
     });
 
     Route::get('rooms/types', function() {
-        $types = \App\Room::select(['id', DB::raw('CONCAT(name, " ", building, " - ID ", id) AS name')])->get()->toArray();
+        $types = \App\Room::select(['*', DB::raw('CONCAT(name, " ", building, " - ID ", id) AS name')])->get()->toArray();
         return response()->json($types, 200, [], JSON_UNESCAPED_UNICODE);
+    });
+
+    Route::post('calendar', function() {
+        try {
+            $from = Request::input('from');
+            $to = Request::input('to');
+
+            while(strtotime($from) <= strtotime($to)) {
+                $from = date ("Y-m-d", strtotime("+1 day", strtotime($from)));
+                $calendar = new \App\Calendar;
+                $calendar->roomID = Request::input('roomType.id');
+                $calendar->selectedDate = $from;
+                $calendar->roomOnly = Request::input('roomOnly', 0);
+                $calendar->single = Request::input('single', 0);
+                $calendar->double = Request::input('double', 0);
+                $calendar->minStay = Request::input('minStay', 0);
+                $calendar->maxStay = Request::input('maxStay', 0);
+                $calendar->availability = Request::input('availability', 0);
+                $calendar->isActive = Request::input('isActive', 0);
+                $calendar->save();
+            }
+        } catch(\Exception $e) {
+            return response()->json($e->getMessage(), 400, [], JSON_UNESCAPED_UNICODE);
+        }
+        
+    });
+
+    Route::get('room/{roomID}/calendar', function($roomID) {
+        $calendar = \App\Calendar::where('roomID', $roomID)->select(['*', DB::raw('selectedDate AS title'), DB::raw('selectedDate AS start')])->get()->toArray();
+        return response()->json($calendar, 200, [], JSON_UNESCAPED_UNICODE);
     });
 });
 

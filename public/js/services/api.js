@@ -39,7 +39,13 @@ copenhagenApp.factory('API', ['$http', '$rootScope', '$state', function($http, $
     api.getRoomTypes = function() {
         return $http.get(urlBase + '/rooms/types');
     }
+    api.saveCalendar = function(calendar) {
+        return $http.post(urlBase + '/calendar', calendar);
+    }
 
+    api.getRoomCalendar = function(roomID) {
+        return $http.get(urlBase + '/room/' + roomID + '/calendar');
+    }
 
 
 

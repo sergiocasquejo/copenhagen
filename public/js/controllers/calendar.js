@@ -1,19 +1,38 @@
 copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'uiCalendarConfig', 'API',
     function($scope, $compile, $timeout, uiCalendarConfig, API) {
+        $scope.roomTypes = [];
+        $scope.calendar = {};
+        $scope.events = [];
+        API.getRoomTypes().then(function(response) {
+            $scope.roomTypes = response.data;
+            $scope.calendar.roomType = response.data[0];
+            if (response.data[0]) {
+                API.getRoomCalendar(response.data[0].id).then(function(response) {
+                    $scope.events = response.data;
+                    console.log($scope.events);
+                }, function(error) {
+                    console.log(error);
+                });
+            }
+
+        }, function(error) {
+            console.log(error);
+        });
+
+
         var date = new Date();
         var d = date.getDate();
         var m = date.getMonth();
         var y = date.getFullYear();
-        $scope.events = [];
-        /* event source that contains custom events on the scope */
-        // $scope.events = [
-        //     { title: 'All Day Event', start: new Date(y, m, 1) },
-        //     { title: 'Long Event', start: new Date(y, m, d - 5), end: new Date(y, m, d - 2) },
-        //     { id: 999, title: 'Repeating Event', start: new Date(y, m, d - 3, 16, 0), allDay: false },
-        //     { id: 999, title: 'Repeating Event', start: new Date(y, m, d + 4, 16, 0), allDay: false },
-        //     { title: 'Birthday Party', start: new Date(y, m, d + 1, 19, 0), end: new Date(y, m, d + 1, 22, 30), allDay: false },
-        //     { title: 'Click for Google', start: new Date(y, m, 28), end: new Date(y, m, 29), url: 'http://google.com/' }
-        // ];
+
+        var firstDay = new Date(y, m - 1, 1);
+        var lastDay = new Date(y, m + 12, 0);
+        console.log(lastDay);
+        for (var d = firstDay; d <= lastDay; d.setDate(d.getDate() + 1)) {
+            /* event source that contains custom events on the scope */
+
+            $scope.events.push({ title: '1 Total PHP 9999', start: new Date(d) });
+        }
 
         /* alert on eventClick */
         $scope.alertOnEventClick = function(date, jsEvent, view) {
@@ -91,13 +110,17 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'uiC
         };
         $scope.eventSources = [$scope.events];
 
-        $scope.roomTypes = [];
-        $scope.calendar = {};
-        API.getRoomTypes().then(function(response) {
-            $scope.roomTypes = response.data;
-            $scope.calendar.roomType = response.data[0];
-        }, function(error) {
-            console.log(error);
-        });
+
+
+        // Save Calendar
+        $scope.saveCalendar = function(isValid) {
+            if (isValid) {
+                API.saveCalendar($scope.calendar).then(function(response) {
+                    console.log(response.data);
+                }, function(error) {
+                    console.log(error);
+                });
+            }
+        }
     }
 ]);

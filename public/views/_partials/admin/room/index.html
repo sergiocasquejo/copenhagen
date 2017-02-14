@@ -42,7 +42,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group" ng-class="{ 'has-error': roomForm.standardRate.$touched && roomForm.standardRate.$invalid }">
-                                    <label class="control-label col-sm-4" for="standardRate">Standard Rate</label>
+                                    <label class="control-label col-sm-4" for="standardRate">Standard Rate <i>Load rate to Room Only.</i></label>
                                     <div class="col-sm-8">
                                         <input type="text" name="standardRate" ng-model="room.standardRate" min="0" ng-min="0" class="form-control">
                                     </div>
@@ -71,6 +71,10 @@
                                         <select name="totalPerson" class="form-control" ng-options="o  as o for o in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" data-ng-model="room.totalPerson">
                                         </select>
                                     </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-4 text-right">Total persons allowed in this room:</div>
+                                    <div class="col-sm-2">{{ room.totalPerson }}</div>
                                 </div>
                                 <div class="form-group" ng-class="{ 'has-error': roomForm.extrabed.$touched && roomForm.extrabed.$invalid }">
                                     <label class="control-label col-sm-4" for="extrabed">Extra Bed <span class="req">*</span></label>
@@ -111,11 +115,10 @@
                                     </div>
                                 </div>
                                 <div class="form-group" ng-class="{ 'has-error': roomForm.roomSize.$touched && roomForm.roomSize.$invalid }">
-                                    <label class="control-label col-sm-4" for="roomSize">Room Size <span class="req">*</span></label>
-                                    <div class="col-sm-6">
+                                    <label class="control-label col-sm-4" for="roomSize">Room Size (sq.m) <span class="req">*</span></label>
+                                    <div class="col-sm-4">
                                         <input type="text" name="roomSize" ng-model="room.roomSize" min="0" ng-min="0" class="form-control" ng-required="true" required>
                                     </div>
-                                    <div class="col-sm-2 text-left">(sq.m)</div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Amenities</label>

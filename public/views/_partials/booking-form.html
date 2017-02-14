@@ -1,15 +1,15 @@
 <div class="booking-form" ng-controller="bookingFormCtrl">
     <form novalidate="" name="bookingForm" class="form-inline text-center">
         <div class="form-group">
-            <div class="input-group">
-                <div class="input-group-addon" ng-click="open1()"><span class="glyphicon glyphicon-calendar" area-hidden="true"></span></div>
-                <input type="text" class="form-control" ng-click="open1()" uib-datepicker-popup="{{format}}" ng-model="arrival" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+            <div class="input-group" moment-picker="booking.checkIn" format="YYYY-MM-DD">
+                <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                <input class="form-control" placeholder="Check In" ng-model="booking.checkIn" ng-model-options="{ updateOn: 'blur' }">
             </div>
         </div>
         <div class="form-group">
-            <div class="input-group">
-                <div class="input-group-addon" ng-click="open2()"><span class="glyphicon glyphicon-calendar" area-hidden="true"></span></div>
-                <input type="text" class="form-control" ng-click="open2()" uib-datepicker-popup="{{format}}" ng-model="departure" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+            <div class="input-group" moment-picker="booking.checkOut" format="YYYY-MM-DD">
+                <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                <input class="form-control" placeholder="Check Out" ng-model="booking.checkOut" ng-model-options="{ updateOn: 'blur' }">
             </div>
         </div>
         <div class="form-group">

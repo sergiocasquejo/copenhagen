@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/lib/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="/lib/fullcalendar/dist/fullcalendar.min.css" type="text/css">
     <link rel="stylesheet" href="/lib/angular-bootstrap-toggle/dist/angular-bootstrap-toggle.min.css" type="text/css">
+    <link rel="stylesheet" href="/lib/angular-moment-picker/dist/angular-moment-picker.min.css" type="text/css">
     <link rel="stylesheet" href="/css/admin.min.css" type="text/css">
     <script src="/lib/jquery/dist/jquery.min.js" type="text/javascript"></script>
     <script src="/lib/angular.min.js" type="text/javascript"></script>
@@ -24,6 +25,7 @@
     <script src="/lib/ui-bootstrap-tpls-2.5.0.min.js" type="text/javascript"></script>
     <script src="/lib/moment/moment.js" type="text/javascript"></script>
     <script src="/lib/fullcalendar/dist/fullcalendar.min.js" type="text/javascript"></script>
+    <script src="/lib/angular-moment-picker/dist/angular-moment-picker.min.js" type="text/javascript"></script>
     <script src="/lib/calendar.js" type="text/javascript"></script>
     <script src="/js/app.js" type="text/javascript"></script>
     <script src="/js/routes/index.js" type="text/javascript"></script>
