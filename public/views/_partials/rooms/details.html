@@ -1,0 +1,63 @@
+<div ui-view="header"></div>
+<div class="main">
+    <div ui-view="steps"></div>
+    <section class="section-rooms-available section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-title">Studio Deluxe – Double Bed with Living Room and Kitchenette</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="room-inner">
+                        <div class="room-image">
+                            <img class="img-responsive" src="/images/rooms/1.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <p class="price">
+                        <span class="from">from</span>
+                        <span class="currency">Php</span> 1,000.00
+                        <span class="per">/Night</span>
+                    </p>
+                    <div class="booking-form">
+                        <form novalidate="" name="bookingForm" class="text-center">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon" ng-click="open1()"><span class="glyphicon glyphicon-calendar" area-hidden="true"></span></div>
+                                    <input type="text" class="form-control" ng-click="open1()" uib-datepicker-popup="{{format}}" ng-model="arrival" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon" ng-click="open2()"><span class="glyphicon glyphicon-calendar" area-hidden="true"></span></div>
+                                    <input type="text" class="form-control" ng-click="open2()" uib-datepicker-popup="{{format}}" ng-model="departure" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <select name="arrival" class="form-control" data-ng-model="booking.adult">
+                                    <option value="">Adult</option>
+                                    <option ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">{{ i }}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select name="child" class="form-control" data-ng-model="booking.child">
+                                    <option value="">Child</option>
+                                    <option ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">{{ i }}</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-success btn-block">Book Now</button>
+                        </form>
+                    </div>
+
+                </div>
+
+
+
+            </div>
+        </div>
+    </section>
+</div>
+<div ui-view="footer"></div>

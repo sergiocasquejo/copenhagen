@@ -1,0 +1,29 @@
+<div class="booking-form" ng-controller="bookingFormCtrl">
+    <form novalidate="" name="bookingForm" class="form-inline text-center">
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-addon" ng-click="open1()"><span class="glyphicon glyphicon-calendar" area-hidden="true"></span></div>
+                <input type="text" class="form-control" ng-click="open1()" uib-datepicker-popup="{{format}}" ng-model="arrival" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-addon" ng-click="open2()"><span class="glyphicon glyphicon-calendar" area-hidden="true"></span></div>
+                <input type="text" class="form-control" ng-click="open2()" uib-datepicker-popup="{{format}}" ng-model="departure" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+            </div>
+        </div>
+        <div class="form-group">
+            <select name="arrival" class="form-control" data-ng-model="booking.adult">
+                        <option value="">Adult</option>
+                        <option ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">{{ i }}</option>
+                    </select>
+        </div>
+        <div class="form-group">
+            <select name="child" class="form-control" data-ng-model="booking.child">
+                        <option value="">Child</option>
+                        <option ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">{{ i }}</option>
+                    </select>
+        </div>
+        <button class="btn btn-success">Check Availability</button>
+    </form>
+</div>

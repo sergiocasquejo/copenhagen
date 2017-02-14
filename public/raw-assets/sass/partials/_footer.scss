@@ -1,0 +1,36 @@
+footer {
+    background: #17212c;
+    .navbar-bottom {
+        padding: 2em 0 0 0;
+        li {
+            a {
+                color: $white;
+                padding: 0 10px;
+            }
+        }
+    }
+    .l-footer-secondary {
+        background: #17212c;
+        padding: 2.5em 0 1em;
+        border-top: 1px solid #273545;
+        color: $white;
+        .footer-brand {
+            margin: 1em auto;
+            display: block;
+            font: 0/0 a;
+            color: transparent;
+            text-shadow: none;
+            background-color: transparent;
+            border: 0;
+            width: 295px;
+            height: 120px;
+            max-width: 100%;
+            background: url(/images/logo-lg.png) center no-repeat;
+            background-size: 100%;
+        }
+        .copyright {
+            color: #7d8389;
+            padding: 3em 0;
+        }
+    }
+}

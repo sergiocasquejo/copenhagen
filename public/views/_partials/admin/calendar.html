@@ -1,0 +1,41 @@
+<div class="admin-main">
+    <div ui-view="header"></div>
+    <section class="section-calendar section">
+        <div class="col-md-8">
+            <div class="room-type">
+                <div class="form-group">
+                    <label for="">Room Type</label>
+                    <select name="" id="" class="form-control" ng-model="roomType">
+                    <option value="">--Select--</option>
+                </select>
+                </div>
+                <div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div>
+            </div>
+
+        </div>
+        <!--/.col-md-8-->
+        <div class="col-md-4">
+            <form action="" novalidate="" name="calendarForm">
+                <strong>Availability</strong>
+                <div class="form-group">
+                    <label for="">Studio East</label>
+                    <input type="number" class="form-control" name="qty" ng-model="qty">
+                </div>
+                <div class="form-group">
+                    <label for="">Sell In (PHP)</label>
+                    <input type="number" class="form-control" name="price" ng-model="price">
+                </div>
+                <div class="checkbox">
+                    <label for="">
+                        <input type="checkbox" name="available" ng-model="status">
+                        Available?
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-success">Save</button>
+                <button type="reset" class="btn btn-default">Cancel</button>
+            </form>
+        </div>
+        <!--/.col-md-4-->
+
+    </section>
+</div>

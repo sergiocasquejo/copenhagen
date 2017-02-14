@@ -1,0 +1,137 @@
+<div class="admin-main" ng-controller="roomCtrl">
+    <div ui-view="header"></div>
+    <section class="section-rooms section">
+        <div class="col-md-12">
+            <div class="actions">
+                <h1>Room Setup</h1>
+                <div class="pull-right">
+                    <button class="btn btn-warning" ng-click="addNewRoom()"><i class="fa fa-plus" aria-hidden="true"></i> Add Room</button>
+                </div>
+                <h3>Total room types {{ roomLists.length }}</h3>
+
+            </div>
+        </div>
+        <div class="col-md-12">
+            <uib-accordion close-others="oneAtATime">
+                <div uib-accordion-group ng-repeat="room in roomLists" class="panel-default" photo="{{ room.photos.length }}" roomID="{{room.id}}" heading="{{ room.name +'('+ room.building +')' }}">
+                    <uib-accordion-heading>
+                        <div class="row">
+                            <div class="col-md-2">#{{room.id}}</div>
+                            <div class="col-md-4">{{room.name +'('+ room.building +')'}}</div>
+                            <div class="col-md-2">Photos {{room.photos.length}}</div>
+                            <div class="col-md-2">Persons {{room.totalPerson}}</div>
+                            <div class="col-md-2">
+                                <toggle ng-model="room.isActive" ng-change="changed()"></toggle>
+                            </div>
+                        </div>
+                    </uib-accordion-heading>
+                    <form name="roomForm" class="form-horizontal" ng-submit="save(roomForm.$valid, room)" novalidate>
+                        <div class="form-row">
+                            <div class="col-md-4">
+                                <h4>Basic Info</h4>
+                                <div class="form-group" ng-class="{ 'has-error': roomForm.name.$touched && roomForm.name.$invalid }">
+                                    <label class="control-label col-sm-4" for="name">Room Name <span class="req">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="name" ng-model="room.name" class="form-control" ng-required="true" required>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{ 'has-error': roomForm.totalRooms.$touched && roomForm.totalRooms.$invalid }">
+                                    <label class="control-label col-sm-4" for="totalRooms">No. of Rooms <span class="req">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="totalRooms" ng-model="room.totalRooms" ng-min="1" class="form-control" ng-required="true" required>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{ 'has-error': roomForm.standardRate.$touched && roomForm.standardRate.$invalid }">
+                                    <label class="control-label col-sm-4" for="standardRate">Standard Rate</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="standardRate" ng-model="room.standardRate" min="0" ng-min="0" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{ 'has-error': roomForm.minimumRate.$touched && roomForm.minimumRate.$invalid }">
+                                    <label class="control-label col-sm-4" for="minimumRate">Minimum Rate <span class="req">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="minimumRate" ng-model="room.minimumRate" min="0" ng-min="0" class="form-control" ng-required="true" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/.col-md-4-->
+                            <div class="col-md-4">
+                                <h4>Occupancy Settings</h4>
+                                <div class="form-group" ng-class="{ 'has-error': roomForm.building.$touched && roomForm.building.$invalid }">
+                                    <label class="control-label col-sm-4" for="building">Building <span class="req">*</span></label>
+                                    <div class="col-sm-8">
+                                        <select name="building" class="form-control" data-ng-model="room.building">
+                                            <option ng-repeat="i in ['Main', 'East']">{{ i }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{ 'has-error': roomForm.totalPerson.$touched && roomForm.totalPerson.$invalid }">
+                                    <label class="control-label col-sm-4" for="totalPerson">Persons<span class="req">*</span></label>
+                                    <div class="col-sm-8">
+                                        <select name="totalPerson" class="form-control" ng-options="o  as o for o in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" data-ng-model="room.totalPerson">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{ 'has-error': roomForm.extrabed.$touched && roomForm.extrabed.$invalid }">
+                                    <label class="control-label col-sm-4" for="extrabed">Extra Bed <span class="req">*</span></label>
+                                    <div class="col-sm-8">
+                                        <select name="extrabed" class="form-control" ng-options="o  as o for o in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" data-ng-model="room.extraBed">
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!--/.col-md-4-->
+                            <div class="col-md-4">
+                                <h4>Content</h4>
+                                <div class="photos">
+                                    <ul class="list-inline">
+                                        <li ng-repeat="photo in room.photos">
+                                            <img width="60" height="60" src="{{ photo.file.small }}" />
+                                            <a ng-click="deletePhoto($index, room.id, photo.id)"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <button type="button" class="btn btn-default pull-right photo-uploader"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload Photos
+                                        <input type="file" ng-click="setPhotoRoomID(room.id, $index)" nv-file-select="" uploader="uploader" accept="image/*" multiple/>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{ 'has-error': roomForm.roomSize.$touched && roomForm.roomSize.$invalid }">
+                                    <label class="control-label col-sm-4" for="roomSize">Room Size <span class="req">*</span></label>
+                                    <div class="col-sm-6">
+                                        <input type="text" name="roomSize" ng-model="room.roomSize" min="0" ng-min="0" class="form-control" ng-required="true" required>
+                                    </div>
+                                    <div class="col-sm-2 text-left">(sq.m)</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Amenities</label>
+                                    <!--<input type="number" name="roomSize" ng-model="room.roomSize" min="0" ng-min="0" class="form-control">-->
+                                </div>
+                                <div class="form-group" ng-class="{ 'has-error': roomForm.bathrooms.$touched && roomForm.bathrooms.$invalid }">
+                                    <label class="control-label col-sm-4" for="bathrooms">Bathrooms</label>
+                                    <div class="col-sm-8">
+                                        <select name="bathrooms" class="form-control" ng-options="o  as o for o in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" data-ng-model="room.bathrooms">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/.col-md-4-->
+                        </div>
+                        <div class="footer-row">
+                            <div class="col-md-12">
+                                <div class="pull-right">
+                                    <button type="submit" class="btn btn-success" ng-disabled="roomForm.$invalid">Save</button>
+                                    <button type="reset" class="btn btn-default">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="id" ng-model="room.id">
+                    </form>
+                </div>
+            </uib-accordion>
+        </div>
+    </section>
+</div>

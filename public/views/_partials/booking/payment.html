@@ -1,0 +1,45 @@
+<div ui-view="header"></div>
+<div class="main">
+    <div ui-view="steps"></div>
+    <section class="section-payment-detail section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><i class="fa fa-money" aria-hidden="true"></i> Payment</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form novalidate>
+
+                                <div class="radio">
+                                    <label for="">
+                                        <input type="radio" ng-model="paymentType" value="pesopay"> Credit Card(pesopay)</label>
+
+                                    <img src="images/cards.png" />
+                                </div>
+                                <button class="btn btn-success">Pay Now <span class="fa fa-long-arrow-right"></span></button>
+                                <div class="checkbox">
+                                    <label for="">
+                                        <input type="checkbox" ng-model="accept"> I accept to the <a>Terms of Sale</a>
+                                    </label>
+                                </div>
+                                <p>
+
+                                    By accepting the terms & conditions, I have read and agree to all the terms and conditions set forth by Iron Wood Property Ventures Corp. If you would like more information please access our Help section to read the <a>terms</a>                                    and <a>privacy policy</a>
+                                </p>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div ui-view="bookingDetails"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+<div ui-view="footer"></div>

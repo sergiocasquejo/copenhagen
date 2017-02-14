@@ -1,0 +1,58 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="top-nav">
+        <div class="container">
+            <div class="row">
+                <div class="pull-left social-links">
+                    <ul class="list-inline social">
+                        <li class="facebook"> <a href="https://www.facebook.com/pages/Copenhagen-Residences/772245752803648" target="_blank"><span class="fa fa-facebook"></span></a></li>
+                        <li class="twitter"> <a href="https://twitter.com/CopenhagenCebu" target="_blank"><span class="fa fa-twitter"></span></a></li>
+                        <li class="pinterest"> <a href="https://www.pinterest.com/" target="_blank"><span class="fa fa-pinterest"></span></a></li>
+                    </ul>
+                </div>
+                <div class="pull-right address">
+                    <ul class="address list-inline">
+                        <li><a>A.C. Cortes Avenue Mandaue City 6014, Cebu Phils.</a></li>
+                        <li><a>(032) 2384639, 2385684, 2385485, 4141914</a></li>
+                        <li><a>(032) 2385026</a></li>
+                        <li><a class="mailto:info-cebu@copenhagen.ph">info-cebu@copenhagen.ph</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="menu-nav">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                        <a class="navbar-brand" ui-sref="home"></a>
+                    </div>
+                    <div id="navbar" class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a ui-sref="home">Home</a></li>
+                            <li><a ui-sref="roomsAvailable">Accomodation</a></li>
+                            <li><a ui-sref="login">Dining</a></li>
+                            <li><a href="#contact">Mettings</a></li>
+                            <li><a href="#contact">Gallery</a></li>
+                            <li><a href="#contact">Contact & Location</a></li>
+                        </ul>
+                    </div>
+                    <!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="booking-box">
+        <div class="container">
+            <div ui-view="bookingForm"></div>
+        </div>
+    </div>
+
+</nav>

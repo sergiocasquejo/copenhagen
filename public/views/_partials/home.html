@@ -1,0 +1,13 @@
+<div ui-view="header"></div>
+<section class="section-banner section">
+    <div class="section-banner-inner">
+        <div class="section-banner-content">
+            <div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
+                <div uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
+                    <img ng-src="{{slide.image}}" style="margin:auto;">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div ui-view="footer"></div>
