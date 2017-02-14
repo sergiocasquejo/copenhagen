@@ -19,10 +19,12 @@ class CreateCalendarTable extends Migration
                 $table->integer('roomID')->unsigned();
                 $table->date('selectedDate');
                 $table->tinyInteger('roomOnly')->default(0);
-                $table->double('single');
-                $table->double('double');
-                $table->integer('minStay');
-                $table->integer('maxStay');
+                $table->double('single')->default(0);
+                $table->double('double')->default(0);
+                $table->integer('minStay')->default(0);
+                $table->integer('maxStay')->default(0);
+                $table->integer('availability')->default(0);
+                $table->integer('isActive')->default(0);
                 $table->timestamps();
                 $table->foreign('roomID')->references('id')->on('rooms')
                 ->onDelete('cascade');;

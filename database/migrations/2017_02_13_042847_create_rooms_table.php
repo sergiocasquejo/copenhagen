@@ -22,6 +22,8 @@ class CreateRoomsTable extends Migration
                 $table->double('standardRate')->default(0);
                 $table->double('minimumRate')->default(0);
                 $table->integer('totalPerson')->default(1);
+                $table->string('bed')->nullable();
+                $table->string('location')->nullable();
                 $table->integer('extraBed')->default(0);
                 $table->integer('roomSize')->nullable();
                 $table->integer('bathrooms')->default(0);

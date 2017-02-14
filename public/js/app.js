@@ -14,15 +14,15 @@ var csrftoken = (function() {
 })();
 var copenhagenApp = angular.module('copenhagenApp', ['ui.router', 'ui.bootstrap', 'ui.calendar', 'angularFileUpload', 'ui.toggle'])
     .constant('CSRF_TOKEN', csrftoken)
-    .config(['$httpProvider', 'CSRF_TOKEN',
+    .config(['$httpProvider', '$qProvider', 'CSRF_TOKEN',
 
-        function($httpProvider, CSRF_TOKEN) {
+        function($httpProvider, $qProvider, CSRF_TOKEN) {
 
 
             /**
              * adds CSRF token to header
              */
             $httpProvider.defaults.headers.common['X-CSRF-TOKEN'] = CSRF_TOKEN;
-
+            $qProvider.errorOnUnhandledRejections(false);
         }
     ]);;

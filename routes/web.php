@@ -48,6 +48,12 @@ Route::group(['prefix' => 'api/v1'], function() {
             foreach($r['photos'] as $i => $photo) {
                 $r['photos'][$i]['file'] = json_decode($photo['file']);
             }
+
+            $aminities = $room->aminities()->get()->toArray();
+            $r['aminities'] = array();
+            foreach($aminities as $i => $a) {
+                $r['aminities'][] = $a['id'];
+            }
             $list[] = $r;
         };
 
@@ -69,6 +75,8 @@ Route::group(['prefix' => 'api/v1'], function() {
         $room->standardRate = Request::input('standardRate', 0);
         $room->minimumRate = Request::input('minimumRate', 0);
         $room->totalPerson = Request::input('totalPerson', 1);
+        $room->location = Request::input('location', '');
+        $room->bed = Request::input('bed', '');
         $room->extraBed = Request::input('extraBed', 0);
         $room->bathrooms = Request::input('bathrooms', 0);
         $room->building = Request::input('building', 0);
@@ -92,6 +100,8 @@ Route::group(['prefix' => 'api/v1'], function() {
         $room->standardRate = Request::input('standardRate', 0);
         $room->minimumRate = Request::input('minimumRate', 0);
         $room->totalPerson = Request::input('totalPerson', 1);
+        $room->location = Request::input('location', '');
+        $room->bed = Request::input('bed', '');
         $room->extraBed = Request::input('extraBed', 0);
         $room->bathrooms = Request::input('bathrooms', 0);
         $room->building = Request::input('building', 0);
@@ -107,6 +117,26 @@ Route::group(['prefix' => 'api/v1'], function() {
         return response()->json('failed', 400);
     });
 
+    Route::delete('/room/{id}', function() {
+        $roomID  = Request::input('roomID');
+        if ($room = \App\Room::find($roomID)) {
+            // Delete photos
+            $photos = $room->photos()->get();
+            foreach ($photos as $i => $photo) {
+                if ($photo->file) {
+                    foreach(json_decode($photo->file) as $key => $file) {
+                        File::delete(public_path() . $file);
+                    }
+                }
+            }
+            $room->delete();
+            $list = getAllRooms();
+            return response()->json($list, 200, [], JSON_UNESCAPED_UNICODE); 
+        }
+
+        return response()->json('failed', 400);
+    });
+
      Route::post('/room/{id}/photo', function($id) {
          $photo = Request::file('photo');
          $roomID  = Request::input('roomID');
@@ -115,7 +145,7 @@ Route::group(['prefix' => 'api/v1'], function() {
          $ext = pathinfo($filename, PATHINFO_EXTENSION); // jpg
          
          $uploadPath = Config::get('copenhagen.uploadsPath') .'/';
-         $path = Config::get('copenhagen.rooms.url') . '/' . $roomID; 
+         $path = Config::get('copenhagen.rooms.url');// . '/' . $roomID; 
 
          if (File::exists(public_path(). $path .'/'. $filename))
          {
@@ -130,7 +160,7 @@ Route::group(['prefix' => 'api/v1'], function() {
                  'orig' => $path .'/'. $filename
              );
              foreach ($sizes as $key => $size) {
-                $img = Image::make($dir. $filename)->resize($size['width'], $size['height']);
+                $img = Image::make($dir. $filename)->fit($size['width'], $size['height']);
                 $_n = $name. '_'. $size['width'] .'x'. $size['height'] .'.'. $ext;
                 $images[$key]  = $path .'/'. $_n;
                 $img->save($dir.$_n);
@@ -159,6 +189,25 @@ Route::group(['prefix' => 'api/v1'], function() {
          }
     });
 
+    Route::post('/room/{roomID}/aminities', function() {
+        $room = \App\Room::find(Request::input('roomID'));
+        $aminites = json_decode(Request::input('aminities'));
+        if ($room && count($aminites) != 0) {
+            if ($room->aminities()->sync($aminites)) {
+
+                $aminities = $room->aminities()->get()->toArray();
+                $r = array();
+                foreach($aminities as $i => $a) {
+                    $r[] = $a['id'];
+                }
+
+                return response()->json($r, 200, [], JSON_UNESCAPED_UNICODE);
+            }
+        }
+
+        return response()->json('failed', 400);
+    });
+
     Route::delete('/rooms/{roomID}/photo/{photoID}', function($roomID, $photoID) {
         $photo = \App\Photo::find($photoID);
         if ($photo) {
@@ -176,6 +225,29 @@ Route::group(['prefix' => 'api/v1'], function() {
             }
         }
         return response()->json('failed', 400);
+    });
+
+    Route::get('/rooms/aminities', function() {
+        $aminites = \App\Aminities::all();
+        return response()->json($aminites->toArray(), 200, [], JSON_UNESCAPED_UNICODE);
+    });
+
+    Route::post('/rooms/facility', function() {
+        $facility = new \App\Aminities;
+        $facility->name = strtolower(Request::input('name'));
+        try {
+            if ($facility->save()) {
+                $aminites = \App\Aminities::all();
+                return response()->json($aminites->toArray(), 200, [], JSON_UNESCAPED_UNICODE);
+            }
+        } catch(\Exception $e) {
+            return response()->json($e->getMessage(), 200, [], JSON_UNESCAPED_UNICODE);
+        }
+    });
+
+    Route::get('rooms/types', function() {
+        $types = \App\Room::select(['id', DB::raw('CONCAT(name, " ", building, " - ID ", id) AS name')])->get()->toArray();
+        return response()->json($types, 200, [], JSON_UNESCAPED_UNICODE);
     });
 });
 

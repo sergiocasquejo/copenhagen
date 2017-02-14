@@ -1,13 +1,13 @@
-<div class="admin-main">
+<div class="admin-main" ng-controller="calendarCtrl">
     <div ui-view="header"></div>
     <section class="section-calendar section">
         <div class="col-md-8">
             <div class="room-type">
-                <div class="form-group">
-                    <label for="">Room Type</label>
-                    <select name="" id="" class="form-control" ng-model="roomType">
-                    <option value="">--Select--</option>
-                </select>
+                <div class="form-group row">
+                    <label for="" class="col-md-4">Room Type</label>
+                    <div class="col-md-8">
+                        <select name="roomType" class="form-control" ng-model="calendar.roomType" ng-options="obj as obj.name for obj in roomTypes track by obj.id"></select>
+                    </div>
                 </div>
                 <div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div>
             </div>
@@ -16,21 +16,50 @@
         <!--/.col-md-8-->
         <div class="col-md-4">
             <form action="" novalidate="" name="calendarForm">
-                <strong>Availability</strong>
-                <div class="form-group">
-                    <label for="">Studio East</label>
-                    <input type="number" class="form-control" name="qty" ng-model="qty">
+                <h3>Availability</h3>
+                <hr>
+                <div class="form-group row">
+                    <label for="" class="col-md-6">{{calendar.roomType.name}}</label>
+                    <div class="col-md-3">
+                        <input type="text" name="qty" ng-model="calendar.availability" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <toggle ng-model="calendar.isActive" onstyle="btn-success" size="btn-sm"></toggle>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="">Sell In (PHP)</label>
-                    <input type="number" class="form-control" name="price" ng-model="price">
+                <h3>Rate Plan</h3>
+                <hr>
+                <div class="form-group row">
+                    <label for="" class="col-md-6">Room Only</label>
+                    <div class="col-md-6">
+                        <toggle ng-model="calendar.roomOnly" onstyle="btn-success" size="btn-sm"></toggle>
+                    </div>
                 </div>
-                <div class="checkbox">
-                    <label for="">
-                        <input type="checkbox" name="available" ng-model="status">
-                        Available?
-                    </label>
+                <div class="form-group row">
+                    <label for="" class="col-md-6">Single</label>
+                    <div class="col-md-6">
+                        <input type="number" class="form-control" name="single" ng-model="calendar.single">
+                    </div>
                 </div>
+                <div class="form-group row">
+                    <label for="" class="col-md-6">Double</label>
+                    <div class="col-md-6">
+                        <input type="number" class="form-control" name="double" ng-model="calendar.double">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="" class="col-md-6">Min Stay</label>
+                    <div class="col-md-6">
+                        <input type="number" class="form-control" name="minStay" ng-model="calendar.minStay">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="" class="col-md-6">Max Stay</label>
+                    <div class="col-md-6">
+                        <input type="number" class="form-control" name="maxStay" ng-model="calendar.maxStay">
+                    </div>
+                </div>
+
                 <button type="submit" class="btn btn-success">Save</button>
                 <button type="reset" class="btn btn-default">Cancel</button>
             </form>

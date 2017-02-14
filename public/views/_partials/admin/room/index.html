@@ -21,7 +21,7 @@
                             <div class="col-md-2">Photos {{room.photos.length}}</div>
                             <div class="col-md-2">Persons {{room.totalPerson}}</div>
                             <div class="col-md-2">
-                                <toggle ng-model="room.isActive" ng-change="changed()"></toggle>
+                                <toggle ng-model="room.isActive" ng-change="changed()" onstyle="btn-success" size="btn-sm"></toggle>
                             </div>
                         </div>
                     </uib-accordion-heading>
@@ -79,7 +79,18 @@
                                         </select>
                                     </div>
                                 </div>
-
+                                <div class="form-group" ng-class="{ 'has-error': roomForm.bed.$touched && roomForm.bed.$invalid }">
+                                    <label class="control-label col-sm-4" for="bed">Bed <span class="req">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="bed" ng-model="room.bed" class="form-control" ng-required="true" required>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{ 'has-error': roomForm.location.$touched && roomForm.location.$invalid }">
+                                    <label class="control-label col-sm-4" for="location">Location <span class="req">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="location" ng-model="room.location" class="form-control" ng-required="true" required>
+                                    </div>
+                                </div>
                             </div>
                             <!--/.col-md-4-->
                             <div class="col-md-4">
@@ -108,7 +119,9 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Amenities</label>
-                                    <!--<input type="number" name="roomSize" ng-model="room.roomSize" min="0" ng-min="0" class="form-control">-->
+                                    <div class="col-md-8">
+                                        <button type="button" class="btn btn-default" ng-click="openAminities($index, room)">{{ room.aminities.length }} Selected <i class="fa fa-caret-down" aria-hidden="true"></i></button>
+                                    </div>
                                 </div>
                                 <div class="form-group" ng-class="{ 'has-error': roomForm.bathrooms.$touched && roomForm.bathrooms.$invalid }">
                                     <label class="control-label col-sm-4" for="bathrooms">Bathrooms</label>
@@ -124,7 +137,7 @@
                             <div class="col-md-12">
                                 <div class="pull-right">
                                     <button type="submit" class="btn btn-success" ng-disabled="roomForm.$invalid">Save</button>
-                                    <button type="reset" class="btn btn-default">Cancel</button>
+                                    <button type="button" ng-click="open(room)" class="btn btn-default">Cancel</button>
                                 </div>
                             </div>
                         </div>
@@ -135,3 +148,40 @@
         </div>
     </section>
 </div>
+<script type="text/ng-template" id="confirmPopup.html">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Please Confirm</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <p>Are you sure you want to delete?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" ng-click="ok()" class="btn btn-danger" type="button">Delete</button>
+        <button class="btn btn-default" ng-click="cancel()" type="button">Cancel</button>
+    </div>
+</script>
+<script type="text/ng-template" id="aminitiesPopup.html">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Facilities</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <form name="aminitiesForm" class="form-inline" ng-submit="saveFacility(aminitiesForm.$valid)">
+            <div class="form-group">
+                <input type="text" name="search" ng-model="facility.name" class="search form-control" placeholder="Search..." ng-required="true" required>
+            </div>
+            <button type="submit" class="btn btn-primary" ng-show="!filteredAminities.length">Add</button>
+        </form>
+
+
+        <div class="facilities">
+            <div class="col-md-4 item" ng-repeat="i in filteredAminities = (aminities | filter:facility.name)">
+                <p>{{ i.name }}</p>
+                <toggle ng-model="i.active" ng-init="i.active=aminitiesExists(i.id)" class="toggle-aminities" ng-change="changed()" size="btn-xs" onstyle="btn-success"></toggle>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" ng-click="cancel()" type="button">Cancel</button>
+        <button type="submit" ng-click="ok()" class="btn btn-primary" type="button">Apply</button>
+    </div>
+</script>

@@ -11,4 +11,8 @@ class Room extends Model
      public function photos() {
          return $this->hasMany('App\Photo', 'roomID', 'id');
      }
+
+     public function aminities() {
+         return $this->belongsToMany('App\Aminities', 'rooms_aminities', 'roomID', 'aminitiesID');
+     }
 }
