@@ -6,6 +6,7 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'uiC
         API.getRoomTypes().then(function(response) {
             $scope.roomTypes = response.data;
             $scope.calendar.roomType = response.data[0];
+
             if (response.data[0]) {
                 API.getRoomCalendar(response.data[0].id).then(function(response) {
                     $scope.events = response.data;
@@ -27,11 +28,12 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'uiC
 
         var firstDay = new Date(y, m - 1, 1);
         var lastDay = new Date(y, m + 12, 0);
-        console.log(lastDay);
+
+
         for (var d = firstDay; d <= lastDay; d.setDate(d.getDate() + 1)) {
             /* event source that contains custom events on the scope */
 
-            $scope.events.push({ title: '1 Total PHP 9999', start: new Date(d) });
+            $scope.events.push({ title: '1 Total PHP 999.00', start: new Date(d) });
         }
 
         /* alert on eventClick */

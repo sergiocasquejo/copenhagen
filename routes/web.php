@@ -84,6 +84,27 @@ Route::group(['prefix' => 'api/v1'], function() {
         $room->sort = Request::input('sort', 0);
 
         if ($room->save()) {
+            $from = date('Y-m-d', strtotime("-1 month", strtotime(date('Y-m-d'))));
+            $last = date('Y-m-d', strtotime("+12 months", strtotime($from)));
+
+            $data = array(
+                'roomID' => $room->id,
+                'from' => $from,
+                'to' => $last,
+                'roomOnly' => 0,
+                'single' => $room->minimumRate,
+                'double' => $room->minimumRate,
+                'roomOnlyPrice' => $room->standardRate,
+                'minStay' => 1,
+                'maxStay' => 0,
+                'availability' => $room->totalRooms,
+                'isActive' => 1
+            );
+
+            
+            saveCalendar($data);
+
+            
             $list = getAllRooms();
             return response()->json($list, 200, [], JSON_UNESCAPED_UNICODE);  
         }
@@ -110,6 +131,14 @@ Route::group(['prefix' => 'api/v1'], function() {
         $room->updated_at = date('Y-m-d H:i:s');
 
         if ($room->update()) {
+
+            \App\Calendar::where('roomID', $room->id)->where('onCreateSetup', 0)->update([
+                'single' => $room->minimumRate, 
+                'double' => $room->minimumRate,
+                'roomOnlyPrice' => $room->standardRate,
+                'onCreateSetup' => 1,
+            ]);
+            
             $list = getAllRooms();
             return response()->json($list, 200, [], JSON_UNESCAPED_UNICODE); 
         }
@@ -246,29 +275,46 @@ Route::group(['prefix' => 'api/v1'], function() {
     });
 
     Route::get('rooms/types', function() {
-        $types = \App\Room::select(['*', DB::raw('CONCAT(name, " ", building, " - ID ", id) AS name')])->get()->toArray();
+        $types = \App\Room::select(['*', DB::raw('CONCAT(name, " ", building, " - ID ", id) AS title')])->get()->toArray();
         return response()->json($types, 200, [], JSON_UNESCAPED_UNICODE);
     });
 
+    function saveCalendar($data) {
+        
+        $from = $data['from'];
+        $to = $data['to'];
+        while(strtotime($from) <= strtotime($to)) {
+            $from = date ("Y-m-d", strtotime("+1 day", strtotime($from)));
+            $calendar = new \App\Calendar;
+            $calendar->roomID = $data['roomID'];
+            $calendar->selectedDate = $from;
+            $calendar->roomOnly = $data['roomOnly'];
+            $calendar->single = $data['single'];
+            $calendar->double = $data['double'];
+            $calendar->minStay = $data['minStay'];
+            $calendar->maxStay = $data['maxStay'];
+            $calendar->availability = $data['availability'];
+            $calendar->isActive = $data['isActive'];
+            $calendar->save();
+        }
+    }
     Route::post('calendar', function() {
         try {
-            $from = Request::input('from');
-            $to = Request::input('to');
+            $data = array(
+                'roomID' => Request::input('roomType.id'),
+                'from' => Request::input('from'),
+                'to' => Request::input('to'),
+                'roomOnly' => Request::input('roomOnly', 0),
+                'single' => Request::input('single', 0),
+                'double' => Request::input('double', 0),
+                'minStay' => Request::input('minStay', 0),
+                'maxStay' => Request::input('maxStay', 0),
+                'availability' => Request::input('availability', 0),
+                'isActive' => Request::input('isActive', 0)
+            );
 
-            while(strtotime($from) <= strtotime($to)) {
-                $from = date ("Y-m-d", strtotime("+1 day", strtotime($from)));
-                $calendar = new \App\Calendar;
-                $calendar->roomID = Request::input('roomType.id');
-                $calendar->selectedDate = $from;
-                $calendar->roomOnly = Request::input('roomOnly', 0);
-                $calendar->single = Request::input('single', 0);
-                $calendar->double = Request::input('double', 0);
-                $calendar->minStay = Request::input('minStay', 0);
-                $calendar->maxStay = Request::input('maxStay', 0);
-                $calendar->availability = Request::input('availability', 0);
-                $calendar->isActive = Request::input('isActive', 0);
-                $calendar->save();
-            }
+            
+            saveCalendar($data);
         } catch(\Exception $e) {
             return response()->json($e->getMessage(), 400, [], JSON_UNESCAPED_UNICODE);
         }

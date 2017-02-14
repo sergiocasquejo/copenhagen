@@ -6,7 +6,7 @@
                 <div class="form-group row">
                     <label for="" class="col-md-4">Room Type</label>
                     <div class="col-md-8">
-                        <select name="roomType" class="form-control" ng-model="calendar.roomType" ng-options="val.name for val in roomTypes track by val.id"></select>
+                        <select name="roomType" class="form-control" ng-model="calendar.roomType" ng-options="val.title for val in roomTypes track by val.id"></select>
                     </div>
                 </div>
                 <div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div>
