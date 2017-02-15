@@ -65,6 +65,49 @@ Route::group(['prefix' => 'api/v1'], function() {
         return response()->json($list, 200, [], JSON_UNESCAPED_UNICODE);   
     });
 
+    Route::get('/room/{id}', function($id) {
+        $room = \App\Room::find($id)->first();
+        if ($room) {
+            $r = $room->toArray();
+            $r['photos'] = $room->photos()->get()->toArray();
+            foreach($r['photos'] as $i => $photo) {
+                $r['photos'][$i]['file'] = json_decode($photo['file']);
+            }
+
+            $aminities = $room->aminities()->get()->toArray();
+            $r['aminities'] = array();
+            foreach($aminities as $i => $a) {
+                $r['aminities'][] = array('id' => $a['id'], 'name' => $a['name']);
+            }
+            return response()->json($r, 200, [], JSON_UNESCAPED_UNICODE);  
+        }
+        
+        return response()->json('failed', 400, [], JSON_UNESCAPED_UNICODE);  
+         
+    })->where('id', '[0-9]+');
+
+
+    Route::get('/room/{slug}', function($slug) {
+        $room = \App\Room::where('slug', $slug)->first();
+        if ($room) {
+            $r = $room->toArray();
+            $r['photos'] = $room->photos()->get()->toArray();
+            foreach($r['photos'] as $i => $photo) {
+                $r['photos'][$i]['file'] = json_decode($photo['file']);
+            }
+
+            $aminities = $room->aminities()->get()->toArray();
+            $r['aminities'] = array();
+            foreach($aminities as $i => $a) {
+                $r['aminities'][] = array('id' => $a['id'], 'name' => $a['name']);
+            }
+            return response()->json($r, 200, [], JSON_UNESCAPED_UNICODE);  
+        }
+
+        return response()->json('failed', 400, [], JSON_UNESCAPED_UNICODE);  
+         
+    })->where('name', '[A-Za-z]+');
+
     Route::post('/room', function() {
         $defaultName = 'Studio Standard-' .time();
         $room = new \App\Room;
@@ -113,54 +156,66 @@ Route::group(['prefix' => 'api/v1'], function() {
     });
 
     Route::put('/room/{id}', function($id) {
-        $room = \App\Room::find(Request::input('id'));
-        $room->name = Request::input('name', '');
-        $room->slug = str_slug(Request::input('name', ''));
-        $room->roomSize = Request::input('roomSize', 0);
-        $room->totalRooms = Request::input('totalRooms', 0);
-        $room->standardRate = Request::input('standardRate', 0);
-        $room->minimumRate = Request::input('minimumRate', 0);
-        $room->totalPerson = Request::input('totalPerson', 1);
-        $room->location = Request::input('location', '');
-        $room->bed = Request::input('bed', '');
-        $room->extraBed = Request::input('extraBed', 0);
-        $room->bathrooms = Request::input('bathrooms', 0);
-        $room->building = Request::input('building', 0);
-        $room->isActive = Request::input('isActive', 0);
-        $room->sort = Request::input('sort', 0);
-        $room->updated_at = date('Y-m-d H:i:s');
+        try {
+            $room = \App\Room::find(Request::input('id'));
+            $room->name = Request::input('name', '');
+            $room->slug = str_slug(Request::input('name', ''));
+            $room->roomSize = Request::input('roomSize', 0);
+            $room->totalRooms = Request::input('totalRooms', 0);
+            $room->standardRate = Request::input('standardRate', 0);
+            $room->minimumRate = Request::input('minimumRate', 0);
+            $room->totalPerson = Request::input('totalPerson', 1);
+            $room->location = Request::input('location', '');
+            $room->bed = Request::input('bed', '');
+            $room->extraBed = Request::input('extraBed', 0);
+            $room->bathrooms = Request::input('bathrooms', 0);
+            $room->building = Request::input('building', 0);
+            $room->isActive = Request::input('isActive', 0);
+            $room->sort = Request::input('sort', 0);
+            $room->updated_at = date('Y-m-d H:i:s');
 
-        if ($room->update()) {
+            if ($room->update()) {
 
-            \App\Calendar::where('roomID', $room->id)->where('onCreateSetup', 0)->update([
-                'singlePrice' => $room->minimumRate, 
-                'doublePrice' => $room->minimumRate,
-                'roomOnlyPrice' => $room->standardRate,
-                'onCreateSetup' => 1,
-            ]);
+                \App\Calendar::where('roomID', $room->id)->where('onCreateSetup', 0)->update([
+                    'singlePrice' => $room->minimumRate, 
+                    'doublePrice' => $room->minimumRate,
+                    'roomOnlyPrice' => $room->standardRate,
+                    'availability' => $room->totalRooms,
+                    'onCreateSetup' => 1,
+                ]);
+                
+                $list = getAllRooms();
+                return response()->json($list, 200, [], JSON_UNESCAPED_UNICODE); 
+            }
+
             
-            $list = getAllRooms();
-            return response()->json($list, 200, [], JSON_UNESCAPED_UNICODE); 
+        } catch(\Exception $e) {
+            return response()->json($e->getMessage(), 200, [], JSON_UNESCAPED_UNICODE);
         }
 
-        return response()->json('failed', 400);
+        return response()->json('failed', 200, [], JSON_UNESCAPED_UNICODE);
     });
 
     Route::delete('/room/{id}', function() {
-        $roomID  = Request::input('roomID');
-        if ($room = \App\Room::find($roomID)) {
-            // Delete photos
-            $photos = $room->photos()->get();
-            foreach ($photos as $i => $photo) {
-                if ($photo->file) {
-                    foreach(json_decode($photo->file) as $key => $file) {
-                        File::delete(public_path() . $file);
+        try {
+            
+            $roomID  = Request::input('roomID');
+            if ($room = \App\Room::find($roomID)) {
+                // Delete photos
+                $photos = $room->photos()->get();
+                foreach ($photos as $i => $photo) {
+                    if ($photo->file) {
+                        foreach(json_decode($photo->file) as $key => $file) {
+                            File::delete(public_path() . $file);
+                        }
                     }
                 }
+                $room->delete();
+                $list = getAllRooms();
+                return response()->json($list, 200, [], JSON_UNESCAPED_UNICODE); 
             }
-            $room->delete();
-            $list = getAllRooms();
-            return response()->json($list, 200, [], JSON_UNESCAPED_UNICODE); 
+        } catch(\Exception $e) {
+            return response()->json($e->getMessage(), 200, [], JSON_UNESCAPED_UNICODE);
         }
 
         return response()->json('failed', 400);
@@ -280,23 +335,26 @@ Route::group(['prefix' => 'api/v1'], function() {
     });
 
     function saveCalendar($data) {
-        
-        $from = $data['from'];
-        $to = $data['to'];
-        while(strtotime($from) <= strtotime($to)) {
-            $from = date ("Y-m-d", strtotime("+1 day", strtotime($from)));
-            $calendar = \App\Calendar::firstOrNew(array( 'selectedDate' => $from, 'roomID' => $data['roomID']));
-            $calendar->roomID = $data['roomID'];
-            $calendar->selectedDate = $from;
-            $calendar->roomOnly = $data['roomOnly'];
-            $calendar->singlePrice = $data['singlePrice'];
-            $calendar->doublePrice = $data['doublePrice'];
-            $calendar->minStay = $data['minStay'];
-            $calendar->maxStay = $data['maxStay'];
-            $calendar->availability = $data['availability'];
-            $calendar->isActive = $data['isActive'];
-            $calendar->save();
-        }
+        // try {
+            $from = $data['from'];
+            $to = $data['to'];
+            while(strtotime($from) <= strtotime($to)) {
+                $from = date ("Y-m-d", strtotime("+1 day", strtotime($from)));
+                $calendar = \App\Calendar::firstOrNew(array( 'selectedDate' => $from, 'roomID' => $data['roomID']));
+                $calendar->roomID = $data['roomID'];
+                $calendar->selectedDate = $from;
+                $calendar->roomOnly = $data['roomOnly'];
+                $calendar->singlePrice = $data['singlePrice'];
+                $calendar->doublePrice = $data['doublePrice'];
+                $calendar->minStay = $data['minStay'];
+                $calendar->maxStay = $data['maxStay'];
+                $calendar->availability = $data['availability'];
+                $calendar->isActive = $data['isActive'];
+                $calendar->save();
+            }
+        // } catch (\Exception $e) {
+        //     return response()->json($e->getMessage(), 400, [], JSON_UNESCAPED_UNICODE);
+        // }
     }
     Route::post('calendar', function() {
         try {
@@ -312,8 +370,6 @@ Route::group(['prefix' => 'api/v1'], function() {
                 'availability' => Request::input('availability', 0),
                 'isActive' => Request::input('isActive', 0)
             );
-            // dd($data);
-            
             saveCalendar($data);
         } catch(\Exception $e) {
             return response()->json($e->getMessage(), 400, [], JSON_UNESCAPED_UNICODE);

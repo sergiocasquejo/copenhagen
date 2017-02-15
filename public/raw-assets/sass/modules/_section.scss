@@ -98,4 +98,48 @@ section {
             }
         }
     }
+    &.section-rooms-details {
+        .form-wrapper {
+            background-color: #FFF;
+            padding: 10px;
+            form {
+                button {
+                    display: block;
+                    width: 100%;
+                }
+            }
+        }
+        .room-image {
+            .item {
+                max-height: 500px;
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+        .nav-tabs {
+            margin-top: 20px;
+        }
+        .tab-content {
+            background-color: #FFF;
+            .tab-pane {
+                padding: 20px;
+                .aminities {
+                    li {
+                        padding: 5px;
+                    }
+                }
+                .overview {
+                    li {
+                        padding: 10px;
+                        strong {
+                            width: 150px;
+                            display: inline-block;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

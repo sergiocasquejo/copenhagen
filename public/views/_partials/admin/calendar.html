@@ -26,9 +26,9 @@
                         </div>
                     </div>
                 </div>
-                <!--/ on-timespan-click="timespanClicked(calendarDate)"-->
+
                 <mwl-calendar view="calendarView" view-date="viewDate" events="events" view-title="calendarTitle" on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd" cell-is-open="false" cell-auto-open-disabled="true"
-                    custom-template-urls="{calendarMonthCell: 'customMonthCell.html'}" on-date-range-select="rangeSelected(calendarRangeStartDate, calendarRangeEndDate)">
+                    custom-template-urls="{calendarMonthCell: 'customMonthCell.html'}" on-timespan-click="timespanClicked(calendarDate)" on-date-range-select="rangeSelected(calendarRangeStartDate, calendarRangeEndDate)">
                 </mwl-calendar>
             </div>
 
@@ -114,18 +114,9 @@
                 'cal-day-future': day.isFuture,
                 'cal-day-selected': vm.dateRangeSelect && vm.dateRangeSelect.startDate <= day.date && day.date <= vm.dateRangeSelect.endDate,'cal-day-open': dayIndex === vm.openDayIndex}">
 
-
-            <span class="pull-right" data-cal-date ng-click="vm.calendarCtrl.dateClicked(day.date)" ng-bind="day.label"></span>
-
-            <small style="position: absolute; bottom: 10px; left: 5px" ng-repeat="event in day.events">
-                {{ event.title }}
-    </small>
-
-
-
-
+            <!-- data-cal-date  ng-click="vm.calendarCtrl.dateClicked(day.date)"-->
+            <span class="pull-right" ng-bind="day.label"></span>
+            <small style="position: absolute; bottom: 10px; left: 5px" ng-repeat="event in day.events">{{ event.title }}</small>
         </div>
-
-
     </script>
 </div>

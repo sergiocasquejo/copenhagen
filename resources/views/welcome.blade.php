@@ -29,6 +29,7 @@
     <script src="/js/app.js" type="text/javascript"></script>
     <script src="/js/routes/index.js" type="text/javascript"></script>
     <script src="/js/services/api.js" type="text/javascript"></script>
+    <script src="/js/services/booking.js" type="text/javascript"></script>
     <script src="/js/controllers/auth.js" type="text/javascript"></script>
     <script src="/js/controllers/home.js" type="text/javascript"></script>
     <script src="/js/controllers/admin.js" type="text/javascript"></script>

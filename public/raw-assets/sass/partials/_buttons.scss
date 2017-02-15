@@ -1,0 +1,25 @@
+.cal-month-day.cal-day-inmonth.cal-day-past.cal-day-selected {
+    &:first-child:after,
+    &:last-child:after {
+        content: "\f0b2";
+        clear: both;
+        display: block;
+        width: 25px;
+        height: 25px;
+        background-color: #2b669a;
+        font: normal normal normal 14px/1 FontAwesome;
+        position: absolute;
+        top: 33%;
+        border-radius: 75px;
+        text-align: center;
+        line-height: 26px;
+        color: #FFF;
+        font-size: 12px;
+    }
+    &:first-child:after {
+        left: -15px;
+    }
+    &:last-child:after {
+        right: - 15px;
+    }
+}

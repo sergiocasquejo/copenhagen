@@ -1,5 +1,5 @@
-<div ui-view="header"></div>
-<div class="main">
+<div class="main" ng-controller="roomAvailableCtrl">
+    <div ui-view="header"></div>
     <section class="section-rooms-available section">
         <div class="container">
             <div class="row">
@@ -16,78 +16,26 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 item">
+                <div class="col-md-6 item" ng-repeat="room in roomLists">
                     <div class="room-inner">
                         <div class="room-image">
                             <img class="img-responsive" src="/images/rooms/1.jpg" alt="">
                         </div>
                         <div class="room-details">
                             <div class="pull-left">
-                                <h3>Studio Deluxe – Double Bed with Living Room and Kitchenette</h3>
+                                <h3>{{room.name}}</h3>
                             </div>
                             <div class="pull-right">
-                                <a ui-sref="roomDetail({slug: 'studio-deluxe'})"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                                <a ui-sref="roomDetail({slug: room.slug})"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
                             </div>
 
                         </div>
                     </div>
                 </div>
-                <!--/.col-md-6-->
-                <div class="col-md-6 item">
-                    <div class="room-inner">
-                        <div class="room-image">
-                            <img class="img-responsive" src="/images/rooms/1.jpg" alt="">
-                        </div>
-                        <div class="room-details">
-                            <div class="pull-left">
-                                <h3>Studio Deluxe – Double Bed with Living Room and Kitchenette</h3>
-                            </div>
-                            <div class="pull-right">
-                                <a ui-sref="roomDetail({slug: 'studio-deluxe'})"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <!--/.col-md-6-->
-                <div class="col-md-6 item">
-                    <div class="room-inner">
-                        <div class="room-image">
-                            <img class="img-responsive" src="/images/rooms/1.jpg" alt="">
-                        </div>
-                        <div class="room-details">
-                            <div class="pull-left">
-                                <h3>Studio Deluxe – Double Bed with Living Room and Kitchenette</h3>
-                            </div>
-                            <div class="pull-right">
-                                <a ui-sref="roomDetail({slug: 'studio-deluxe'})"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <!--/.col-md-6-->
-                <div class="col-md-6 item">
-                    <div class="room-inner">
-                        <div class="room-image">
-                            <img class="img-responsive" src="/images/rooms/1.jpg" alt="">
-                        </div>
-                        <div class="room-details">
-                            <div class="pull-left">
-                                <h3>Studio Deluxe – Double Bed with Living Room and Kitchenette</h3>
-                            </div>
-                            <div class="pull-right">
-                                <a ui-sref="roomDetail({slug: 'studio-deluxe'})"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <!--/.col-md-6-->
 
 
             </div>
         </div>
     </section>
+    <div ui-view="footer"></div>
 </div>
-<div ui-view="footer"></div>

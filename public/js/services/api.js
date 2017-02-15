@@ -16,6 +16,13 @@ copenhagenApp.factory('API', ['$http', '$rootScope', '$state', function($http, $
         return $http.get(urlBase + '/rooms');
     }
 
+    api.getRoomBySlug = function(slug) {
+        return $http.get(urlBase + '/room/' + slug);
+    }
+    api.getRoomById = function(id) {
+        return $http.get(urlBase + '/room/' + id);
+    }
+
     api.deleteRoom = function(roomID, data) {
         return $http.delete(urlBase + '/room/' + roomID, data);
     }

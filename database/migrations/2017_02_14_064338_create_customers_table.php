@@ -27,6 +27,7 @@ class CreateCustomersTable extends Migration
                 $table->string('city');
                 $table->string('zipcode');
                 $table->string('countryCode');
+                $table->string('contact');
                 $table->timestamps();
             });
         }

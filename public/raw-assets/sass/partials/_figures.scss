@@ -1,0 +1,14 @@
+.price {
+    .amount {
+        font-size: 19px;
+        text-transform: uppercase;
+        i {
+            font-size: 12px;
+            text-transform: lowercase;
+            color: #717171;
+            &.cur {
+                vertical-align: top;
+            }
+        }
+    }
+}

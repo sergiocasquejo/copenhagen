@@ -27,7 +27,8 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                     templateUrl: '/views/_partials/rooms/index.html'
                 },
                 'header@roomsAvailable': {
-                    templateUrl: '/views/_partials/header.html'
+                    templateUrl: '/views/_partials/header.html',
+                    controller: 'roomAvailableCtrl'
                 },
                 'bookingForm@roomsAvailable': {
                     templateUrl: '/views/_partials/booking-form.html',
@@ -43,7 +44,8 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
             url: '/rooms-suites/:slug',
             views: {
                 '': {
-                    templateUrl: '/views/_partials/rooms/details.html'
+                    templateUrl: '/views/_partials/rooms/details.html',
+                    controller: 'roomDetailsCtrl'
                 },
                 'header@roomDetail': {
                     templateUrl: '/views/_partials/header.html'
@@ -53,7 +55,6 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                 },
                 'bookingForm@roomDetail': {
                     templateUrl: '/views/_partials/booking-form.html',
-                    controller: 'bookingFormCtrl'
                 },
                 'footer@roomDetail': {
                     templateUrl: '/views/_partials/footer.html'
@@ -109,21 +110,28 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
 
             }
         })
-        // User Authentication Route
-        .state('login', {
-            url: '/login',
-            views: {
-                '': {
-                    controller: 'loginCtrl',
-                    templateUrl: '/views/_partials/login.html'
-                }
-                // ,
-                // 'header@home': {
-                //     templateUrl: '/views/_partials/header.html'
-                // }
-            }
 
-        })
+
+
+
+    /*================================================================================================
+     * ADMIN Routes
+     *================================================================================================*/
+    // User Authentication Route
+    .state('login', {
+        url: '/login',
+        views: {
+            '': {
+                controller: 'loginCtrl',
+                templateUrl: '/views/_partials/login.html'
+            }
+            // ,
+            // 'header@home': {
+            //     templateUrl: '/views/_partials/header.html'
+            // }
+        }
+
+    })
 
     // Admin Routes
     .state('adminCalendar', {
