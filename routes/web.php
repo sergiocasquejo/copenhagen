@@ -92,8 +92,8 @@ Route::group(['prefix' => 'api/v1'], function() {
                 'from' => $from,
                 'to' => $last,
                 'roomOnly' => 0,
-                'single' => $room->minimumRate,
-                'double' => $room->minimumRate,
+                'singlePrice' => $room->minimumRate,
+                'doublePrice' => $room->minimumRate,
                 'roomOnlyPrice' => $room->standardRate,
                 'minStay' => 1,
                 'maxStay' => 0,
@@ -133,8 +133,8 @@ Route::group(['prefix' => 'api/v1'], function() {
         if ($room->update()) {
 
             \App\Calendar::where('roomID', $room->id)->where('onCreateSetup', 0)->update([
-                'single' => $room->minimumRate, 
-                'double' => $room->minimumRate,
+                'singlePrice' => $room->minimumRate, 
+                'doublePrice' => $room->minimumRate,
                 'roomOnlyPrice' => $room->standardRate,
                 'onCreateSetup' => 1,
             ]);
@@ -285,12 +285,12 @@ Route::group(['prefix' => 'api/v1'], function() {
         $to = $data['to'];
         while(strtotime($from) <= strtotime($to)) {
             $from = date ("Y-m-d", strtotime("+1 day", strtotime($from)));
-            $calendar = new \App\Calendar;
+            $calendar = \App\Calendar::firstOrNew(array( 'selectedDate' => $from, 'roomID' => $data['roomID']));
             $calendar->roomID = $data['roomID'];
             $calendar->selectedDate = $from;
             $calendar->roomOnly = $data['roomOnly'];
-            $calendar->single = $data['single'];
-            $calendar->double = $data['double'];
+            $calendar->singlePrice = $data['singlePrice'];
+            $calendar->doublePrice = $data['doublePrice'];
             $calendar->minStay = $data['minStay'];
             $calendar->maxStay = $data['maxStay'];
             $calendar->availability = $data['availability'];
@@ -305,14 +305,14 @@ Route::group(['prefix' => 'api/v1'], function() {
                 'from' => Request::input('from'),
                 'to' => Request::input('to'),
                 'roomOnly' => Request::input('roomOnly', 0),
-                'single' => Request::input('single', 0),
-                'double' => Request::input('double', 0),
+                'singlePrice' => Request::input('singlePrice', 0),
+                'doublePrice' => Request::input('doublePrice', 0),
                 'minStay' => Request::input('minStay', 0),
                 'maxStay' => Request::input('maxStay', 0),
                 'availability' => Request::input('availability', 0),
                 'isActive' => Request::input('isActive', 0)
             );
-
+            // dd($data);
             
             saveCalendar($data);
         } catch(\Exception $e) {
@@ -322,7 +322,7 @@ Route::group(['prefix' => 'api/v1'], function() {
     });
 
     Route::get('room/{roomID}/calendar', function($roomID) {
-        $calendar = \App\Calendar::where('roomID', $roomID)->select(['*', DB::raw('selectedDate AS title'), DB::raw('selectedDate AS start')])->get()->toArray();
+        $calendar = \App\Calendar::where('roomID', $roomID)->select(['*', DB::raw('CONCAT("TOTAL PHP", " ", FORMAT(doublePrice, 2)) AS title'), DB::raw('UNIX_TIMESTAMP(selectedDate) AS startsAt')])->get()->toArray();
         return response()->json($calendar, 200, [], JSON_UNESCAPED_UNICODE);
     });
 });

@@ -12,7 +12,7 @@ var csrftoken = (function() {
     }
 
 })();
-var copenhagenApp = angular.module('copenhagenApp', ['ui.router', 'ui.bootstrap', 'ui.calendar', 'angularFileUpload', 'ui.toggle', 'moment-picker'])
+var copenhagenApp = angular.module('copenhagenApp', ['ui.router', 'ui.bootstrap', 'mwl.calendar', 'angularFileUpload', 'ui.toggle', 'moment-picker'])
     .constant('CSRF_TOKEN', csrftoken)
     .config(['$httpProvider', '$qProvider', 'CSRF_TOKEN',
 

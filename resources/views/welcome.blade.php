@@ -10,23 +10,22 @@
     <title>Copenhagen</title>
     <base href="/">
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="/lib/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="/lib/bootstrap-theme.min.css" type="text/css">
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap-theme.min.css" type="text/css">
     <link rel="stylesheet" href="/lib/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="/lib/fullcalendar/dist/fullcalendar.min.css" type="text/css">
     <link rel="stylesheet" href="/lib/angular-bootstrap-toggle/dist/angular-bootstrap-toggle.min.css" type="text/css">
     <link rel="stylesheet" href="/lib/angular-moment-picker/dist/angular-moment-picker.min.css" type="text/css">
+    <link rel="stylesheet" href="/lib/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.min.css" type="text/css">
     <link rel="stylesheet" href="/css/admin.min.css" type="text/css">
-    <script src="/lib/jquery/dist/jquery.min.js" type="text/javascript"></script>
-    <script src="/lib/angular.min.js" type="text/javascript"></script>
-    <script src="/lib/angular-ui-router.min.js" type="text/javascript"></script>
+    <script src="/lib/angular/angular.min.js" type="text/javascript"></script>
+    <script src="/lib/angular-ui-router/release/angular-ui-router.min.js" type="text/javascript"></script>
     <script src="/lib/angular-file-upload/dist/angular-file-upload.min.js" type="text/javascript"></script>
     <script src="/lib/angular-bootstrap-toggle/dist/angular-bootstrap-toggle.min.js" type="text/javascript"></script>
-    <script src="/lib/ui-bootstrap-tpls-2.5.0.min.js" type="text/javascript"></script>
+    <script src="/lib/angular-bootstrap/ui-bootstrap-tpls.min.js" type="text/javascript"></script>
     <script src="/lib/moment/moment.js" type="text/javascript"></script>
-    <script src="/lib/fullcalendar/dist/fullcalendar.min.js" type="text/javascript"></script>
     <script src="/lib/angular-moment-picker/dist/angular-moment-picker.min.js" type="text/javascript"></script>
-    <script src="/lib/calendar.js" type="text/javascript"></script>
+    <script src="/lib/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.min.js" type="text/javascript"></script>
+    
     <script src="/js/app.js" type="text/javascript"></script>
     <script src="/js/routes/index.js" type="text/javascript"></script>
     <script src="/js/services/api.js" type="text/javascript"></script>

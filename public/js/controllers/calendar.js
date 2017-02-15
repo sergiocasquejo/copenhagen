@@ -1,118 +1,69 @@
-copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'uiCalendarConfig', 'API',
-    function($scope, $compile, $timeout, uiCalendarConfig, API) {
-        $scope.roomTypes = [];
-        $scope.calendar = {};
+copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API',
+    function($scope, $compile, $timeout, API) {
+        $scope.calendarView = 'month';
+        $scope.viewDate = moment().startOf('month').toDate();
+        var currentDate = moment($scope.viewDate).format('MMMM DD, YYYY');
+
         $scope.events = [];
+        $scope.roomTypes = [];
+        $scope.calendar = {
+            roomType: null,
+            from: $scope.currentDate,
+            to: $scope.currentDate
+        };
+
         API.getRoomTypes().then(function(response) {
             $scope.roomTypes = response.data;
-            $scope.calendar.roomType = response.data[0];
-
             if (response.data[0]) {
-                API.getRoomCalendar(response.data[0].id).then(function(response) {
-                    $scope.events = response.data;
-                    console.log($scope.events);
-                }, function(error) {
-                    console.log(error);
-                });
+                $scope.calendar.roomType = response.data[0];
+                fetchCalendarByRoomID($scope.calendar.roomType.id)
             }
-
         }, function(error) {
             console.log(error);
         });
 
-
-        var date = new Date();
-        var d = date.getDate();
-        var m = date.getMonth();
-        var y = date.getFullYear();
-
-        var firstDay = new Date(y, m - 1, 1);
-        var lastDay = new Date(y, m + 12, 0);
-
-
-        for (var d = firstDay; d <= lastDay; d.setDate(d.getDate() + 1)) {
-            /* event source that contains custom events on the scope */
-
-            $scope.events.push({ title: '1 Total PHP 999.00', start: new Date(d) });
+        function fetchCalendarByRoomID(roomID) {
+            API.getRoomCalendar(roomID).then(function(response) {
+                angular.forEach(response.data, function(data) {
+                    var event = {
+                        title: data.title, // The title of the event
+                        startsAt: new Date(data.startsAt * 1000), // A javascript date object for when the event starts
+                        endsAt: new Date(data.startsAt * 1000), // Optional - a javascript date object for when the event ends
+                        color: { // can also be calendarConfig.colorTypes.warning for shortcuts to the deprecated event types
+                            primary: '#e3bc08', // the primary event color (should be darker than secondary)
+                            secondary: '#fdf1ba' // the secondary event color (should be lighter than primary)
+                        },
+                        actions: [{ // an array of actions that will be displayed next to the event title
+                            label: '<i class=\'glyphicon glyphicon-pencil\'></i>', // the label of the action
+                            cssClass: 'edit-action', // a CSS class that will be added to the action element so you can implement custom styling
+                            onClick: function(args) { // the action that occurs when it is clicked. The first argument will be an object containing the parent event
+                                console.log('Edit event', args.calendarEvent);
+                            }
+                        }],
+                        draggable: true, //Allow an event to be dragged and dropped
+                        resizable: true, //Allow an event to be resizable
+                        incrementsBadgeTotal: true, //If set to false then will not count towards the badge total amount on the month and year view
+                        recursOn: 'year', // If set the event will recur on the given period. Valid values are year or month
+                        cssClass: 'a-css-class-name', //A CSS class (or more, just separate with spaces) that will be added to the event when it is displayed on each view. Useful for marking an event as selected / active etc
+                        allDay: true // set to true to display the event as an all day event on the day view
+                    };
+                    $scope.events.push(event);
+                });
+            }, function(error) {
+                console.log(error);
+            });
         }
 
-        /* alert on eventClick */
-        $scope.alertOnEventClick = function(date, jsEvent, view) {
-            $scope.alertMessage = (date.title + ' was clicked ');
-        };
-        /* alert on Drop */
-        $scope.alertOnDrop = function(event, delta, revertFunc, jsEvent, ui, view) {
-            $scope.alertMessage = ('Event Dropped to make dayDelta ' + delta);
-        };
-        /* alert on Resize */
-        $scope.alertOnResize = function(event, delta, revertFunc, jsEvent, ui, view) {
-            $scope.alertMessage = ('Event Resized to make dayDelta ' + delta);
-        };
-        /* add and removes an event source of choice */
-        $scope.addRemoveEventSource = function(sources, source) {
-            var canAdd = 0;
-            angular.forEach(sources, function(value, key) {
-                if (sources[key] === source) {
-                    sources.splice(key, 1);
-                    canAdd = 1;
-                }
-            });
-            if (canAdd === 0) {
-                sources.push(source);
-            }
-        };
-        /* add custom event*/
-        $scope.addEvent = function() {
-            $scope.events.push({
-                title: 'Open Sesame',
-                start: new Date(y, m, 28),
-                end: new Date(y, m, 29),
-                className: ['openSesame']
-            });
-        };
-        /* remove event */
-        $scope.remove = function(index) {
-            $scope.events.splice(index, 1);
-        };
-        /* Change View */
-        $scope.changeView = function(view, calendar) {
-            uiCalendarConfig.calendars[calendar].fullCalendar('changeView', view);
-        };
-        /* Change View */
-        $scope.renderCalendar = function(calendar) {
-            $timeout(function() {
-                if (uiCalendarConfig.calendars[calendar]) {
-                    uiCalendarConfig.calendars[calendar].fullCalendar('render');
-                }
-            });
-        };
-        /* Render Tooltip */
-        $scope.eventRender = function(event, element, view) {
-            element.attr({
-                'tooltip': event.title,
-                'tooltip-append-to-body': true
-            });
-            $compile(element)($scope);
-        };
-        /* config object */
-        $scope.uiConfig = {
-            calendar: {
-                height: 450,
-                editable: true,
-                header: {
-                    left: 'title',
-                    center: '',
-                    right: 'today prev,next'
-                },
-                eventClick: $scope.alertOnEventClick,
-                eventDrop: $scope.alertOnDrop,
-                eventResize: $scope.alertOnResize,
-                eventRender: $scope.eventRender
-            }
-        };
-        $scope.eventSources = [$scope.events];
 
 
+        $scope.rangeSelected = function(startDate, endDate) {
+            $scope.calendar.from = startDate;
+            $scope.calendar.to = endDate;
+        };
+
+        $scope.timespanClicked = function(event) {
+            console.log(event);
+        };
 
         // Save Calendar
         $scope.saveCalendar = function(isValid) {

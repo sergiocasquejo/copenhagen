@@ -9,7 +9,27 @@
                         <select name="roomType" class="form-control" ng-model="calendar.roomType" ng-options="val.title for val in roomTypes track by val.id"></select>
                     </div>
                 </div>
-                <div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div>
+                <div class="row">
+                    <div class="col-md-6 text-center">
+                        <h3 class="page-title">{{ viewDate | date: 'MMMM yyyy' }}</h3>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <div class="btn-group">
+                            <button class="btn btn-primary" mwl-date-modifier date="viewDate" decrement="calendarView">
+                                Previous
+                            </button>
+                            <button class="btn btn-default" mwl-date-modifier date="viewDate" set-to-today>
+                                Today</button>
+                            <button class="btn btn-primary" mwl-date-modifier date="viewDate" increment="calendarView">
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!--/ on-timespan-click="timespanClicked(calendarDate)"-->
+                <mwl-calendar view="calendarView" view-date="viewDate" events="events" view-title="calendarTitle" on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd" cell-is-open="false" cell-auto-open-disabled="true"
+                    custom-template-urls="{calendarMonthCell: 'customMonthCell.html'}" on-date-range-select="rangeSelected(calendarRangeStartDate, calendarRangeEndDate)">
+                </mwl-calendar>
             </div>
 
         </div>
@@ -20,11 +40,16 @@
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="">From:</label>
-                        <input class="form-control" ng-model="calendar.from" ng-model-options="{ updateOn: 'blur' }" format="YYYY-MM-DD" moment-picker="calendar.from">
+                        <div moment-picker="calendar.from" format="LL" autoclose="true" ng-model-options="{ updateOn: 'blur' }" format="YYYY-MM-DD">
+                            {{ calendar.from | date: 'MMMM yyyy' }}
+                        </div>
+                        <!--<input class="form-control" ng-model="calendar.from" ng-model-options="{ updateOn: 'blur' }" format="YYYY-MM-DD" moment-picker="calendar.from">-->
                     </div>
                     <div class="form-group col-md-6">
                         <label for="">To:</label>
-                        <input class="form-control" ng-model="calendar.to" ng-model-options="{ updateOn: 'blur' }" format="YYYY-MM-DD" moment-picker="calendar.to">
+                        <div moment-picker="calendar.to" format="LL" autoclose="true" ng-model-options="{ updateOn: 'blur' }" format="YYYY-MM-DD">
+                            {{ calendar.to | date: 'MMMM yyyy'}}
+                        </div>
                     </div>
                 </div>
                 <h3>Availability</h3>
@@ -47,15 +72,15 @@
                     </div>
                 </div>
                 <div class="form-group row" ng-hide="calendar.roomOnly">
-                    <label for="" class="col-md-6">Single</label>
+                    <label for="" class="col-md-6">singlePrice</label>
                     <div class="col-md-6">
-                        <input type="number" class="form-control" name="single" ng-model="calendar.single">
+                        <input type="number" class="form-control" name="singlePrice" ng-model="calendar.singlePrice">
                     </div>
                 </div>
                 <div class="form-group row" ng-hide="calendar.roomOnly">
-                    <label for="" class="col-md-6">Double</label>
+                    <label for="" class="col-md-6">doublePrice</label>
                     <div class="col-md-6">
-                        <input type="number" class="form-control" name="double" ng-model="calendar.double">
+                        <input type="number" class="form-control" name="doublePrice" ng-model="calendar.doublePrice">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -78,4 +103,29 @@
         <!--/.col-md-4-->
 
     </section>
+    <script id="customMonthCell.html" type="text/ng-template">
+        <div mwl-droppable on-drop="vm.handleEventDrop(dropData.event, day.date, dropData.draggedFromDate)" mwl-drag-select="!!vm.onDateRangeSelect" on-drag-select-start="vm.onDragSelectStart(day)" on-drag-select-move="vm.onDragSelectMove(day)" on-drag-select-end="vm.onDragSelectEnd(day)"
+            class="cal-month-day {{ day.cssClass }}" ng-class="{
+                'cal-day-outmonth': !day.inMonth,
+                'cal-day-inmonth': day.inMonth,
+                'cal-day-weekend': day.isWeekend,
+                'cal-day-past': day.isPast,
+                'cal-day-today': day.isToday,
+                'cal-day-future': day.isFuture,
+                'cal-day-selected': vm.dateRangeSelect && vm.dateRangeSelect.startDate <= day.date && day.date <= vm.dateRangeSelect.endDate,'cal-day-open': dayIndex === vm.openDayIndex}">
+
+
+            <span class="pull-right" data-cal-date ng-click="vm.calendarCtrl.dateClicked(day.date)" ng-bind="day.label"></span>
+
+            <small style="position: absolute; bottom: 10px; left: 5px" ng-repeat="event in day.events">
+                {{ event.title }}
+    </small>
+
+
+
+
+        </div>
+
+
+    </script>
 </div>

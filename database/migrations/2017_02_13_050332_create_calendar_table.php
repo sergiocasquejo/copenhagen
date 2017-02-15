@@ -19,8 +19,8 @@ class CreateCalendarTable extends Migration
                 $table->integer('roomID')->unsigned();
                 $table->date('selectedDate');
                 $table->tinyInteger('roomOnly')->default(0);
-                $table->double('single')->default(0);
-                $table->double('double')->default(0);
+                $table->double('singlePrice')->default(0);
+                $table->double('doublePrice')->default(0);
                 $table->double('roomOnlyPrice')->default(0);
                 $table->integer('minStay')->default(0);
                 $table->integer('maxStay')->default(0);

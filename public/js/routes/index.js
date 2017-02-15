@@ -135,6 +135,9 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                 },
                 'header@adminCalendar': {
                     templateUrl: '/views/_partials/admin/header.html'
+                },
+                'calendarControls@adminCalendar': {
+                    templateUrl: '/views/_partials/admin/partials/calendarControls.html'
                 }
             }
 
