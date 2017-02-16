@@ -1,0 +1,124 @@
+<div class="admin-main" ng-controller="calendarCtrl">
+    <div ui-view="header"></div>
+    <section class="section-calendar section">
+        <div class="col-md-8">
+            <div class="calendar-main">
+                <div class="form-group row">
+                    <label for="" class="col-md-4">Room Type</label>
+                    <div class="col-md-8">
+                        <select name="roomType" class="form-control" ng-model="calendar.roomType" ng-options="val.title for val in roomTypes track by val.id"></select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 text-center">
+                        <h3 class="page-title">{{ viewDate | date: 'MMMM yyyy' }}</h3>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <div class="btn-group">
+                            <button class="btn btn-primary" mwl-date-modifier date="viewDate" decrement="calendarView">
+                                Previous
+                            </button>
+                            <button class="btn btn-default" mwl-date-modifier date="viewDate" set-to-today>
+                                Today</button>
+                            <button class="btn btn-primary" mwl-date-modifier date="viewDate" increment="calendarView">
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <mwl-calendar view="calendarView" view-date="viewDate" events="events" view-title="calendarTitle" on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd" cell-is-open="false" cell-auto-open-disabled="true"
+                    custom-template-urls="{calendarMonthCell: 'customMonthCell.html'}" on-timespan-click="timespanClicked(calendarDate)" on-date-range-select="rangeSelected(calendarRangeStartDate, calendarRangeEndDate)">
+                </mwl-calendar>
+            </div>
+
+        </div>
+        <!--/.col-md-8-->
+        <div class="col-md-4">
+            <div class="calendar-form-main">
+                <form ng-submit="saveCalendar(calendarForm.$valid)" novalidate="" name="calendarForm">
+                    <input type="hidden" ng-model="calendar.roomID" ng-init="calendar.roomID = calendar.roomType.id">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="">From:</label>
+                            <div moment-picker="calendar.from" format="LL" autoclose="true" ng-model-options="{ updateOn: 'blur' }" format="YYYY-MM-DD">
+                                {{ calendar.from | date: 'MMMM yyyy' }}
+                            </div>
+                            <!--<input class="form-control" ng-model="calendar.from" ng-model-options="{ updateOn: 'blur' }" format="YYYY-MM-DD" moment-picker="calendar.from">-->
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="">To:</label>
+                            <div moment-picker="calendar.to" format="LL" autoclose="true" ng-model-options="{ updateOn: 'blur' }" format="YYYY-MM-DD">
+                                {{ calendar.to | date: 'MMMM yyyy'}}
+                            </div>
+                        </div>
+                    </div>
+                    <h3>Availability</h3>
+                    <hr>
+                    <div class="form-group row">
+                        <label for="" class="col-md-6">{{calendar.roomType.name}}</label>
+                        <div class="col-md-3">
+                            <input type="text" name="qty" ng-model="calendar.availability" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <toggle ng-model="calendar.isActive" onstyle="btn-success" size="btn-sm"></toggle>
+                        </div>
+                    </div>
+                    <h3>Rate Plan</h3>
+                    <hr>
+                    <div class="form-group row">
+                        <label for="" class="col-md-6">Room Only</label>
+                        <div class="col-md-6">
+                            <toggle ng-model="calendar.roomOnly" onstyle="btn-success" size="btn-sm"></toggle>
+                        </div>
+                    </div>
+                    <div class="form-group row" ng-hide="calendar.roomOnly">
+                        <label for="" class="col-md-6">singlePrice</label>
+                        <div class="col-md-6">
+                            <input type="number" class="form-control" name="singlePrice" ng-model="calendar.singlePrice">
+                        </div>
+                    </div>
+                    <div class="form-group row" ng-hide="calendar.roomOnly">
+                        <label for="" class="col-md-6">doublePrice</label>
+                        <div class="col-md-6">
+                            <input type="number" class="form-control" name="doublePrice" ng-model="calendar.doublePrice">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="col-md-6">Min Stay</label>
+                        <div class="col-md-6">
+                            <input type="number" class="form-control" name="minStay" ng-model="calendar.minStay">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="col-md-6">Max Stay</label>
+                        <div class="col-md-6">
+                            <input type="number" class="form-control" name="maxStay" ng-model="calendar.maxStay">
+                        </div>
+                    </div>
+
+                    <button type="submit" ng-disabled="calendarForm.$invalid" class="btn btn-success">Save</button>
+                    <button type="reset" class="btn btn-default">Cancel</button>
+                </form>
+            </div>
+        </div>
+        <!--/.col-md-4-->
+
+    </section>
+    <script id="customMonthCell.html" type="text/ng-template">
+        <div mwl-droppable on-drop="vm.handleEventDrop(dropData.event, day.date, dropData.draggedFromDate)" mwl-drag-select="!!vm.onDateRangeSelect" on-drag-select-start="vm.onDragSelectStart(day)" on-drag-select-move="vm.onDragSelectMove(day)" on-drag-select-end="vm.onDragSelectEnd(day)"
+            class="cal-month-day {{ day.cssClass }}" ng-class="{
+                'cal-day-outmonth': !day.inMonth,
+                'cal-day-inmonth': day.inMonth,
+                'cal-day-weekend': day.isWeekend,
+                'cal-day-past': day.isPast,
+                'cal-day-today': day.isToday,
+                'cal-day-future': day.isFuture,
+                'cal-day-selected': vm.dateRangeSelect && vm.dateRangeSelect.startDate <= day.date && day.date <= vm.dateRangeSelect.endDate,'cal-day-open': dayIndex === vm.openDayIndex}">
+
+            <!-- data-cal-date  ng-click="vm.calendarCtrl.dateClicked(day.date)"-->
+            <span class="pull-right" ng-bind="day.label"></span>
+            <small style="position: absolute; bottom: 10px; left: 5px" ng-repeat="event in day.events">{{ event.title }}</small>
+        </div>
+    </script>
+</div>

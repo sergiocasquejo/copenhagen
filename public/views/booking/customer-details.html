@@ -1,0 +1,111 @@
+<div class="main" ng-controller="customerDetail">
+    <div ui-view="header"></div>
+    <div ui-view="steps"></div>
+    <section class="section-customer-detail section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <form name="customerForm" ng-submit="submitCustomerDetail(customerForm.$valid)" novalidate>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><span class="fa fa-info-circle"></span> Your details</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group" ng-class="{'has-error': customerForm.salutation.$touched && customerForm.salutation.$invalid }">
+                                            <label class="control-label" for="salutation">Salutation</label>
+                                            <select name="salutation" class="form-control" ng-model="booking.salutation" ng-options="o for o in ['Mr', 'Mrs']" ng-required="true" required></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group" ng-class="{'has-error': customerForm.firstname.$touched && customerForm.firstname.$invalid }">
+                                            <label class="control-label" for="firstname">First Name</label> <input type="text" class="form-control" ng-model="booking.firstname" name="firstname" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group" ng-class="{'has-error': customerForm.lastname.$touched && customerForm.lastname.$invalid }">
+                                            <label class="control-label" for="lastname">Last Name</label> <input type="text" class="form-control" ng-model="booking.lastname" name="lastname" ng-required="true" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group" ng-class="{'has-error': customerForm.middleName.$touched && customerForm.middleName.$invalid }">
+                                            <label class="control-label" for="middleNme">Middle Name</label>
+                                            <input type="text" class="form-control" ng-model="booking.middleName" name="middleName" ng-required="true" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group" ng-class="{'has-error': customerForm.email.$touched && customerForm.email.$invalid }">
+                                            <label class="control-label" for="email">Email</label> <input type="email" class="form-control" ng-model="booking.email" name="email" ng-required="true" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group" ng-class="{'has-error': customerForm.contact.$touched && customerForm.contact.$invalid }">
+                                            <label class="control-label" for="contact">Contact #</label>
+                                            <input type="text" class="form-control" ng-model="booking.contact" name="contact" ng-required="true" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="special_instructions">Special Instructions</label><textarea cols="50" rows="5" class="form-control" ng-model="booking.specialInstructions"></textarea></div>
+                            </div>
+                        </div>
+                        <!--/.panel-->
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><span class="fa fa-map-marker"></span> Your address</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group" ng-class="{'has-error': customerForm.address1.$touched && customerForm.address1.$invalid }">
+                                    <label class="control-label" for="addres1">Address 1</label> <input type="text" class="form-control" ng-model="booking.address1" name="address1" ng-required="true" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="address2">Address 2</label> <input type="text" class="form-control" ng-model="booking.address2"></div>
+                                <div class="form-group" ng-class="{'has-error': customerForm.state.$touched && customerForm.state.$invalid }">
+                                    <label class="control-label" for="state">State</label> <input type="text" class="form-control" ng-model="booking.state" name="state" ng-required="true" required>
+                                </div>
+                                <div class="form-group" ng-class="{'has-error': customerForm.city.$touched && customerForm.city.$invalid }">
+                                    <label class="control-label" for="middleNme">City</label>
+                                    <input type="text" class="form-control" ng-model="booking.city" name="city" ng-required="true" required>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group" ng-class="{'has-error': customerForm.zipcode.$touched && customerForm.zipcode.$invalid }">
+                                            <label class="control-label" for="zipcode">Zip Code</label>
+                                            <input type="text" class="form-control" ng-model="booking.zipcode" name="zipcode" ng-required="true" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label" for="customer_country">Country</label>
+                                            <country-select cs-required cs-priorities="US, GB, KP, KR, CN , AU, JP, PH, DE" ng-model="booking.country" class="form-control" required-message="'Please select country.'" placeholder="Country"></country-select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label" for="billingInstructions">Billing Instructions</label><textarea cols="50" rows="5" class="form-control" name="billingInstructions" ng-model="booking.billingInstructions"></textarea></div>
+                                <div class="text-center">
+                                    <button type="submit" ng-disabled="customerForm.$invalid" class="btn btn-success btn-lg btn-block">Continue <span class="fa fa-long-arrow-right"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!--/.col-md-8-->
+                <div class="col-md-4">
+                    <div ui-view="bookingDetails"></div>
+                </div>
+                <!--/.col-md-4-->
+            </div>
+        </div>
+    </section>
+    <div ui-view="footer"></div>
+</div>

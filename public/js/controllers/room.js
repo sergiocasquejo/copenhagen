@@ -4,7 +4,6 @@ copenhagenApp
             $scope.roomLists = {};
             $scope.selectedRoom = null;
             roomListIndex = null;
-
             API.getRooms().then(function(response) {
                 $scope.roomLists = response.data;
             }, function(error) {

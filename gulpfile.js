@@ -10,7 +10,7 @@ gulp.task('compress-sass', function() {
     return gulp.src('public/raw-assets/sass/main.scss')
         .pipe(sass.sync().on('error', sass.logError))
         .pipe(cleanCSS({ compatibility: 'ie8' }))
-        .pipe(concat('admin.min.css'))
+        .pipe(concat('app.min.css'))
         .pipe(gulp.dest('public/css'));
 });
 

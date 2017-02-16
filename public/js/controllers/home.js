@@ -23,22 +23,22 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
 }])
 
-.controller('bookingFormCtrl', ['$scope', '$rootScope', '$state', 'API', 'Booking',
-    function($scope, $rootScope, $state, API, Booking) {
+.controller('bookingFormCtrl', ['$scope', '$rootScope', '$state', 'API',
+    function($scope, $rootScope, $state, API) {
         $scope.buttonText = 'Check Availability';
         $scope.isInlineForm = true;
-        $scope.booking = Booking.getData();
+        $scope.booking = API.getBookingData();
         $scope.search = function(isValid) {
             if (isValid) {
-                Booking.setData({ checkIn: $scope.booking.checkIn, checkOut: $scope.booking.checkOut, adult: $scope.booking.adult, child: $scope.booking.child });
+                API.setBookingData({ checkIn: $scope.booking.checkIn, checkOut: $scope.booking.checkOut, adult: $scope.booking.adult, child: $scope.booking.child });
                 $state.go('roomsAvailable');
             }
         }
     }
 ])
 
-.controller('roomAvailableCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'Booking',
-    function($scope, $rootScope, $state, $stateParams, API, Booking) {
+.controller('roomAvailableCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API',
+    function($scope, $rootScope, $state, $stateParams, API) {
         $scope.roomLists = [];
         API.getRooms().then(function(response) {
             $scope.roomLists = response.data;
@@ -48,11 +48,13 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
     }
 ])
 
-.controller('roomDetailsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'Booking',
-    function($scope, $rootScope, $state, $stateParams, API, Booking) {
-
+.controller('roomDetailsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API',
+    function($scope, $rootScope, $state, $stateParams, API) {
+        //Hide Top Booking Form
+        $scope.bookingFormTopHide = true;
+        //Current Step
+        $scope.step = 1;
         $scope.room = [];
-        $scope.booking = Booking.getData();
 
         $scope.myInterval = 5000;
         $scope.noWrapSlides = false;
@@ -119,13 +121,19 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
         $scope.book = function(isValid) {
             if (isValid) {
-                console.log($scope.room.id);
-                Booking.setData({
-                    checkIn: $scope.booking.checkIn,
-                    checkOut: $scope.booking.checkOut,
-                    adult: $scope.booking.adult,
-                    child: $scope.booking.child,
-                    noRoom: $scope.booking.noRoom,
+
+                var date1 = new Date($rootScope.booking.checkIn);
+                var date2 = new Date($rootScope.booking.checkOut);
+                var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+                var nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+                API.setBookingData({
+                    checkIn: $rootScope.booking.checkIn,
+                    checkOut: $rootScope.booking.checkOut,
+                    adult: $rootScope.booking.adult,
+                    child: $rootScope.booking.child,
+                    noRooms: $rootScope.booking.noRooms,
+                    nights: nights,
                     room: {
                         id: $scope.room.id,
                         name: $scope.room.name,
@@ -133,6 +141,8 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                         price: $scope.room.minimumRate
                     }
                 });
+
+                console.log(nights, $scope.room);
                 $state.go('customerDetail');
             }
         }
@@ -141,20 +151,40 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
     }
 ])
 
-.controller('customerDetail', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'Booking',
-    function($scope, $rootScope, $state, $stateParams, API, Booking) {
-        $scope.booking = Booking.getData();
-        $scope.room = [];
-
-        console.log($scope.booking);
-
-        API.getRoomById($scope.booking.roomID).then(function(response) {
-            // if (!response.data) {
-            //     $state.go('home');
-            // }
-            $scope.room = response.data;
-        }, function(error) {
-            // $state.go('home');
-        });
+.controller('customerDetail', ['$scope', '$rootScope', '$state', '$stateParams', 'API',
+    function($scope, $rootScope, $state, $stateParams, API) {
+        //Hide Top Booking Form
+        $scope.bookingFormTopHide = true;
+        //Current Step
+        $scope.step = 2;
+        $scope.submitCustomerDetail = function(isValid) {
+            if (isValid) {
+                API.setBookingData($rootScope.booking);
+                $state.go('paymentDetail');
+            }
+        }
     }
-]);
+])
+
+.controller('paymentDetailCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API',
+        function($scope, $rootScope, $state, $stateParams, API) {
+            //Hide Top Booking Form
+            $scope.bookingFormTopHide = true;
+            //Current Step
+            $scope.step = 3;
+            $scope.pay = function(isValid) {
+                if (isValid) {
+                    API.setBookingData($rootScope.booking);
+                    $state.go('bookingComplete');
+                }
+            }
+        }
+    ])
+    .controller('bookingCompleteCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API',
+        function($scope, $rootScope, $state, $stateParams, API) {
+            //Hide Top Booking Form
+            $scope.bookingFormTopHide = true;
+            //Current Step
+            $scope.step = 4;
+        }
+    ]);

@@ -1,7 +1,13 @@
-// Modules and Variables
-@import "modules/_all";
-// Partials
-@import "partials/_base";
-body {
-    background-color: #F5f5f5;
-}
+// // Modules and Variables
+// @import "modules/_all";
+// // Partials
+// @import "partials/_base";
+// body {
+//     background-color: #F5f5f5;
+// }
+@import 'utils/module';
+@import 'base/module';
+@import 'components/module';
+@import 'layout/module';
+@import 'pages/module';
+@import 'vendor/module';

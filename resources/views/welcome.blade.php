@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="/lib/angular-bootstrap-toggle/dist/angular-bootstrap-toggle.min.css" type="text/css">
     <link rel="stylesheet" href="/lib/angular-moment-picker/dist/angular-moment-picker.min.css" type="text/css">
     <link rel="stylesheet" href="/lib/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.min.css" type="text/css">
-    <link rel="stylesheet" href="/css/admin.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/app.min.css" type="text/css">
     <script src="/lib/angular/angular.min.js" type="text/javascript"></script>
     <script src="/lib/angular-ui-router/release/angular-ui-router.min.js" type="text/javascript"></script>
     <script src="/lib/angular-file-upload/dist/angular-file-upload.min.js" type="text/javascript"></script>
@@ -25,6 +25,7 @@
     <script src="/lib/moment/moment.js" type="text/javascript"></script>
     <script src="/lib/angular-moment-picker/dist/angular-moment-picker.min.js" type="text/javascript"></script>
     <script src="/lib/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.min.js" type="text/javascript"></script>
+    <script src="/lib/ng-country-select/dist/ng-country-select.min.js" type="text/javascript"></script>
     
     <script src="/js/app.js" type="text/javascript"></script>
     <script src="/js/routes/index.js" type="text/javascript"></script>

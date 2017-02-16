@@ -11,7 +11,7 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                     templateUrl: '/views/_partials/header.html'
                 },
                 'bookingForm@home': {
-                    templateUrl: '/views/_partials/booking-form.html',
+                    templateUrl: '/views/booking/booking-form.html',
                     controller: 'bookingFormCtrl'
                 },
                 'footer@home': {
@@ -24,14 +24,14 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
             url: '/available-rooms-cebu-hotels',
             views: {
                 '': {
-                    templateUrl: '/views/_partials/rooms/index.html'
+                    templateUrl: '/views/rooms/index.html'
                 },
                 'header@roomsAvailable': {
                     templateUrl: '/views/_partials/header.html',
                     controller: 'roomAvailableCtrl'
                 },
                 'bookingForm@roomsAvailable': {
-                    templateUrl: '/views/_partials/booking-form.html',
+                    templateUrl: '/views/booking/booking-form.html',
                     controller: 'bookingFormCtrl'
                 },
                 'footer@roomsAvailable': {
@@ -44,17 +44,17 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
             url: '/rooms-suites/:slug',
             views: {
                 '': {
-                    templateUrl: '/views/_partials/rooms/details.html',
+                    templateUrl: '/views/rooms/details.html',
                     controller: 'roomDetailsCtrl'
                 },
                 'header@roomDetail': {
                     templateUrl: '/views/_partials/header.html'
                 },
                 'steps@roomDetail': {
-                    templateUrl: '/views/_partials/rooms/steps.html'
+                    templateUrl: '/views/booking/steps.html'
                 },
                 'bookingForm@roomDetail': {
-                    templateUrl: '/views/_partials/booking-form.html',
+                    templateUrl: '/views/booking/booking-form.html',
                 },
                 'footer@roomDetail': {
                     templateUrl: '/views/_partials/footer.html'
@@ -66,19 +66,19 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
             url: '/booking/submit-your-details',
             views: {
                 '': {
-                    templateUrl: '/views/_partials/booking/customer-details.html'
+                    templateUrl: '/views/booking/customer-details.html'
                 },
                 'header@customerDetail': {
                     templateUrl: '/views/_partials/header.html'
                 },
                 'steps@customerDetail': {
-                    templateUrl: '/views/_partials/rooms/steps.html'
+                    templateUrl: '/views/booking/steps.html'
                 },
                 'bookingForm@customerDetail': {
-                    templateUrl: '/views/_partials/booking-form.html'
+                    templateUrl: '/views/booking/booking-form.html'
                 },
                 'bookingDetails@customerDetail': {
-                    templateUrl: '/views/_partials/booking/booking-details.html'
+                    templateUrl: '/views/booking/booking-details.html'
                 },
                 'footer@customerDetail': {
                     templateUrl: '/views/_partials/footer.html'
@@ -90,21 +90,47 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
             url: '/booking/payment',
             views: {
                 '': {
-                    templateUrl: '/views/_partials/booking/payment.html'
+                    templateUrl: '/views/booking/payment.html',
+                    controller: 'paymentDetailCtrl'
                 },
                 'header@paymentDetail': {
                     templateUrl: '/views/_partials/header.html'
                 },
                 'steps@paymentDetail': {
-                    templateUrl: '/views/_partials/rooms/steps.html'
+                    templateUrl: '/views/booking/steps.html'
                 },
                 'bookingForm@paymentDetail': {
-                    templateUrl: '/views/_partials/booking-form.html'
+                    templateUrl: '/views/booking/booking-form.html'
                 },
                 'bookingDetails@paymentDetail': {
-                    templateUrl: '/views/_partials/booking/booking-details.html'
+                    templateUrl: '/views/booking/booking-details.html'
                 },
                 'footer@paymentDetail': {
+                    templateUrl: '/views/_partials/footer.html'
+                }
+
+            }
+        })
+        .state('bookingComplete', {
+            url: '/booking/complete',
+            views: {
+                '': {
+                    templateUrl: '/views/booking/complete.html',
+                    controller: 'bookingCompleteCtrl'
+                },
+                'header@bookingComplete': {
+                    templateUrl: '/views/_partials/header.html'
+                },
+                'steps@bookingComplete': {
+                    templateUrl: '/views/booking/steps.html'
+                },
+                'bookingForm@bookingComplete': {
+                    templateUrl: '/views/booking/booking-form.html'
+                },
+                'bookingDetails@bookingComplete': {
+                    templateUrl: '/views/booking/booking-details.html'
+                },
+                'footer@bookingComplete': {
                     templateUrl: '/views/_partials/footer.html'
                 }
 
@@ -123,7 +149,7 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
             views: {
                 '': {
                     controller: 'loginCtrl',
-                    templateUrl: '/views/_partials/login.html'
+                    templateUrl: '/views/auth/login.html'
                 }
             },
             resolve: { unauthenticate: unauthenticate }
@@ -140,28 +166,28 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
             views: {
                 '': {
                     controller: 'calendarCtrl',
-                    templateUrl: '/views/_partials/admin/calendar.html',
+                    templateUrl: '/views/admin/calendar.html',
                     resolve: { authenticate: authenticate }
                 },
                 'header@adminCalendar': {
-                    templateUrl: '/views/_partials/admin/header.html'
+                    templateUrl: '/views/_partials/admin-header.html'
                 },
                 'calendarControls@adminCalendar': {
-                    templateUrl: '/views/_partials/admin/partials/calendarControls.html'
+                    templateUrl: '/views/admin/partials/calendarControls.html'
                 }
             }
 
         })
         .state('adminRoomSetup', {
-            url: '/admin/rooms',
+            url: '/admin/room-setup',
             views: {
                 '': {
                     controller: 'roomCtrl',
-                    templateUrl: '/views/_partials/admin/room/index.html',
+                    templateUrl: '/views/admin/room-setup.html',
                     resolve: { authenticate: authenticate }
                 },
                 'header@adminRoomSetup': {
-                    templateUrl: '/views/_partials/admin/header.html'
+                    templateUrl: '/views/_partials/admin-header.html',
                 }
             }
 

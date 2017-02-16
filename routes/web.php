@@ -25,13 +25,16 @@ Route::group(['prefix' => 'api/v1'], function() {
 
     Route::post('/login', function() {
         if (!Auth::check()) {
-            $email = Request::input('username');
+            $username = Request::input('username');
             $password = Request::input('password');
             $remember = Request::input('remember');
 
-            if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
+            if (Auth::attempt(['email' => $username, 'password' => $password], $remember)) {
                 // Authentication passed...
-                return response()->json(Auth::user()->toArray(), 200);
+                return response()->json(Auth::user()->with('customer')->get()->toArray(), 200);
+            }elseif (Auth::attempt(['username' => $username, 'password' => $password], $remember)) {
+                // Authentication passed...
+                return response()->json(Auth::user()->with('customer')->get()->toArray(), 200);
             } else {
                 return response()->json('failed', 400);
             }

@@ -1,0 +1,30 @@
+<nav class="navbar navbar-inverse">
+    <div class="menu-nav">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                        <a class="navbar-brand" ui-sref="home"></a>
+                    </div>
+                    <div id="navbar" class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li><a ui-sref="adminRoomSetup">Setup Room</a></li>
+                            <li><a ui-sref="adminCalendar">Calendar</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav pull-right">
+                            <li><a ui-sref="roomsAvailable">Welcome {{ currentUser.username }}</a></li>
+                            <li class="active"><a ui-sref="logout">Logout</a></li>
+                        </ul>
+                    </div>
+                    <!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

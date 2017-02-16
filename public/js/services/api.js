@@ -18,8 +18,9 @@ copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$window', functi
         $window.sessionStorage.setItem('currentUser', JSON.stringify(user));
     }
 
-    api.getCurrenUser = function() {
-        return JSON.parse($window.sessionStorage.getItem("currentUser"));
+    api.getCurrentUser = function() {
+        var _user = JSON.parse($window.sessionStorage.getItem("currentUser"));
+        return _user.length > 0 ? _user[0] : _user;
     }
 
     api.saveRoom = function(room) {
@@ -69,7 +70,14 @@ copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$window', functi
     api.getRoomCalendar = function(roomID) {
         return $http.get(urlBase + '/room/' + roomID + '/calendar');
     }
-
+    api.setBookingData = function(data) {
+        $rootScope.booking = data;
+        $window.sessionStorage.setItem('Booking', JSON.stringify(data));
+    }
+    api.getBookingData = function() {
+        var _b = JSON.parse($window.sessionStorage.getItem("Booking"));
+        return _b != null && _b.length > 0 ? _b[0] : _b;
+    }
 
 
     return api;

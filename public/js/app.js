@@ -12,7 +12,7 @@ var csrftoken = (function() {
     }
 
 })();
-var copenhagenApp = angular.module('copenhagenApp', ['ui.router', 'ui.bootstrap', 'mwl.calendar', 'angularFileUpload', 'ui.toggle', 'moment-picker'])
+var copenhagenApp = angular.module('copenhagenApp', ['ui.router', 'ui.bootstrap', 'mwl.calendar', 'angularFileUpload', 'ui.toggle', 'moment-picker', 'countrySelect'])
     .constant('CSRF_TOKEN', csrftoken)
     .config(['$httpProvider', '$qProvider', 'CSRF_TOKEN',
 
@@ -26,6 +26,10 @@ var copenhagenApp = angular.module('copenhagenApp', ['ui.router', 'ui.bootstrap'
             $qProvider.errorOnUnhandledRejections(false);
         }
     ])
+    .run(['$rootScope', 'API', function($rootScope, API) {
+        $rootScope.currentUser = API.getCurrentUser();
+        $rootScope.booking = API.getBookingData();
+    }])
     .filter('range', function() {
         return function(input, min, max) {
             min = parseInt(min); //Make string input int

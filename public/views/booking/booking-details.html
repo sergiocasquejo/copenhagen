@@ -1,0 +1,38 @@
+<div class="panel panel-primary panel-customer-details" ng-controller="customerDetail">
+    <div class="panel-heading">
+        <h3 class="panel-title"><span class="fa fa-info-circle"></span> Booking Details</h3>
+    </div>
+    <div class="panel-body">
+        <h4>{{ booking.room.name }}</h4>
+        <p><span class="lbl"><i class="fa fa-home" aria-hidden="true"></i> Building:</span><span>{{ booking.room.building }}</span></p>
+        <p><span class="lbl"><i class="fa fa-calendar" aria-hidden="true"></i> Check In:</span><span>{{ booking.checkIn | date: "EEEE MMMM dd, yyyy" }}</span></p>
+        <p><span class="lbl"><i class="fa fa-clock-o" aria-hidden="true"></i> Time In:</span><span>2:00:00 pm</span></p>
+
+        <p><span class="lbl"><i class="fa fa-calendar" aria-hidden="true"></i> Check Out:</span><span>{{ booking.checkOut | date: "EEEE MMMM dd, yyyy"  }}</span></p>
+        <p><span class="lbl"><i class="fa fa-clock-o" aria-hidden="true"></i> Time Out:</span><span>2:00:00 pm</span></p>
+        <p><span class="lbl"><i class="fa fa-moon-o" aria-hidden="true"></i> Nights: </span><span>{{ booking.nights }}</span></p>
+        <p><span class="lbl"><i class="fa fa-area-chart" aria-hidden="true"></i> Rate: </span><span>Php 2,000.00</span></p>
+        <p><span class="lbl"><i class="fa fa-bed" aria-hidden="true"></i> Rooms: </span><span>{{ booking.noRooms }}</span></p>
+        <p><span class="lbl"><i class="fa fa-user" aria-hidden="true"></i> Adult(s): </span><span>{{ booking.adult }}</span></p>
+        <p><span class="lbl"><i class="fa fa-user" aria-hidden="true"></i> Children: </span><span>{{ booking.child }}</span></p>
+        <div class="customer-info">
+            <p><span class="lbl"><i class="fa fa-asterisk" aria-hidden="true"></i> Salutation: </span><span>{{ booking.salutation }}</span></p>
+            <p><span class="lbl"><i class="fa fa-asterisk" aria-hidden="true"></i> First Name: </span><span>{{ booking.firstname }}</span></p>
+            <p><span class="lbl"><i class="fa fa-asterisk" aria-hidden="true"></i> Middle Name: </span><span>{{ booking.middleName }}</span></p>
+            <p><span class="lbl"><i class="fa fa-asterisk" aria-hidden="true"></i> Last Name: </span><span>{{ booking.lastname }}</span></p>
+            <p><span class="lbl"><i class="fa fa-envelope" aria-hidden="true"></i> Email Address: </span><span>{{ booking.email }}</span></p>
+            <p><span class="lbl"><i class="fa fa-sticky-note" aria-hidden="true"></i> Special Notes: </span><br/>
+                <span class="notes">{{ booking.specialInstructions }}</span></p>
+            <p><span class="lbl"><i class="fa fa-map-marker" aria-hidden="true"></i> Address 1: </span><span>{{ booking.address1 }}</span></p>
+            <p><span class="lbl"><i class="fa fa-map-marker" aria-hidden="true"></i> Address 2: </span><span>{{ booking.address2 }}</span></p>
+            <p><span class="lbl"><i class="fa fa-map-marker" aria-hidden="true"></i> State: </span><span>{{ booking.state }}</span></p>
+            <p><span class="lbl"><i class="fa fa-map-marker" aria-hidden="true"></i> City: </span><span>{{ booking.city }}</span></p>
+            <p><span class="lbl"><i class="fa fa-asterisk" aria-hidden="true"></i> Zip Code: </span><span>{{ booking.zipcode }}</span></p>
+            <p><span class="lbl"><i class="fa fa-asterisk" aria-hidden="true"></i> Country: </span><span>{{ booking.country }}</span></p>
+            <p><span class="lbl"><i class="fa fa-phone" aria-hidden="true"></i> Contact #: </span><span>{{ booking.contact }}</span></p>
+            <p><span class="lbl"><i class="fa fa-sticky-note" aria-hidden="true"></i> Billing Notes: </span><br/>
+                <span class="notes">{{ booking.billingInstructions }}</span></p>
+        </div>
+    </div>
+    <!--/.panel-->
+</div>
