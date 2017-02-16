@@ -17,7 +17,7 @@ var copenhagenApp = angular.module('copenhagenApp', ['ui.router', 'ui.bootstrap'
     .config(['$httpProvider', '$qProvider', 'CSRF_TOKEN',
 
         function($httpProvider, $qProvider, CSRF_TOKEN) {
-
+            $httpProvider.defaults.stripTrailingSlashes = false;
 
             /**
              * adds CSRF token to header

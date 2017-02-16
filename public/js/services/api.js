@@ -1,10 +1,26 @@
-copenhagenApp.factory('API', ['$http', '$rootScope', '$state', function($http, $rootScope, $state) {
+copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$window', function($http, $rootScope, $state, $window) {
     var urlBase = '/api/v1';
     var api = {};
-
     api.login = function(auth) {
         return $http.post(urlBase + '/login', auth);
     };
+
+    api.logout = function() {
+        $window.sessionStorage.removeItem('currentUser');
+        return $http.get(urlBase + '/logout');
+    }
+
+    api.isAuthenticated = function() {
+        return JSON.parse($window.sessionStorage.getItem('currentUser')) !== null;
+    };
+
+    api.setCurrentUser = function(user) {
+        $window.sessionStorage.setItem('currentUser', JSON.stringify(user));
+    }
+
+    api.getCurrenUser = function() {
+        return JSON.parse($window.sessionStorage.getItem("currentUser"));
+    }
 
     api.saveRoom = function(room) {
         if (room.id) {

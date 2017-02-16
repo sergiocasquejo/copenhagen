@@ -119,19 +119,20 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
      *================================================================================================*/
     // User Authentication Route
     .state('login', {
-        url: '/login',
-        views: {
-            '': {
-                controller: 'loginCtrl',
-                templateUrl: '/views/_partials/login.html'
-            }
-            // ,
-            // 'header@home': {
-            //     templateUrl: '/views/_partials/header.html'
-            // }
-        }
+            url: '/login',
+            views: {
+                '': {
+                    controller: 'loginCtrl',
+                    templateUrl: '/views/_partials/login.html'
+                }
+            },
+            resolve: { unauthenticate: unauthenticate }
 
-    })
+        })
+        .state('logout', {
+            url: '/logout',
+            controller: 'logoutCtrl',
+        })
 
     // Admin Routes
     .state('adminCalendar', {
@@ -139,7 +140,8 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
             views: {
                 '': {
                     controller: 'calendarCtrl',
-                    templateUrl: '/views/_partials/admin/calendar.html'
+                    templateUrl: '/views/_partials/admin/calendar.html',
+                    resolve: { authenticate: authenticate }
                 },
                 'header@adminCalendar': {
                     templateUrl: '/views/_partials/admin/header.html'
@@ -155,7 +157,8 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
             views: {
                 '': {
                     controller: 'roomCtrl',
-                    templateUrl: '/views/_partials/admin/room/index.html'
+                    templateUrl: '/views/_partials/admin/room/index.html',
+                    resolve: { authenticate: authenticate }
                 },
                 'header@adminRoomSetup': {
                     templateUrl: '/views/_partials/admin/header.html'
@@ -166,6 +169,38 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
 
     $urlRouterProvider.otherwise('/');
     $locationProvider.html5Mode(true);
+
+
+    function authenticate($q, API, $state, $timeout) {
+        if (API.isAuthenticated()) {
+            //Resolve the promise successfully
+            return $q.when();
+        } else {
+            $timeout(function() {
+                    // This code runs after the authentication promise has been rejected.
+                    // Go to the log-in page
+                    $state.go('login');
+                })
+                // Reject the authentication promise to prevent the state from loading
+            return $q.reject();
+        }
+    }
+
+    function unauthenticate($q, API, $state, $timeout) {
+        if (!API.isAuthenticated()) {
+            //Resolve the promise successfully
+            return $q.when();
+        } else {
+            $timeout(function() {
+                    // This code runs after the authentication promise has been rejected.
+                    // Go to the log-in page
+                    $state.go('adminRoomSetup');
+                })
+                // Reject the authentication promise to prevent the state from loading
+            return $q.reject();
+        }
+    }
+
 
 
 });
