@@ -130,10 +130,11 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                 API.setBookingData({
                     checkIn: $rootScope.booking.checkIn,
                     checkOut: $rootScope.booking.checkOut,
-                    adult: $rootScope.booking.adult,
-                    child: $rootScope.booking.child,
-                    noRooms: $rootScope.booking.noRooms,
-                    nights: nights,
+                    noOfAdults: $rootScope.booking.adult,
+                    noOfChild: $rootScope.booking.child,
+                    noOfRooms: $rootScope.booking.noRooms,
+                    roomRate: $scope.room.minimumRate,
+                    noOfNights: nights,
                     room: {
                         id: $scope.room.id,
                         name: $scope.room.name,
@@ -166,8 +167,9 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
     }
 ])
 
-.controller('paymentDetailCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API',
-        function($scope, $rootScope, $state, $stateParams, API) {
+.controller('paymentDetailCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh',
+        function($scope, $rootScope, $state, $stateParams, API, sh) {
+            console.log($rootScope.booking);
             //Hide Top Booking Form
             $scope.bookingFormTopHide = true;
             //Current Step
@@ -175,16 +177,38 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
             $scope.pay = function(isValid) {
                 if (isValid) {
                     API.setBookingData($rootScope.booking);
-                    $state.go('bookingComplete');
+                    var data = $rootScope.booking;
+                    data.roomID = data.room.id;
+                    API.book(data).then(function(response) {
+                        if (response.data == 'success') {
+                            $state.go('paymentPesopay');
+                        }
+                    }, function(error) {
+
+
+                        popupModal = sh.openModal('globalPopup.html', 'Error', error.data);
+                        popupModal.result.then(function(result) {
+                            console.log(result);
+                        });
+                    });
+
                 }
             }
         }
     ])
-    .controller('bookingCompleteCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API',
-        function($scope, $rootScope, $state, $stateParams, API) {
-            //Hide Top Booking Form
-            $scope.bookingFormTopHide = true;
-            //Current Step
-            $scope.step = 4;
+    .controller('paymentStatusCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', '$timeout',
+        function($scope, $rootScope, $state, $stateParams, API, $timeout) {
+            $scope.paymentStatus = $stateParams.status;
+            $scope.load = function() {
+                document.getElementById("payForm").submit();
+            };
+
+            $scope.payment = {
+                merchantId: '',
+                amount: '',
+                orderRef: '',
+                secureHash: '',
+            };
+            // $timeout(function() { $scope.load(); }, 1000, true);
         }
     ]);

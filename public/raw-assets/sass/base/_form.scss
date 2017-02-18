@@ -1,4 +1,14 @@
 .auth-form-inner {
     background-color: #FFF;
     @include border-radius(4px);
+    margin-top: 10%;
+    @include padding(20px);
+    .logo {
+        margin-bottom: 10px;
+    }
+    .bg-danger {
+        color: $red;
+        @include border-radius(4px);
+        @include paddingUpSideDown(10px, 10px);
+    }
 }

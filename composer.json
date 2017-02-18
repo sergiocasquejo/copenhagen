@@ -21,11 +21,17 @@
         ],
         "psr-4": {
             "App\\": "app/"
-        }
+        },
+        "files": [
+            "app/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\": "tests/",
+            "App\\": "app/",
+            "Serge\\Payment\\": "packages/serge/payment/src",
+            "Serge\\Primesoft\\": "packages/serge/primesoft/src"
         }
     },
     "scripts": {

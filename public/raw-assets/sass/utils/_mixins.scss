@@ -59,6 +59,10 @@
     padding: $padding;
 }
 
+@mixin paddingUpSideDown($p1, $p2) {
+    padding: $p1 $p2;
+}
+
 @mixin paddingLeft($padding) {
     padding-left: $padding;
 }

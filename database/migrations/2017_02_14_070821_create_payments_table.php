@@ -17,16 +17,13 @@ class CreatePaymentsTable extends Migration
             Schema::create('payments', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('bookingID')->unsigned();
-                $table->integer('customerID')->unsigned();
                 $table->double('totalAmount')->default(0);
-                $table->string('method')->nullable();
-                $table->string('status')->nullable();
+                $table->string('method');
+                $table->string('status')->default('pending');
                 $table->string('referenceID')->nullable();
                 $table->string('customData')->nullable();
                 $table->timestamps();
                 $table->foreign('bookingID')->references('id')->on('bookings')
-                ->onDelete('cascade');
-                $table->foreign('customerID')->references('id')->on('customers')
                 ->onDelete('cascade');
             });
         }

@@ -1,84 +1,133 @@
 copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$window', function($http, $rootScope, $state, $window) {
-    var urlBase = '/api/v1';
-    var api = {};
-    api.login = function(auth) {
-        return $http.post(urlBase + '/login', auth);
-    };
+        var urlBase = '/api/v1';
+        var api = {};
+        api.login = function(auth) {
+            return $http.post(urlBase + '/login', auth);
+        };
 
-    api.logout = function() {
-        $window.sessionStorage.removeItem('currentUser');
-        return $http.get(urlBase + '/logout');
-    }
-
-    api.isAuthenticated = function() {
-        return JSON.parse($window.sessionStorage.getItem('currentUser')) !== null;
-    };
-
-    api.setCurrentUser = function(user) {
-        $window.sessionStorage.setItem('currentUser', JSON.stringify(user));
-    }
-
-    api.getCurrentUser = function() {
-        var _user = JSON.parse($window.sessionStorage.getItem("currentUser"));
-        return _user.length > 0 ? _user[0] : _user;
-    }
-
-    api.saveRoom = function(room) {
-        if (room.id) {
-            return $http.put(urlBase + '/room/' + room.id, room);
+        api.logout = function() {
+            $window.sessionStorage.removeItem('currentUser');
+            return $http.get(urlBase + '/logout');
         }
-        return $http.post(urlBase + '/room', room);
-    }
-    api.getRooms = function() {
-        return $http.get(urlBase + '/rooms');
-    }
 
-    api.getRoomBySlug = function(slug) {
-        return $http.get(urlBase + '/room/' + slug);
-    }
-    api.getRoomById = function(id) {
-        return $http.get(urlBase + '/room/' + id);
-    }
+        api.isAuthenticated = function() {
+            return JSON.parse($window.sessionStorage.getItem('currentUser')) !== null;
+        };
 
-    api.deleteRoom = function(roomID, data) {
-        return $http.delete(urlBase + '/room/' + roomID, data);
-    }
+        api.setCurrentUser = function(user) {
+            $window.sessionStorage.setItem('currentUser', JSON.stringify(user));
+        }
 
-    api.deletePhoto = function(roomID, photoID) {
-        return $http.delete(urlBase + '/rooms/' + roomID + '/photo/' + photoID);
-    }
+        api.getCurrentUser = function() {
+            var _user = JSON.parse($window.sessionStorage.getItem("currentUser"));
+            return _user != null && _user.length > 0 ? _user[0] : _user;
+        }
 
-    api.getAminities = function() {
-        return $http.get(urlBase + '/rooms/aminities');
-    }
+        /*============================================================================================
+         * Rate Factory
+         *============================================================================================*/
 
-    api.saveFacility = function(facility) {
-        return $http.post(urlBase + '/rooms/facility', facility);
-    }
+        api.getRates = function() {
+            return $http.get(urlBase + '/rates');
+        }
+        api.saveRate = function(rate, id) {
+            if (id) {
+                return $http.put(urlBase + '/rates/' + id, rate);
+            }
+            return $http.post(urlBase + '/rates', rate);
+        }
+        api.deleteRate = function(id) {
+            return $http.delete(urlBase + '/rates/' + id);
+        }
 
-    api.saveRoomAminities = function(roomID, data) {
-        return $http.post(urlBase + '/room/' + roomID + '/aminities', data);
-    }
+        /*============================================================================================
+         * Room Factory
+         *============================================================================================*/
 
-    api.getRoomTypes = function() {
-        return $http.get(urlBase + '/rooms/types');
-    }
-    api.saveCalendar = function(calendar) {
-        return $http.post(urlBase + '/calendar', calendar);
-    }
+        api.saveRoom = function(room) {
+            if (room.id) {
+                return $http.put(urlBase + '/rooms/' + room.id, room);
+            }
+            return $http.post(urlBase + '/rooms', room);
+        }
+        api.getRooms = function() {
+            return $http.get(urlBase + '/rooms');
+        }
 
-    api.getRoomCalendar = function(roomID) {
-        return $http.get(urlBase + '/room/' + roomID + '/calendar');
-    }
-    api.setBookingData = function(data) {
-        $rootScope.booking = data;
-        $window.sessionStorage.setItem('Booking', JSON.stringify(data));
-    }
-    api.getBookingData = function() {
-        var _b = JSON.parse($window.sessionStorage.getItem("Booking"));
-        return _b != null && _b.length > 0 ? _b[0] : _b;
-    }
+        api.getRoomBySlug = function(slug) {
+            return $http.get(urlBase + '/room/' + slug);
+        }
+        api.getRoomById = function(id) {
+            return $http.get(urlBase + '/room/' + id);
+        }
+
+        api.deleteRoom = function(roomID) {
+            return $http.delete(urlBase + '/rooms/' + roomID);
+        }
+
+        api.deletePhoto = function(roomID, photoID) {
+            return $http.delete(urlBase + '/rooms/' + roomID + '/photos/' + photoID);
+        }
+
+        api.getAminities = function() {
+            return $http.get(urlBase + '/rooms/aminities');
+        }
+
+        api.saveFacility = function(facility) {
+            return $http.post(urlBase + '/rooms/aminities', facility);
+        }
+
+        api.deleteAminities = function(id) {
+            return $http.delete(urlBase + '/rooms/aminities/' + id);
+        }
+
+        api.saveRoomAminities = function(roomID, data) {
+            return $http.post(urlBase + '/rooms/' + roomID + '/aminities', data);
+        }
+
+        api.getRoomTypes = function() {
+            return $http.get(urlBase + '/rooms/types');
+        }
+        api.saveCalendar = function(calendar) {
+            return $http.post(urlBase + '/calendar', calendar);
+        }
+
+        api.getRoomCalendar = function(roomID) {
+            return $http.get(urlBase + '/room/' + roomID + '/calendar');
+        }
+        api.setBookingData = function(data) {
+            $rootScope.booking = data;
+            $window.sessionStorage.setItem('Booking', JSON.stringify(data));
+        }
+        api.getBookingData = function() {
+            var _b = JSON.parse($window.sessionStorage.getItem("Booking"));
+
+            return _b != null && _b.length > 0 ? _b[0] : _b;
+        }
+
+        api.book = function(data) {
+            return $http.post(urlBase + '/book', data);
+        }
 
 
-    return api;
-}]);
+        return api;
+    }])
+    .factory('authHttpResponseInterceptor', ['$q', '$location', function($q, $location) {
+        return {
+            response: function(response) {
+                if (response.status === 401) {
+                    console.log("Response 401");
+                }
+                return response || $q.when(response);
+            },
+            responseError: function(rejection) {
+                if (rejection.status === 401) {
+
+                    console.log("Response Error 401", rejection);
+
+                    $location.path('/login').search('returnTo', $location.path());
+                }
+                return $q.reject(rejection);
+            }
+        }
+    }])

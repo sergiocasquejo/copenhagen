@@ -17,6 +17,7 @@ class CreateBookingsTable extends Migration
             Schema::create('bookings', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('roomID')->unsigned();
+                $table->string('refId')->unique();
                 $table->integer('customerID')->unsigned();
                 $table->date('checkIn');
                 $table->string('checkInTime');
@@ -25,12 +26,16 @@ class CreateBookingsTable extends Migration
                 $table->integer('noOfRooms')->default(1);
                 $table->integer('noOfNights')->default(1);
                 $table->integer('noOfAdults')->default(1);
-                $table->integer('noOfChild')->default(0);
+                $table->integer('noOfChild')->default(0)->nullable();
                 $table->double('roomRate')->default(0);
                 $table->double('totalAmount')->default(0);
-                $table->string('status')->default('pending');
+                $table->string('rate_code');
+                $table->string('meal_type');
+                $table->string('room_type_code');
+                $table->string('company_code');
                 $table->string('specialInstructions')->nullable();
                 $table->string('billingInstructions')->nullable();
+                $table->string('status')->default('pending');
                 $table->timestamps();
                 $table->foreign('roomID')->references('id')->on('rooms')
                 ->onDelete('cascade');

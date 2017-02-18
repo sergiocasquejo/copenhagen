@@ -12,11 +12,23 @@
 */
 
 Route::get('/', function ($any = null) {
-    return view('welcome');
+    return view('app');
 });
 
 
 Route::group(['prefix' => 'api/v1'], function() {
+    /*
+    |--------------------------------------------------------------------------
+    | Rates Routes
+    |--------------------------------------------------------------------------
+    |
+    | Register your routes here that needs user authentication
+    | routes are loaded by the RouteServiceProvider within a group which
+    | contains the "web" middleware group. Now create something great!
+    |
+    */
+
+    
 
     Route::get('/logout', function() {
         Auth::logout();
@@ -36,13 +48,13 @@ Route::group(['prefix' => 'api/v1'], function() {
                 // Authentication passed...
                 return response()->json(Auth::user()->with('customer')->get()->toArray(), 200);
             } else {
-                return response()->json('failed', 400);
+                return response()->json('Username or Password not exist.', 400);
             }
         } else {
             return response()->json(Auth::user()->toArray(), 200);
         }
     });
-
+    /*
     function getAllRooms() {
         $list = array();
         $rooms = \App\Room::all();
@@ -131,13 +143,128 @@ Route::group(['prefix' => 'api/v1'], function() {
         return response()->json($calendar, 200, [], JSON_UNESCAPED_UNICODE);
     });
 
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | Booked API Routes
+    |--------------------------------------------------------------------------
+    |
+    | Register your routes here that needs user authentication
+    | routes are loaded by the RouteServiceProvider within a group which
+    | contains the "web" middleware group. Now create something great!
+    |
+    */
+
+    
+
+    Route::post('/book', function() {
+        $customer = \App\Customer::firstOrNew(['email' => \Request::input('email')]);
+        $booking = new \App\Booking;
+
+        $rules = $customer->rules;
+        if ($customer->id) {
+            $rules['email'] = $rules['email'] .','. $customer->id . ',id';
+        }
+
+        $validator = $customer->validate(Request::all(), $rules);
+        if ($validator->passes()) {
+            $totalNights = $booking->countTotalNights(
+                Request::input('checkIn'), 
+                Request::input('checkOut')
+            );
+            $roomRate = Request::input('roomRate');
+            $noOfAdults = Request::input('noOfAdults');
+            $noOfChild = Request::input('noOfChild', 0);
+            $noOfRooms = Request::input('noOfRooms');
+            $totalAmount = $booking->calculateTotaPrice($roomRate, $noOfRooms, $totalNights);
+            $booking->refId = time();
+            $booking->customerID = Request::input('customerID');
+            $booking->checkInTime = $booking::CHECK_IN_TIME;
+            $booking->checkOutTime = $booking::CHECK_OUT_TIME;
+            $booking->roomID = Request::input('roomID');
+            $booking->checkIn = Request::input('checkIn');
+            $booking->checkOut = Request::input('checkOut');
+            $booking->noOfRooms = $noOfRooms;
+            $booking->noOfNights = $totalNights;
+            $booking->noOfAdults = $noOfAdults;
+            $booking->noOfChild = $noOfChild;
+            $booking->roomRate = $roomRate;
+            $booking->totalAmount = $totalAmount;
+            $booking->specialInstructions = Request::input('specialInstructions');
+            $booking->billingInstructions = Request::input('billingInstructions');
+            $booking->status = $booking::BOOKING_PENDING;
+
+           $bookingData = Request::all();
+           $bookingData['customerID'] = $customer->id;
+           $bookingData['totalAmount'] = $booking->totalAmount;
+
+            $validator = $booking->validate($bookingData);
+            if ($validator->passes()) {
+                $customer->salutation = Request::input('salutation');
+                $customer->firstname = Request::input('firstname');
+                $customer->middleName = Request::input('middleName');
+                $customer->lastname = Request::input('lastname');
+                $customer->email = Request::input('email');
+                $customer->address1 = Request::input('address1');
+                $customer->address2 = Request::input('address2');
+                $customer->city = Request::input('city');
+                $customer->state = Request::input('state');
+                $customer->zipcode = Request::input('zipcode');
+                $customer->countryCode = Request::input('country');
+                $customer->contact = Request::input('contact');
+                if ($customer->save()) {
+                    //$customer->bookings()->save($booking);
+                    $booking->customerID = $customer->id;
+                    if ($booking->save()) {
+                        session(['orderRef' => $booking->refId]);
+                        return response()->json('success', 200, [], JSON_UNESCAPED_UNICODE);
+                    }
+                }
+            } else {
+                return response()->json($validator->errors()->getMessages(), 400, [], JSON_UNESCAPED_UNICODE);
+            }
+        } else {
+            return response()->json($validator->errors()->getMessages(), 400, [], JSON_UNESCAPED_UNICODE);
+        }
 
 
-    /*==================================================================================================
-     * Administrator Routes
-     *==================================================================================================*/
+        
+
+        
+    });
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Administrator Routes
+    |--------------------------------------------------------------------------
+    |
+    | Register your routes here that needs user authentication
+    | routes are loaded by the RouteServiceProvider within a group which
+    | contains the "web" middleware group. Now create something great!
+    |
+    */
 
     Route::group(['middleware' => 'auth'], function() {
+        Route::resource('rates', 'RateController', ['only' => [
+            'index', 'store', 'update', 'destroy'
+        ]]);
+        
+        
+        Route::group(['prefix' => 'rooms'], function() {
+            Route::resource('aminities', 'AminitiesController', ['only' => [
+                'index', 'store', 'update', 'destroy'
+            ]]);
+            Route::post('{roomId}/photos', 'PhotoController@store');
+            Route::delete('{roomId}/photos/{id}', 'PhotoController@destroy');
+            Route::post('{roomId}/aminities', 'RoomController@attachAminities');
+        });
+        Route::resource('rooms', 'RoomController', ['only' => [
+                'index', 'store', 'update', 'destroy'
+            ]]);
+
+        /*
+
         // Save Room
         Route::post('/room', function() {
             $defaultName = 'Studio Standard-' .time();
@@ -158,28 +285,28 @@ Route::group(['prefix' => 'api/v1'], function() {
             $room->sort = Request::input('sort', 0);
 
             if ($room->save()) {
-                $from = date('Y-m-d', strtotime("-1 month", strtotime(date('Y-m-d'))));
-                $last = date('Y-m-d', strtotime("+12 months", strtotime($from)));
+                // $from = date('Y-m-d', strtotime("-1 month", strtotime(date('Y-m-d'))));
+                // $last = date('Y-m-d', strtotime("+12 months", strtotime($from)));
 
-                $data = array(
-                    'roomID' => $room->id,
-                    'from' => $from,
-                    'to' => $last,
-                    'roomOnly' => 0,
-                    'singlePrice' => $room->minimumRate,
-                    'doublePrice' => $room->minimumRate,
-                    'roomOnlyPrice' => $room->standardRate,
-                    'minStay' => 1,
-                    'maxStay' => 0,
-                    'availability' => $room->totalRooms,
-                    'isActive' => 1
-                );
-
-                
-                saveCalendar($data);
+                // $data = array(
+                //     'roomID' => $room->id,
+                //     'from' => $from,
+                //     'to' => $last,
+                //     'roomOnly' => 0,
+                //     'singlePrice' => $room->minimumRate,
+                //     'doublePrice' => $room->minimumRate,
+                //     'roomOnlyPrice' => $room->standardRate,
+                //     'minStay' => 1,
+                //     'maxStay' => 0,
+                //     'availability' => $room->totalRooms,
+                //     'isActive' => 1
+                // );
 
                 
-                $list = getAllRooms();
+                // saveCalendar($data);
+
+                
+                // $list = getAllRooms();
                 return response()->json($list, 200, [], JSON_UNESCAPED_UNICODE);  
             }
 
@@ -226,31 +353,7 @@ Route::group(['prefix' => 'api/v1'], function() {
 
             return response()->json('failed', 200, [], JSON_UNESCAPED_UNICODE);
         });
-        // Delete Room
-         Route::delete('/room/{id}', function() {
-            try {
-                
-                $roomID  = Request::input('roomID');
-                if ($room = \App\Room::find($roomID)) {
-                    // Delete photos
-                    $photos = $room->photos()->get();
-                    foreach ($photos as $i => $photo) {
-                        if ($photo->file) {
-                            foreach(json_decode($photo->file) as $key => $file) {
-                                File::delete(public_path() . $file);
-                            }
-                        }
-                    }
-                    $room->delete();
-                    $list = getAllRooms();
-                    return response()->json($list, 200, [], JSON_UNESCAPED_UNICODE); 
-                }
-            } catch(\Exception $e) {
-                return response()->json($e->getMessage(), 200, [], JSON_UNESCAPED_UNICODE);
-            }
 
-            return response()->json('failed', 400);
-        });
         // Save room photo
         Route::post('/room/{id}/photo', function($id) {
             $photo = Request::file('photo');
@@ -400,13 +503,15 @@ Route::group(['prefix' => 'api/v1'], function() {
                 return response()->json($e->getMessage(), 400, [], JSON_UNESCAPED_UNICODE);
             }
             
-        });
+        });*/
     });
 });
 
 Route::any('{all}', function(){
-    return view('welcome');
+    return view('app');
 })->where('all', '.*');
 // Auth::routes();
 
 // Route::get('/home', 'HomeController@index');
+
+

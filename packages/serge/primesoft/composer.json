@@ -1,0 +1,12 @@
+{
+    "name": "serge/primesoft",
+    "description": "Connect to primesoftware API",
+    "authors": [
+        {
+            "name": "Serge",
+            "email": "serg.casquejo@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}

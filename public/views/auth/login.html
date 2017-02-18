@@ -4,7 +4,7 @@
             <div class="col-md-3 col-md-offset-5 auth-form-inner text-center">
                 <img class="logo" src="/images/logo.png" />
                 <form ng-submit="login(userForm.$valid)" novalidate="" name="userForm">
-                    <p data-ng-bind="message" class="bg-danger"></p>
+                    <p ng-if="message" data-ng-bind="message" class="bg-danger"></p>
                     <div class="form-group" data-ng-class="{ 'has-error': userForm.username.$touched && userForm.username.$invalid }">
                         <div class="input-group">
                             <div class="input-group-addon"><span class="glyphicon glyphicon-user" area-hidden="true"></span></div>

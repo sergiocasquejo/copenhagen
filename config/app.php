@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Laravel',
+    'name' => 'Long Term Stay Apartments | Cebu Serviced Apartments',
 
     /*
     |--------------------------------------------------------------------------
@@ -25,7 +25,7 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'production'),
+    'env' => env('APP_ENV', 'development'),
 
     /*
     |--------------------------------------------------------------------------
@@ -178,6 +178,11 @@ return [
         App\Providers\RouteServiceProvider::class,
         // Image Resiser
         Intervention\Image\ImageServiceProvider::class,
+
+        //Payment Service Provider
+        Serge\Payment\PaymentServiceProvider::class,
+        //Prime Software Service Provider
+        Serge\Primesoft\PrimesoftServiceProvider::class,
     ],
 
     /*

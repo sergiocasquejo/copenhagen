@@ -1,0 +1,12 @@
+{
+    "name": "serge/payment",
+    "description": "Pesopay Payment Integration",
+    "authors": [
+        {
+            "name": "Serge",
+            "email": "serg.casquejo@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}

@@ -12,7 +12,7 @@ var csrftoken = (function() {
     }
 
 })();
-var copenhagenApp = angular.module('copenhagenApp', ['ui.router', 'ui.bootstrap', 'mwl.calendar', 'angularFileUpload', 'ui.toggle', 'moment-picker', 'countrySelect'])
+var copenhagenApp = angular.module('copenhagenApp', ['ngAnimate', 'ui.router', 'ui.bootstrap', 'mwl.calendar', 'angularFileUpload', 'ui.toggle', 'moment-picker', 'countrySelect'])
     .constant('CSRF_TOKEN', csrftoken)
     .config(['$httpProvider', '$qProvider', 'CSRF_TOKEN',
 
@@ -24,11 +24,20 @@ var copenhagenApp = angular.module('copenhagenApp', ['ui.router', 'ui.bootstrap'
              */
             $httpProvider.defaults.headers.common['X-CSRF-TOKEN'] = CSRF_TOKEN;
             $qProvider.errorOnUnhandledRejections(false);
+            $httpProvider.interceptors.push('authHttpResponseInterceptor');
         }
     ])
-    .run(['$rootScope', 'API', function($rootScope, API) {
+    .run(['$rootScope', '$window', 'API', function($rootScope, $window, API) {
         $rootScope.currentUser = API.getCurrentUser();
         $rootScope.booking = API.getBookingData();
+
+        $rootScope.$on('$stateChangeStart',
+            function(event, toState, toParams, fromState, fromParams) {
+                if (toState.external) {
+                    event.preventDefault();
+                    $window.open(toState.url, '_self');
+                }
+            });
     }])
     .filter('range', function() {
         return function(input, min, max) {
@@ -38,4 +47,42 @@ var copenhagenApp = angular.module('copenhagenApp', ['ui.router', 'ui.bootstrap'
                 input.push(i);
             return input;
         };
-    });
+    })
+
+.factory('sh', function($uibModal) {
+    var modalInstance = null;
+
+    function openModal(page, title, message) {
+
+        return $uibModal.open({
+            animation: true,
+            templateUrl: page,
+            backdrop: 'static',
+            keyboard: false,
+            controller: function($scope, $uibModalInstance, modalTitle, bodyMessage) {
+                $scope.modalTitle = modalTitle;
+                $scope.modalMessage = bodyMessage;
+                $scope.ok = function() {
+                    $uibModalInstance.close('ok');
+
+                };
+
+                $scope.cancel = function() {
+                    $uibModalInstance.dismiss('cancel');
+                };
+            },
+            resolve: {
+                modalTitle: function() {
+                    return title;
+                },
+                bodyMessage: function() {
+                    return message;
+                }
+            }
+        })
+    }
+
+    return {
+        openModal: openModal
+    }
+});

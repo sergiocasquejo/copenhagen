@@ -111,6 +111,21 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
 
             }
         })
+        .state('paymentStatus', {
+            url: '/payment/:status',
+            views: {
+                '': {
+                    templateUrl: '/views/booking/process-payment.html',
+                    controller: 'paymentStatusCtrl'
+                }
+
+            }
+        })
+
+    .state('paymentPesopay', {
+            url: '/payment/pesopay',
+            external: true
+        })
         .state('bookingComplete', {
             url: '/booking/complete',
             views: {
@@ -152,7 +167,7 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                     templateUrl: '/views/auth/login.html'
                 }
             },
-            resolve: { unauthenticate: unauthenticate }
+            // resolve: { unauthenticate: unauthenticate }
 
         })
         .state('logout', {
@@ -178,6 +193,22 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
             }
 
         })
+        .state('adminRateSetup', {
+            url: '/admin/rate-setup',
+            views: {
+                '': {
+                    controller: 'rateCtrl',
+                    templateUrl: '/views/admin/rate-setup.html',
+                    resolve: { authenticate: authenticate }
+                },
+                'header@adminRateSetup': {
+                    templateUrl: '/views/_partials/admin-header.html',
+                },
+                'footer@adminRateSetup': {
+                    templateUrl: '/views/_partials/admin-footer.html',
+                }
+            }
+        })
         .state('adminRoomSetup', {
             url: '/admin/room-setup',
             views: {
@@ -188,6 +219,9 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                 },
                 'header@adminRoomSetup': {
                     templateUrl: '/views/_partials/admin-header.html',
+                },
+                'footer@adminRoomSetup': {
+                    templateUrl: '/views/_partials/admin-footer.html',
                 }
             }
 

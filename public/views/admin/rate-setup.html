@@ -1,0 +1,89 @@
+<div class="admin-main" ng-controller="rateCtrl">
+    <div ui-view="header"></div>
+    <section class="section-rate section">
+        <!--/.col-md-8-->
+        <div class="col-md-4">
+            <div class="rate-form-main">
+                <form ng-submit="save(rateForm.$valid)" novalidate="" name="rateForm">
+                    <h3>Rate</h3>
+                    <hr>
+                    <div class="form-group row" ng-class="{ 'has-error': rateForm.name.$touched && rateForm.name.$invalid }">
+                        <label for="" class="control-label col-md-6">Name</label>
+                        <div class="col-md-6">
+                            <input type="text" name="name" ng-model="rate.name" class="form-control" ng-requred="true" required>
+                        </div>
+                    </div>
+                    <div class="form-group row" ng-class="{ 'has-error': rateForm.rateCode.$touched && rateForm.rateCode.$invalid }">
+                        <label for="" class="control-label col-md-6">Rate Code</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="rateCode" ng-model="rate.rateCode" ng-required="true" required>
+                        </div>
+                    </div>
+                    <div class="form-group row" ng-class="{ 'has-error': rateForm.roomCode.$touched && rateForm.roomCode.$invalid }">
+                        <label for="" class="control-label col-md-6">Room Code</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="roomCode" ng-model="rate.roomCode" ng-required="true" required>
+                        </div>
+                    </div>
+                    <div class="form-group row" ng-class="{ 'has-error': rateForm.mealType.$touched && rateForm.mealType.$invalid }">
+                        <label for="" class="control-label col-md-6">Meal Type</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="mealType" ng-model="rate.mealType" ng-required="true" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="control-label col-md-6">Description</label>
+                        <div class="col-md-6">
+                            <textarea rows="2" cols="50" class="form-control" name="description" ng-model="rate.description"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label for="" class="control-label col-md-6"></label>
+                        </div>
+                        <div class="col-md-6">
+                            <toggle ng-model="rate.active" value="1" onstyle="btn-success" size="btn-sm"></toggle>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="pull-right">
+                            <button type="submit" ng-disabled="calendarForm.$invalid" class="btn btn-success">Save</button>
+                            <button type="reset" class="btn btn-default">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--/.col-md-4-->
+        <div class="col-md-8">
+            <table class="table table-stripe">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Rate Code</th>
+                        <th>Room Code</th>
+                        <th>Meal Type</th>
+                        <th>Active</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="rate in rates">
+                        <td>{{ rate.id }}</td>
+                        <td>{{ rate.name }}</td>
+                        <td>{{ rate.rateCode }}</td>
+                        <td>{{ rate.roomCode }}</td>
+                        <td>{{ rate.mealType }}</td>
+                        <td><span class="badge" ng-class="{'bg-danger': rate.active == 0 }">{{ rate.active == 1 ? 'active' : 'inactive' }}</span></td>
+                        <td>
+                            <a ng-click="edit(rate)"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                            <a ng-click="delete(rate.id)"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div ui-view="footer"></div>
+    </section>
+</div>

@@ -1,7 +1,11 @@
 .main {
     padding-top: 6em;
+    &.room-listings {
+        padding-top: 9em;
+    }
     section {
-        .panel-customer-details {
+        .panel-customer-details,
+        .panel-room-details {
             .panel-body {
                 p {
                     padding: 5px 0;
@@ -15,6 +19,15 @@
                         font-style: italic;
                         font-size: 12px;
                     }
+                }
+            }
+            .panel-footer {
+                .lbl {
+                    display: inline-block;
+                    width: 120px;
+                }
+                strong {
+                    font-size: 20px;
                 }
             }
         }
