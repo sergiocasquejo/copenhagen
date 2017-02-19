@@ -1,4 +1,8 @@
 .admin-main {
+    background-color: $white;
+    .navbar.navbar-inverse {
+        border-bottom: solid 10px #f5f5f5;
+    }
     @include clearfix();
     .section-calendar {
         @include clearfix();

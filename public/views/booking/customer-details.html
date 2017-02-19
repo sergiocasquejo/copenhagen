@@ -15,7 +15,7 @@
                                     <div class="col-sm-6">
                                         <div class="form-group" ng-class="{'has-error': customerForm.salutation.$touched && customerForm.salutation.$invalid }">
                                             <label class="control-label" for="salutation">Salutation</label>
-                                            <select name="salutation" class="form-control" ng-model="booking.salutation" ng-options="o for o in ['Mr', 'Mrs']" ng-required="true" required></select>
+                                            <select name="salutation" ng-init="booking.salutation='Mr'" class="form-control" ng-model="booking.salutation" ng-options="o for o in ['Mr', 'Mrs']" ng-required="true" required></select>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">

@@ -18,7 +18,7 @@ class CreateRoomsTable extends Migration
                 $table->increments('id');
                 $table->string('name', 255)->unique();
                 $table->string('slug', 255)->unique();
-                $table->string('totalRooms')->unique();
+                $table->integer('totalRooms');
                 $table->double('minimumRate')->default(0);
                 $table->integer('totalPerson')->default(1);
                 $table->string('bed')->nullable();

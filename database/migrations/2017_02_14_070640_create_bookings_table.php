@@ -29,10 +29,10 @@ class CreateBookingsTable extends Migration
                 $table->integer('noOfChild')->default(0)->nullable();
                 $table->double('roomRate')->default(0);
                 $table->double('totalAmount')->default(0);
-                $table->string('rate_code');
-                $table->string('meal_type');
-                $table->string('room_type_code');
-                $table->string('company_code');
+                $table->string('rateCode')->nullable();
+                $table->string('mealType')->nullable();
+                $table->string('roomTypeCode')->nullable();
+                $table->string('companyCode')->nullable();
                 $table->string('specialInstructions')->nullable();
                 $table->string('billingInstructions')->nullable();
                 $table->string('status')->default('pending');

@@ -54,8 +54,12 @@ copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$window', functi
             return $http.get(urlBase + '/rooms');
         }
 
+        api.getAvailableRooms = function() {
+            return $http.get(urlBase + '/rooms/available');
+        }
+
         api.getRoomBySlug = function(slug) {
-            return $http.get(urlBase + '/room/' + slug);
+            return $http.get(urlBase + '/rooms/' + slug);
         }
         api.getRoomById = function(id) {
             return $http.get(urlBase + '/room/' + id);

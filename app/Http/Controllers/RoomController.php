@@ -9,11 +9,11 @@ class RoomController extends Controller
 	
 	/**
 	* Display a listing of the resource.
-	     *
-	     * @return \Illuminate\Http\Response
-	     */
-	    public function index()
-	    {
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function index()
+    {
 		return response()->json(\App\Room::lazyLoad()->get(), 200);
 	}
 	
@@ -30,7 +30,7 @@ class RoomController extends Controller
         $name = 'Studio Standard-' .time();
         $request->merge(array(
             'name' => $name,
-            'slug' => str_slug($name),
+            'slug' => $name,
         ));
 
         $room->name = $request->input('name');
@@ -134,4 +134,22 @@ class RoomController extends Controller
 
         return response()->json('failed', 400);
     }
+
+    public function types(Request $request) {
+        $types = \App\Room::select(['*', \DB::raw('CONCAT(name, " ", building, " - ID ", id) AS title')])->get()->toArray();
+        return response()->json($types, 200, [], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function showBySlug(Request $request, $slug) {
+         $room = \App\Room::lazyLoad()->where(['slug' => $slug, 'isActive' => 1])->first();
+         
+         return response()->json($room->toArray(), 200, [], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function showAvailable()
+    {
+		return response()->json(\App\Room::lazyLoad()->where('isActive', 1)->get(), 200);
+	}
+
+    
 }

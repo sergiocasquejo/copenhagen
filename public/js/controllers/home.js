@@ -37,19 +37,22 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
     }
 ])
 
-.controller('roomAvailableCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API',
-    function($scope, $rootScope, $state, $stateParams, API) {
+.controller('roomAvailableCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh',
+    function($scope, $rootScope, $state, $stateParams, API, sh) {
         $scope.roomLists = [];
-        API.getRooms().then(function(response) {
+        API.getAvailableRooms().then(function(response) {
             $scope.roomLists = response.data;
         }, function(error) {
-            console.log(error);
+            popupModal = sh.openModal('globalPopup.html', 'Error', error.data);
+            popupModal.result.then(function(result) {
+                console.log(result);
+            });
         });
     }
 ])
 
-.controller('roomDetailsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API',
-    function($scope, $rootScope, $state, $stateParams, API) {
+.controller('roomDetailsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh',
+    function($scope, $rootScope, $state, $stateParams, API, sh) {
         //Hide Top Booking Form
         $scope.bookingFormTopHide = true;
         //Current Step
@@ -63,12 +66,17 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
 
         API.getRoomBySlug($stateParams.slug).then(function(response) {
+            console.log(response.data);
             if (!response.data) {
                 $state.go('home');
             }
             $scope.room = response.data;
             fetchCalendarByRoomID($scope.room.id);
         }, function(error) {
+            popupModal = sh.openModal('globalPopup.html', 'Error', error.data);
+            popupModal.result.then(function(result) {
+                console.log(result);
+            });
             $state.go('home');
         });
 

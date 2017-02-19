@@ -50,39 +50,40 @@ var copenhagenApp = angular.module('copenhagenApp', ['ngAnimate', 'ui.router', '
     })
 
 .factory('sh', function($uibModal) {
-    var modalInstance = null;
+        var modalInstance = null;
 
-    function openModal(page, title, message) {
+        function openModal(page, title, message) {
 
-        return $uibModal.open({
-            animation: true,
-            templateUrl: page,
-            backdrop: 'static',
-            keyboard: false,
-            controller: function($scope, $uibModalInstance, modalTitle, bodyMessage) {
-                $scope.modalTitle = modalTitle;
-                $scope.modalMessage = bodyMessage;
-                $scope.ok = function() {
-                    $uibModalInstance.close('ok');
+            return $uibModal.open({
+                animation: true,
+                templateUrl: page,
+                backdrop: 'static',
+                keyboard: false,
+                controller: function($scope, $uibModalInstance, modalTitle, bodyMessage) {
+                    $scope.modalTitle = modalTitle;
+                    $scope.modalMessage = bodyMessage;
+                    $scope.ok = function() {
+                        $uibModalInstance.close('ok');
 
-                };
+                    };
 
-                $scope.cancel = function() {
-                    $uibModalInstance.dismiss('cancel');
-                };
-            },
-            resolve: {
-                modalTitle: function() {
-                    return title;
+                    $scope.cancel = function() {
+                        $uibModalInstance.dismiss('cancel');
+                    };
                 },
-                bodyMessage: function() {
-                    return message;
+                resolve: {
+                    modalTitle: function() {
+                        return title;
+                    },
+                    bodyMessage: function() {
+                        return message;
+                    }
                 }
-            }
-        })
-    }
+            })
+        }
 
-    return {
-        openModal: openModal
-    }
-});
+        return {
+            openModal: openModal
+        }
+    })
+    .filter('unsafe', function($sce) { return $sce.trustAsHtml; });
