@@ -12,6 +12,14 @@ var csrftoken = (function() {
     }
 
 })();
+
+function errorHandler(error, sh) {
+    console.log('err');
+    var popupModal = sh.openModal('globalPopup.html', 'Error', error.data);
+    popupModal.result.then(function(result) {
+        console.log(result);
+    });
+}
 var copenhagenApp = angular.module('copenhagenApp', ['ngAnimate', 'ui.router', 'ui.bootstrap', 'mwl.calendar', 'angularFileUpload', 'ui.toggle', 'moment-picker', 'countrySelect'])
     .constant('CSRF_TOKEN', csrftoken)
     .config(['$httpProvider', '$qProvider', 'CSRF_TOKEN',

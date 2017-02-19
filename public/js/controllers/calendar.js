@@ -1,5 +1,6 @@
-copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API',
-    function($scope, $compile, $timeout, API) {
+'use strict';
+copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API', 'sh',
+    function($scope, $compile, $timeout, API, sh) {
         $scope.calendarView = 'month';
         $scope.viewDate = moment().startOf('month').toDate();
         var currentDate = moment($scope.viewDate).format('MMMM DD, YYYY');
@@ -19,7 +20,19 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
                 fetchCalendarByRoomID($scope.calendar.roomType.id)
             }
         }, function(error) {
-            console.log(error);
+            popupModal = sh.openModal('globalPopup.html', 'Error', error.data);
+            popupModal.result.then(function(result) {
+                console.log(result);
+            });
+        });
+
+        API.getRates().then(function(response) {
+            $scope.rateLists = response.data;
+        }, function(error) {
+            popupModal = sh.openModal('globalPopup.html', 'Error', error.data);
+            popupModal.result.then(function(result) {
+                console.log(result);
+            });
         });
 
         function fetchCalendarByRoomID(roomID) {

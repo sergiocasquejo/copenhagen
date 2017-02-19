@@ -120,12 +120,6 @@ class RoomController extends Controller
         if ($room && count($aminites) != 0) {
             if ($room->aminities()->sync($aminites)) {
 
-                // $aminities = $room->aminities()->get()->toArray();
-                // $r = array();
-                // foreach($aminities as $i => $a) {
-                //     $r[] = $a['id'];
-                // }
-
                 $r = $room->aminities()->pluck('id')->all();
 
                 return response()->json($r, 200, [], JSON_UNESCAPED_UNICODE);
@@ -136,8 +130,16 @@ class RoomController extends Controller
     }
 
     public function types(Request $request) {
-        $types = \App\Room::select(['*', \DB::raw('CONCAT(name, " ", building, " - ID ", id) AS title')])->get()->toArray();
-        return response()->json($types, 200, [], JSON_UNESCAPED_UNICODE);
+        try {
+            $types = \App\Room::select(['*', \DB::raw('CONCAT(name, " ", building, " - ID ", id) AS title')])->get()->toArray();
+            return response()->json($types, 200, [], JSON_UNESCAPED_UNICODE);
+        }catch(\Exception $e) {
+            if (App::environment('local')) {
+                return response()->json($e->getMessage(), 400, [], JSON_UNESCAPED_UNICODE);
+            }
+            return response()->json('Oops!. Something went wrong with your booking. :(', 400, [], JSON_UNESCAPED_UNICODE);
+        }
+        
     }
 
     public function showBySlug(Request $request, $slug) {
