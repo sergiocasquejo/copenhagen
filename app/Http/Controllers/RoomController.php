@@ -134,10 +134,7 @@ class RoomController extends Controller
             $types = \App\Room::select(['*', \DB::raw('CONCAT(name, " ", building, " - ID ", id) AS title')])->get()->toArray();
             return response()->json($types, 200, [], JSON_UNESCAPED_UNICODE);
         }catch(\Exception $e) {
-            if (App::environment('local')) {
-                return response()->json($e->getMessage(), 400, [], JSON_UNESCAPED_UNICODE);
-            }
-            return response()->json('Oops!. Something went wrong with your booking. :(', 400, [], JSON_UNESCAPED_UNICODE);
+            return response()->json($e->getMessage(), 400, [], JSON_UNESCAPED_UNICODE);
         }
         
     }

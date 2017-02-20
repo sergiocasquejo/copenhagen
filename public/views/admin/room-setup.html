@@ -3,25 +3,26 @@
     <section class="section-rooms section">
         <div class="col-md-12">
             <div class="actions">
-                <h1>Room Setup</h1>
                 <div class="pull-right">
                     <button class="btn btn-warning" ng-click="addNewRoom()"><i class="fa fa-plus" aria-hidden="true"></i> Add Room</button>
                 </div>
-                <h3>Total room types {{ roomLists.length }}</h3>
+                <h1>Room Setup</h1>
+                <h5>Total room types {{ roomLists.length }}</h5>
 
             </div>
         </div>
         <div class="col-md-12">
-            <uib-accordion close-others="oneAtATime">
+            <div class="loading" ng-hide="loaded">Loading...</div>
+            <uib-accordion close-others="oneAtATime" ng-show="roomLists.length">
                 <div uib-accordion-group ng-repeat="room in roomLists" class="panel-default" photo="{{ room.photos.length }}" roomID="{{room.id}}" heading="{{ room.name +'('+ room.building +')' }}">
                     <uib-accordion-heading>
                         <div class="row">
                             <div class="col-md-2">#{{room.id}}</div>
-                            <div class="col-md-4">{{room.name +'('+ room.building +')'}}</div>
+                            <div class="col-md-4">{{room.name }} - {{ room.building | uppercase }}</div>
                             <div class="col-md-2">Photos {{room.photos.length}}</div>
                             <div class="col-md-2">Persons {{room.totalPerson}}</div>
                             <div class="col-md-2">
-
+                                <span class="badge">{{room.isActive ? 'active' : 'inactive'}}</span>
                             </div>
                         </div>
                     </uib-accordion-heading>
@@ -61,7 +62,7 @@
                                     <label class="control-label col-sm-4" for="building">Building <span class="req">*</span></label>
                                     <div class="col-sm-8">
                                         <select name="building" class="form-control" data-ng-model="room.building">
-                                            <option ng-repeat="i in ['Main', 'East']">{{ i }}</option>
+                                            <option ng-repeat="i in ['main', 'east']">{{ i }}</option>
                                         </select>
                                     </div>
                                 </div>

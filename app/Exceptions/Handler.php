@@ -58,7 +58,7 @@ class Handler extends ExceptionHandler
                 case '500':
                 return response()->view('welcome');
                 break;
-
+                
                 default:
                     return $this->renderHttpException($exception);
                 break;

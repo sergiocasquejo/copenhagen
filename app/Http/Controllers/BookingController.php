@@ -13,7 +13,7 @@ class BookingController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(\App\Booking::lazyLoad()->get()->toArray(), 200, [], JSON_UNESCAPED_UNICODE);
     }
 
     /**

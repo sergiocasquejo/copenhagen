@@ -1,3 +1,4 @@
+'use strict';
 var csrftoken = (function() {
     // not need Jquery for doing that
     var metas = window.document.getElementsByTagName('meta');
@@ -13,13 +14,14 @@ var csrftoken = (function() {
 
 })();
 
-function errorHandler(error, sh) {
-    console.log('err');
-    var popupModal = sh.openModal('globalPopup.html', 'Error', error.data);
+function showPopup(title, message, sh, showButton) {
+    var popupModal = sh.openModal('globalPopup.html', title, message, showButton);
     popupModal.result.then(function(result) {
         console.log(result);
     });
 }
+
+
 var copenhagenApp = angular.module('copenhagenApp', ['ngAnimate', 'ui.router', 'ui.bootstrap', 'mwl.calendar', 'angularFileUpload', 'ui.toggle', 'moment-picker', 'countrySelect'])
     .constant('CSRF_TOKEN', csrftoken)
     .config(['$httpProvider', '$qProvider', 'CSRF_TOKEN',
@@ -60,7 +62,7 @@ var copenhagenApp = angular.module('copenhagenApp', ['ngAnimate', 'ui.router', '
 .factory('sh', function($uibModal) {
         var modalInstance = null;
 
-        function openModal(page, title, message) {
+        function openModal(page, title, message, showButton) {
 
             return $uibModal.open({
                 animation: true,
@@ -70,6 +72,7 @@ var copenhagenApp = angular.module('copenhagenApp', ['ngAnimate', 'ui.router', '
                 controller: function($scope, $uibModalInstance, modalTitle, bodyMessage) {
                     $scope.modalTitle = modalTitle;
                     $scope.modalMessage = bodyMessage;
+                    $scope.showButton = showButton;
                     $scope.ok = function() {
                         $uibModalInstance.close('ok');
 
@@ -94,4 +97,8 @@ var copenhagenApp = angular.module('copenhagenApp', ['ngAnimate', 'ui.router', '
             openModal: openModal
         }
     })
-    .filter('unsafe', function($sce) { return $sce.trustAsHtml; });
+    .filter('unsafe', ['$sce', function($sce) {
+        return function(text) {
+            return $sce.trustAsHtml(text);
+        };
+    }]);

@@ -1,0 +1,41 @@
+<div class="admin-main" ng-controller="bookingsCtrl">
+    <div ui-view="header"></div>
+    <section class="section-bookings section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    <h3 class="page-title">{{ viewDate | date: 'MMMM yyyy' }}</h3>
+                </div>
+                <div class="col-md-6 text-right">
+                    <div class="btn-group">
+                        <button class="btn btn-primary" mwl-date-modifier date="viewDate" decrement="calendarView">
+                                Previous
+                            </button>
+                        <button class="btn btn-default" mwl-date-modifier date="viewDate" set-to-today>
+                                Today</button>
+                        <button class="btn btn-primary" mwl-date-modifier date="viewDate" increment="calendarView">
+                                Next
+                            </button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <mwl-calendar events="bookings" view="calendarView" view-date="viewDate" cell-is-open="cellIsOpen" cell-auto-open-disabled="true" on-timespan-click="timespanClicked(calendarDate, calendarCell)">
+                    </mwl-calendar>
+                </div>
+            </div>
+        </div>
+        <div ui-view="footer"></div>
+    </section>
+    <script type="text/ng-template" id="bookingPopup.html">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">{{ title }}</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default" ng-click="cancel()" type="button">Close</button>
+        </div>
+    </script>
+</div>

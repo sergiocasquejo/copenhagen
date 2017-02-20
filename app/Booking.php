@@ -29,14 +29,24 @@ class Booking extends Model
     
 
     protected $table = 'bookings';
+    protected $appends = array('title', 'arrival', 'departure');
     public function customer()
     {
         return $this->belongsTo('App\Customer', 'customerID', 'id');
     }
 
+    public function room()
+    {
+        return $this->belongsTo('App\Room', 'roomID', 'id');
+    }
+
     public function payment() {
         return $this->hasMany('App\Payment', 'bookingID', 'id');
     }
+
+    public static function lazyLoad() {
+         return self::with('customer', 'room');
+     }
 
     private $rules = array(
         'roomID' => 'required',
@@ -76,6 +86,19 @@ class Booking extends Model
         {
             //
         });
+    }
+
+    public function getTitleAttribute()
+    {
+        return $this->customer->salutation . '. '. $this->customer->firstName .' '. $this->customer->lastName;
+    }
+
+    public function getArrivalAttribute() {
+        return strtotime($this->checkIn);
+    }
+
+    public function getDepartureAttribute() {
+        return strtotime($this->checkOut);
     }
 
     // Count total Nights

@@ -1,8 +1,4 @@
 .main {
-    padding-top: 6em;
-    &.room-listings {
-        padding-top: 9em;
-    }
     section {
         .panel-customer-details,
         .panel-room-details {
@@ -152,4 +148,9 @@
             }
         }
     }
+}
+
+.loading {
+    padding: 30px 0;
+    text-align: center;
 }

@@ -1,14 +1,14 @@
-<form novalidate="" autocomplete="false" ng-submit="search(bookingForm.$valid)" name="bookingForm" class="text-center" ng-class="{'form-inline': isInlineForm}">
+<form novalidate="" autocomplete="off" ng-submit="search(bookingForm.$valid)" name="bookingForm" class="text-center" ng-class="{'form-inline': isInlineForm}">
     <div class="form-group" ng-class="{ 'has-error': bookingForm.checkIn.$touched && bookingForm.checkIn.$invalid }">
         <div class="input-group" moment-picker="booking.checkIn" format="YYYY-MM-DD">
             <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-            <input autocomplete="false" class="form-control" name="checkIn" placeholder="Check In" ng-model="booking.checkIn" ng-model-options="{ updateOn: 'blur' }" ng-required="true" required>
+            <input autocomplete="off" class="form-control" name="checkIn" placeholder="Check In" ng-model="booking.checkIn" ng-model-options="{ updateOn: 'blur' }" ng-required="true" required>
         </div>
     </div>
-    <div class="form-group" ng-class="{'has-error':  bookingForm.checkIn.$touched && bookingForm.checkIn.$invalid}">
+    <div class="form-group" ng-class="{'has-error':  bookingForm.checkOut.$touched && bookingForm.checkOut.$invalid}">
         <div class="input-group" min-date="booking.checkIn" moment-picker="booking.checkOut" format="YYYY-MM-DD">
             <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-            <input class="form-control" placeholder="Check Out" ng-model="booking.checkOut" ng-model-options="{ updateOn: 'blur' }" ng-required="true" required>
+            <input autocomplete="off" class="form-control" name="checkOut" placeholder="Check Out" ng-model="booking.checkOut" ng-model-options="{ updateOn: 'blur' }" ng-required="true" required>
         </div>
     </div>
     <div class="form-group" ng-class="{'has-error':  bookingForm.adult.$touched && bookingForm.adult.$invalid}">

@@ -2,125 +2,118 @@
 copenhagenApp
     .controller('roomCtrl', ['$scope', '$rootScope', '$state', 'API', 'FileUploader', 'CSRF_TOKEN', '$uibModal', '$log', 'sh',
         function($scope, $rootScope, $state, API, FileUploader, CSRF_TOKEN, $uibModal, $log, sh) {
-            $scope.roomLists = {};
-            $scope.rateLists = null;
-            $scope.selectedRoom = null;
+            var sc = $scope;
+            sc.loaded = false;
+            sc.roomLists = {};
+            sc.rateLists = null;
+            sc.selectedRoom = null;
             var roomListIndex = null;
             API.getRooms().then(function(response) {
-                $scope.roomLists = response.data;
+                sc.roomLists = response.data;
+                sc.loaded = true;
             }, function(error) {
-                console.log(error);
+                showPopup('Error', error.data, sh);
+                sc.loaded = true;
             });
 
             API.getRates().then(function(response) {
-                $scope.rateLists = response.data;
-                console.log($scope.rateLists);
+                sc.rateLists = response.data;
             }, function(error) {
-                console.log(error);
+                showPopup('Error', error.data, sh);
             });
-            /*
-            $scope.deleteRoom = function(room) {
-                if (room) {
-                    API.deleteRoom(room.id, room).then(function(response) {
-                        $scope.roomLists = response.data;
-                    }, function(error) {
-                        console.log(error);
-                    });
-                }
-            }*/
 
-            $scope.openCorfirmPopup = function(index) {
+            sc.openCorfirmPopup = function(index) {
                 roomListIndex = index;
-                $scope.open();
+                sc.open();
             }
 
-            $scope.deletePhoto = function(index, roomID, photoID) {
+            sc.deletePhoto = function(index, roomID, photoID) {
                 API.deletePhoto(roomID, photoID).then(function(response) {
-                    if ($scope.roomLists[index]) {
-                        $scope.roomLists[index].photos = response.data;
+                    if (sc.roomLists[index]) {
+                        sc.roomLists[index].photos = response.data;
                     }
                 }, function(error) {
-                    console.log(error);
+                    showPopup('Error', error.data, sh);
                 });
             }
-            $scope.addNewRoom = function() {
+            sc.addNewRoom = function() {
                 var room = {};
                 API.saveRoom(room).then(function(response) {
-                    $scope.roomLists = response.data;
+                    sc.roomLists = response.data;
                 }, function(error) {
-                    console.log(error);
+                    showPopup('Error', error.data, sh);
                 });
             }
 
-            $scope.save = function(isValid, room) {
+            sc.save = function(isValid, room) {
                 if (isValid) {
                     API.saveRoom(room).then(function(response) {
-                        $scope.roomLists = response.data;
+                        sc.roomLists = response.data;
                     }, function(error) {
-                        console.log(error);
+                        showPopup('Error', error.data, sh);
                     })
                 }
             }
 
             // Photos Upoader
-            var uploader = $scope.uploader = new FileUploader({
+            var uploader = sc.uploader = new FileUploader({
                 formData: [{ '_token': CSRF_TOKEN }],
                 alias: 'photo',
                 autoUpload: true
             });
 
-            $scope.setPhotoRoomID = function(roomID, index) {
+            sc.setPhotoRoomID = function(roomID, index) {
                 roomListIndex = index;
                 uploader.url = '/api/v1/rooms/' + roomID + '/photos';
                 uploader.formData.push({ 'roomID': roomID });
             }
-            $scope.clearUploadQueue = function() {
+            sc.clearUploadQueue = function() {
                 uploader.queue = [];
             }
             uploader.onAfterAddingFile = function(fileItem) {
                 fileItem.upload();
             };
             uploader.onSuccessItem = function(fileItem, response, status, headers) {
-                if ($scope.roomLists[roomListIndex]) {
-                    $scope.roomLists[roomListIndex].photos = response;
+                if (sc.roomLists[roomListIndex]) {
+                    sc.roomLists[roomListIndex].photos = response;
                 }
                 //roomListIndex = null;
             };
 
 
-            var controller = $scope.controller = {
+            var controller = sc.controller = {
                 isImage: function(item) {
                     var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
                     return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
                 }
             };
 
-            $scope.open = function(room) {
-                var popupModal = sh.openModal('adminGlobalPopup.html', 'Confirm', 'Are you sure?', 'ModalInstanceCtrl');
+            sc.open = function(room) {
+                var popupModal = sh.openModal('globalPopup.html', 'Confirm', 'Are you sure?', 'ModalInstanceCtrl');
                 popupModal.result.then(function(result) {
                     if (result == 'ok') {
                         API.deleteRoom(room.id).then(function(response) {
-                            $scope.roomLists = response.data;
+                            sc.roomLists = response.data;
                         }, function(error) {
-                            sh.openModal('adminGlobalPopup.html', 'Error', error.data, 'ModalInstanceCtrl');
+                            showPopup('Error', error.data, sh);
                         });
                     }
                 });
 
                 popupModal.result.then(function(roomLists) {
-                    $scope.roomLists = roomLists;
+                    sc.roomLists = roomLists;
                 }, function() {
                     $log.info('Modal dismissed at: ' + new Date());
                 });
             };
             var aminitiesModalInstance
 
-            $scope.openAminities = function(index, room) {
+            sc.openAminities = function(index, room) {
                 roomListIndex = index;
                 aminitiesModalInstance = $uibModal.open({
                     templateUrl: "aminitiesPopup.html",
                     controller: 'ModalAminitiesInstanceCtrl',
-                    scope: $scope,
+                    scope: sc,
                     size: 'lg',
                     resolve: {
                         index: function() {
@@ -135,20 +128,20 @@ copenhagenApp
                     }
                 });
                 aminitiesModalInstance.result.then(function(data) {
-                    $scope.roomLists[data.index].facilities = data.data;
+                    sc.roomLists[data.index].facilities = data.data;
                 }, function() {
                     $log.info('Modal dismissed at: ' + new Date());
                 });
             };
-            $scope.deleteAminities = function(id) {
-                var popupModal = sh.openModal('adminGlobalPopup.html', 'Confirm', 'Are you sure?', 'ModalInstanceCtrl');
+            sc.deleteAminities = function(id) {
+                var popupModal = sh.openModal('globalPopup.html', 'Confirm', 'Are you sure?', 'ModalInstanceCtrl');
                 popupModal.result.then(function(result) {
                     if (result == 'ok') {
                         API.deleteAminities(id).then(function(response) {
                             aminitiesModalInstance.close();
-                            $scope.openAminities(roomListIndex, $scope.roomLists[roomListIndex]);
+                            sc.openAminities(roomListIndex, sc.roomLists[roomListIndex]);
                         }, function(error) {
-                            sh.openModal('adminGlobalPopup.html', 'Error', error.data, 'ModalInstanceCtrl');
+                            showPopup('Error', error.data, sh);
                         });
                     }
                 });
@@ -205,7 +198,7 @@ copenhagenApp
 
                     $uibModalInstance.close(data);
                 }, function(error) {
-                    // console.log(error);
+                    showPopup('Error', error.data, sh);
                 });
 
         };

@@ -39,15 +39,21 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
 .controller('roomAvailableCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh',
     function($scope, $rootScope, $state, $stateParams, API, sh) {
-        $scope.roomLists = [];
+        var sc = $scope;
+        sc.roomLists = [];
+        sc.loaded = false;
+        sc.buildingSelected = 'all';
         API.getAvailableRooms().then(function(response) {
-            $scope.roomLists = response.data;
+            sc.roomLists = response.data;
+            sc.loaded = true;
         }, function(error) {
-            popupModal = sh.openModal('globalPopup.html', 'Error', error.data);
-            popupModal.result.then(function(result) {
-                console.log(result);
-            });
+            showPopup('Error', error.data, sh);
+            sc.loaded = true;
         });
+
+        sc.selectedBuilding = function(selected) {
+            sc.buildingSelected = selected;
+        }
     }
 ])
 
@@ -73,10 +79,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
             $scope.room = response.data;
             fetchCalendarByRoomID($scope.room.id);
         }, function(error) {
-            popupModal = sh.openModal('globalPopup.html', 'Error', error.data);
-            popupModal.result.then(function(result) {
-                console.log(result);
-            });
+            showPopup('Error', error.data, sh);
             $state.go('home');
         });
 
@@ -115,7 +118,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                     $scope.events.push(event);
                 });
             }, function(error) {
-                console.log(error);
+                showPopup('Error', error.data, sh);
             });
         }
 
@@ -192,12 +195,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                             $state.go('paymentPesopay');
                         }
                     }, function(error) {
-
-
-                        popupModal = sh.openModal('globalPopup.html', 'Error', error.data);
-                        popupModal.result.then(function(result) {
-                            console.log(result);
-                        });
+                        showPopup('Error', error.data, sh);
                     });
 
                 }

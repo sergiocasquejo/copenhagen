@@ -7,16 +7,18 @@
                     <h1 class="text-center page-title">Available Rooms</h1>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" ng-if="roomLists.length > 0">
                 <div class="col-md-12">
-                    <ul class="filter list-inline">
-                        <li><a>West</a></li>
-                        <li><a>East</a></li>
+                    <ul class="filter-room-available list-inline">
+                        <li ng-class="{'active': buildingSelected == 'all'}" ng-click="selectedBuilding('all')"><a>All</a></li>
+                        <li ng-class="{'active': buildingSelected == 'main'}" ng-click="selectedBuilding('main')"><a>Main</a></li>
+                        <li ng-class="{'active': buildingSelected == 'east'}" ng-click="selectedBuilding('east')"><a>East</a></li>
                     </ul>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 item" ng-repeat="room in roomLists">
+                <div class="loading" ng-hide="loaded">Loading...</div>
+                <div class="col-md-6 item" ng-repeat="room in roomLists" ng-show="buildingSelected=='all' || buildingSelected == room.building">
                     <div class="room-inner">
                         <div class="room-image">
                             <img class="img-responsive" src="/images/rooms/1.jpg" alt="">

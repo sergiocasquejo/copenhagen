@@ -178,9 +178,9 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
     // Admin Routes
     .state('adminCalendar', {
             url: '/admin/calendar',
+            controller: 'calendarCtrl',
             views: {
                 '': {
-                    controller: 'calendarCtrl',
                     templateUrl: '/views/admin/calendar.html',
                     resolve: { authenticate: authenticate }
                 },
@@ -224,6 +224,23 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                     templateUrl: '/views/_partials/admin-header.html',
                 },
                 'footer@adminRoomSetup': {
+                    templateUrl: '/views/_partials/admin-footer.html',
+                }
+            }
+
+        })
+        .state('bookings', {
+            url: '/admin/bookings',
+            views: {
+                '': {
+                    controller: 'bookingsCtrl',
+                    templateUrl: '/views/admin/bookings.html',
+                    resolve: { authenticate: authenticate }
+                },
+                'header@bookings': {
+                    templateUrl: '/views/_partials/admin-header.html',
+                },
+                'footer@bookings': {
                     templateUrl: '/views/_partials/admin-footer.html',
                 }
             }

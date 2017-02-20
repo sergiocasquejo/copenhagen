@@ -26,7 +26,7 @@ copenhagenApp
             }
 
             $scope.delete = function(id) {
-                popupModal = sh.openModal('adminGlobalPopup.html', 'Confirm', 'Are you sure?', 'ModalInstanceCtrl');
+                popupModal = sh.openModal('globalPopup.html', 'Confirm', 'Are you sure?', 'ModalInstanceCtrl');
                 popupModal.result.then(function(result) {
                     if (result == 'ok') {
                         API.deleteRate(id).then(function(response) {

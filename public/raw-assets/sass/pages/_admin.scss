@@ -72,4 +72,18 @@
             }
         }
     }
+    .panel {
+        &.panel-open {
+            .panel-heading {
+                background: #3a6396;
+                color: #FFF;
+            }
+        }
+        &:hover {
+            .panel-heading {
+                background: #3a6396;
+                color: #FFF;
+            }
+        }
+    }
 }

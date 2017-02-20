@@ -114,6 +114,10 @@ copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$window', functi
         }
 
 
+        api.getBookings = function() {
+            return $http.get(urlBase + '/bookings');
+        }
+
         return api;
     }])
     .factory('authHttpResponseInterceptor', ['$q', '$location', function($q, $location) {

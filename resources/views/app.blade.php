@@ -53,6 +53,7 @@
     <script src="/js/controllers/rate.js" type="text/javascript"></script>
     <script src="/js/controllers/room.js" type="text/javascript"></script>
     <script src="/js/controllers/calendar.js" type="text/javascript"></script>
+    <script src="/js/controllers/bookings.js" type="text/javascript"></script>
 </body>
 
 </html>
