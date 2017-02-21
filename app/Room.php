@@ -23,13 +23,28 @@ class Room extends Model
         'building' => 'required',
     );
 
+    /**
+    * Get the error messages for the defined validation rules.
+    *
+    * @return array
+    */
+    public function messages()
+    {
+        return [
+            'required' => ':attribute is required',
+            'unique' => ':attribute must be unique',
+            'required'  => ':attribute is required',
+            'numeric'  => ':attribute must be numeric',
+        ];
+    }
+
     public function validate($data, $rules = false)
     {
         if (!$rules) {
             $rules = $this->rules;
         }
         // make a new validator object
-        $v = Validator::make($data, $rules);
+        $v = Validator::make($data, $rules, $this->messages());
         // return the result
         return $v;
     }

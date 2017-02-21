@@ -8,14 +8,16 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                     templateUrl: '/views/_partials/home.html'
                 },
                 'header@home': {
-                    templateUrl: '/views/_partials/header.html'
+                    templateUrl: '/views/_partials/header.html',
+                    controller: 'homeCtrl',
                 },
                 'bookingForm@home': {
                     templateUrl: '/views/booking/booking-form.html',
                     controller: 'bookingFormCtrl'
                 },
                 'footer@home': {
-                    templateUrl: '/views/_partials/footer.html'
+                    templateUrl: '/views/_partials/footer.html',
+                    controller: 'homeCtrl',
                 }
             }
 
@@ -42,10 +44,10 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
         })
         .state('roomDetail', {
             url: '/rooms-suites/:slug',
+            controller: 'roomDetailsCtrl',
             views: {
                 '': {
                     templateUrl: '/views/rooms/details.html',
-                    controller: 'roomDetailsCtrl'
                 },
                 'header@roomDetail': {
                     templateUrl: '/views/_partials/header.html'
@@ -64,6 +66,7 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
         })
         .state('customerDetail', {
             url: '/booking/submit-your-details',
+            controller: 'customerDetailCtrl',
             views: {
                 '': {
                     templateUrl: '/views/booking/customer-details.html'
@@ -88,10 +91,10 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
         })
         .state('paymentDetail', {
             url: '/booking/payment',
+            controller: 'paymentDetailCtrl',
             views: {
                 '': {
                     templateUrl: '/views/booking/payment.html',
-                    controller: 'paymentDetailCtrl'
                 },
                 'header@paymentDetail': {
                     templateUrl: '/views/_partials/header.html'
@@ -113,10 +116,10 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
         })
         .state('paymentStatus', {
             url: '/payment/:status',
+            controller: 'paymentStatusCtrl',
             views: {
                 '': {
                     templateUrl: '/views/booking/process-payment.html',
-                    controller: 'paymentStatusCtrl'
                 }
 
             }
@@ -128,10 +131,10 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
         })
         .state('bookingComplete', {
             url: '/booking/complete',
+            controller: 'bookingCompleteCtrl',
             views: {
                 '': {
                     templateUrl: '/views/booking/complete.html',
-                    controller: 'bookingCompleteCtrl'
                 },
                 'header@bookingComplete': {
                     templateUrl: '/views/_partials/header.html'
@@ -161,9 +164,9 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
     // User Authentication Route
     .state('login', {
             url: '/login',
+            controller: 'loginCtrl',
             views: {
                 '': {
-                    controller: 'loginCtrl',
                     templateUrl: '/views/auth/login.html'
                 }
             },
@@ -198,9 +201,9 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
         })
         .state('adminRateSetup', {
             url: '/admin/rate-setup',
+            controller: 'rateCtrl',
             views: {
                 '': {
-                    controller: 'rateCtrl',
                     templateUrl: '/views/admin/rate-setup.html',
                     resolve: { authenticate: authenticate }
                 },
@@ -214,9 +217,9 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
         })
         .state('adminRoomSetup', {
             url: '/admin/room-setup',
+            controller: 'roomCtrl',
             views: {
                 '': {
-                    controller: 'roomCtrl',
                     templateUrl: '/views/admin/room-setup.html',
                     resolve: { authenticate: authenticate }
                 },
@@ -231,9 +234,9 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
         })
         .state('bookings', {
             url: '/admin/bookings',
+            controller: 'bookingsCtrl',
             views: {
                 '': {
-                    controller: 'bookingsCtrl',
                     templateUrl: '/views/admin/bookings.html',
                     resolve: { authenticate: authenticate }
                 },

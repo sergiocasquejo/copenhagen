@@ -27,7 +27,7 @@ copenhagenApp.controller('bookingsCtrl', ['$scope', '$compile', '$timeout', 'API
                     '<div class="col-md-6"><strong>Billing Instructions:</strong> <i>' + data.info.billingInstructions + '</i></div>' +
                     '</div>' +
                     '<div class="row">' +
-                    '<div class="col-md-6"><strong>Room Price:</strong> ' + data.info.roomRate + '</div>' +
+                    '<div class="col-md-6"><strong>Room Price:</strong> ' + data.info.roomRateFormatted + '</div>' +
                     '<div class="col-md-6"><strong>Rate Code:</strong> ' + data.info.rateCode + '</div>' +
                     '</div>' +
                     '<div class="row">' +
@@ -39,8 +39,12 @@ copenhagenApp.controller('bookingsCtrl', ['$scope', '$compile', '$timeout', 'API
                     '<div class="col-md-6"><strong>Room Type Code:</strong> ' + data.info.roomTypeCode + '</div>' +
                     '</div>' +
                     '<div class="row">' +
-                    '<div class="col-md-6"><strong>Total Amount:</strong> ' + data.info.totalAmount + '</div>' +
+                    '<div class="col-md-6"><strong>Total Amount:</strong> ' + data.info.totalAmountFormatted + '</div>' +
                     '<div class="col-md-6"><strong>Company Code:</strong> ' + data.info.companyCode + '</div>' +
+                    '</div>' +
+                    '<div class="row">' +
+                    '<div class="col-md-6"><strong>Payment Status:</strong><span class="badge">' + data.info.lastPayment.status + '</span></div>' +
+                    '<div class="col-md-6"><strong>Booking Status:</strong><span class="badge">' + data.info.status + '</span></div>' +
                     '</div>' +
                     '<h4>Customer Information</h4>' +
                     '<div class="row">' +

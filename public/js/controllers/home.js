@@ -72,7 +72,6 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
 
         API.getRoomBySlug($stateParams.slug).then(function(response) {
-            console.log(response.data);
             if (!response.data) {
                 $state.go('home');
             }
@@ -92,28 +91,11 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
             API.getRoomCalendar(roomID).then(function(response) {
                 angular.forEach(response.data, function(data) {
                     var event = {
-                        title: data.title, // The title of the event
+                        title: data.title,
                         isActive: data.isActive,
                         data: data,
-                        startsAt: new Date(data.startsAt * 1000), // A javascript date object for when the event starts
-                        //endsAt: new Date(data.startsAt * 1000), // Optional - a javascript date object for when the event ends
-                        // color: { // can also be calendarConfig.colorTypes.warning for shortcuts to the deprecated event types
-                        //     primary: '#e3bc08', // the primary event color (should be darker than secondary)
-                        //     secondary: '#fdf1ba' // the secondary event color (should be lighter than primary)
-                        // },
-                        // actions: [{ // an array of actions that will be displayed next to the event title
-                        //     label: '<i class=\'glyphicon glyphicon-pencil\'></i>', // the label of the action
-                        //     cssClass: 'edit-action', // a CSS class that will be added to the action element so you can implement custom styling
-                        //     onClick: function(args) { // the action that occurs when it is clicked. The first argument will be an object containing the parent event
-                        //         console.log('Edit event', args.calendarEvent);
-                        //     }
-                        // }],
-                        draggable: true, //Allow an event to be dragged and dropped
-                        resizable: true, //Allow an event to be resizable
-                        incrementsBadgeTotal: true, //If set to false then will not count towards the badge total amount on the month and year view
-                        recursOn: 'year', // If set the event will recur on the given period. Valid values are year or month
-                        cssClass: 'a-css-class-name', //A CSS class (or more, just separate with spaces) that will be added to the event when it is displayed on each view. Useful for marking an event as selected / active etc
-                        allDay: true // set to true to display the event as an all day event on the day view
+                        startsAt: new Date(data.startsAt * 1000),
+                        allDay: true
                     };
                     $scope.events.push(event);
                 });
@@ -137,6 +119,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                 var date2 = new Date($rootScope.booking.checkOut);
                 var timeDiff = Math.abs(date2.getTime() - date1.getTime());
                 var nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                console.log($rootScope.booking);
 
                 API.setBookingData({
                     checkIn: $rootScope.booking.checkIn,
@@ -154,7 +137,6 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                     }
                 });
 
-                console.log(nights, $scope.room);
                 $state.go('customerDetail');
             }
         }
@@ -180,7 +162,6 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
 .controller('paymentDetailCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh',
         function($scope, $rootScope, $state, $stateParams, API, sh) {
-            console.log($rootScope.booking);
             //Hide Top Booking Form
             $scope.bookingFormTopHide = true;
             //Current Step

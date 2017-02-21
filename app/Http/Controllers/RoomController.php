@@ -97,8 +97,15 @@ class RoomController extends Controller
                 return response()->json(\App\Room::lazyLoad()->get(), 200, [], JSON_UNESCAPED_UNICODE);   
 			}
 		}
+        $validationStr = '';
+        foreach ($validator->errors()->getMessages() as $k => $error) {
+            foreach ($error as $err) {
+                $validationStr .= $err .'<br/>';
+            }
+            
+        }
 
-        return response()->json($validator->errors()->getMessages(), 400, [], JSON_UNESCAPED_UNICODE);
+        return response()->json($validationStr, 400, [], JSON_UNESCAPED_UNICODE);
 	}
 	
 	

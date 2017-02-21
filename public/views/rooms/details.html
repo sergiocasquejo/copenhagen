@@ -69,17 +69,17 @@
                             </p>
                         </div>
                         <div ng-if="room.isActive" class="booking-form">
-                            <form novalidate="" ng-submit="book(bookingForm.$valid)" name="bookingForm" class="text-center" ng-class="{'form-inline': isInlineForm}">
+                            <form autocomplete="off" novalidate="" ng-submit="book(bookingForm.$valid)" name="bookingForm" class="text-center" ng-class="{'form-inline': isInlineForm}">
                                 <div class="form-group" ng-class="{ 'has-error': bookingForm.checkIn.$touched && bookingForm.checkIn.$invalid }">
                                     <div class="input-group" moment-picker="booking.checkIn" format="YYYY-MM-DD">
                                         <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-                                        <input class="form-control" name="checkIn" placeholder="Check In" ng-model="booking.checkIn" ng-model-options="{ updateOn: 'blur' }" ng-required="true" required>
+                                        <input autocomplete="off" class="form-control" name="checkIn" placeholder="Check In" ng-model="booking.checkIn" ng-model-options="{ updateOn: 'blur' }" ng-required="true" required>
                                     </div>
                                 </div>
-                                <div class="form-group" ng-class="{'has-error':  bookingForm.checkIn.$touched && bookingForm.checkIn.$invalid}">
+                                <div class="form-group" ng-class="{'has-error':  bookingForm.checkOut.$touched && bookingForm.checkOut.$invalid}">
                                     <div class="input-group" min-date="booking.checkIn" moment-picker="booking.checkOut" format="YYYY-MM-DD">
                                         <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-                                        <input class="form-control" placeholder="Check Out" ng-model="booking.checkOut" ng-model-options="{ updateOn: 'blur' }" ng-required="true" required>
+                                        <input autocomplete="off" name="checkOut" class="form-control" placeholder="Check Out" ng-model="booking.checkOut" ng-model-options="{ updateOn: 'blur' }" ng-required="true" required>
                                     </div>
                                 </div>
                                 <div class="form-group" ng-class="{'has-error':  bookingForm.noRooms.$touched && bookingForm.noRooms.$invalid}">

@@ -29,7 +29,13 @@ class Booking extends Model
     
 
     protected $table = 'bookings';
-    protected $appends = array('title', 'arrival', 'departure');
+    protected $appends = array(
+        'title', 
+        'arrival', 
+        'departure', 
+        'totalAmountFormatted', 
+        'roomRateFormatted',
+        'lastPayment');
     public function customer()
     {
         return $this->belongsTo('App\Customer', 'customerID', 'id');
@@ -99,6 +105,18 @@ class Booking extends Model
 
     public function getDepartureAttribute() {
         return strtotime($this->checkOut);
+    }
+
+    
+    public function getTotalAmountFormattedAttribute($value) {
+        return number_format($this->totalAmount, 2, '.', ', ');
+    }
+
+    public function getRoomRateFormattedAttribute($value) {
+        return number_format($this->roomRate, 2, '.', ', ');
+    }
+    public function getLastPaymentAttribute() {
+        return $this->payment()->orderBy('id', 'desc')->first();
     }
 
     // Count total Nights

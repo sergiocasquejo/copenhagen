@@ -18,8 +18,8 @@ class PaymentServiceProvider extends ServiceProvider
         });
 
         $this->publishes([
-            __DIR__.'/Config/payment.php' => config_path('payment'),
-            __DIR__.'/views' => base_path('resources/views/vendor/courier'),
+            __DIR__.'/config/payment.php' => config_path('payment.php'),
+            __DIR__.'/views' => base_path('resources/views/payment'),
         ]);
 
         $this->loadViewsFrom(__DIR__.'/views', 'payment');
@@ -34,7 +34,7 @@ class PaymentServiceProvider extends ServiceProvider
     {
         include __DIR__.'/routes/routes.php';
         $this->app->make('Serge\Payment\PaymentController');
-        $this->mergeConfigFrom( __DIR__.'/Config/payment.php', 'payment');
+        $this->mergeConfigFrom( __DIR__.'/config/payment.php', 'payment');
     }
 
      /**
