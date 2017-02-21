@@ -5,7 +5,7 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
             views: {
                 '': {
                     controller: 'homeCtrl',
-                    templateUrl: '/views/_partials/home.html'
+                    templateUrl: '/views/page/home.html'
                 },
                 'header@home': {
                     templateUrl: '/views/_partials/header.html',
@@ -18,6 +18,28 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                 'footer@home': {
                     templateUrl: '/views/_partials/footer.html',
                     controller: 'homeCtrl',
+                }
+            }
+
+        })
+        .state('contact', {
+            url: '/contact-location',
+            views: {
+                '': {
+                    controller: 'pageCtrl',
+                    templateUrl: '/views/page/contact.html'
+                },
+                'header@contact': {
+                    templateUrl: '/views/_partials/header.html',
+                    controller: 'pageCtrl',
+                },
+                'bookingForm@contact': {
+                    templateUrl: '/views/booking/booking-form.html',
+                    controller: 'bookingFormCtrl'
+                },
+                'footer@contact': {
+                    templateUrl: '/views/_partials/footer.html',
+                    controller: 'pageCtrl',
                 }
             }
 

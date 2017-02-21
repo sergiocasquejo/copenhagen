@@ -1,0 +1,80 @@
+<div class="main" ng-controller="pageCtrl">
+    <div ui-view="header"></div>
+    <section class="section-page section">
+        <div class="map-container">
+            <a href="https://www.google.com/maps/place/Copenhagen+Main+Residences,+A.+C.+Cortes+Ave/@10.3320259,123.949669,15z/data=!4m2!3m1!1s0x33a9984ca90ecb39:0xd304adf8adbca9e8" target="_BLANK">
+                <img width="100%" height="595" src="images/map.jpg" class="attachment-full wp-post-image" alt="temp-map">
+            </a>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <h1 class="text-center">CONTACT & LOCATION</h1>
+                    <form name="contactForm" ng-submit="send(contactForm.$valid)" autocomplete="off" novalidate>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group" ng-class="{'has-error': contactForm.firstname.$touched && contactForm.firstname.$invalid }">
+                                    <input type="text" name="firstname" ng-model="contact.firstname" class="form-control" ng-required="true" requried placeholder="First Name">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" ng-class="{'has-error': contactForm.lastname.$touched && contactForm.lastname.$invalid }">
+                                    <input type="text" name="lastname" ng-model="contact.lastname" class="form-control" ng-required="true" requried placeholder="Last Name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group" ng-class="{'has-error': contactForm.email.$touched && contactForm.email.$invalid }">
+                                    <input type="email" name="email" ng-model="contact.email" class="form-control" ng-required="true" requried placeholder="Email Address">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" ng-class="{'has-error': contactForm.phone.$touched && contactForm.phone.$invalid }">
+                                    <input type="text" name="phone" ng-model="contact.phone" class="form-control" ng-required="true" requried placeholder="Phone">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group" ng-class="{'has-error': contactForm.message.$touched && contactForm.message.$invalid }">
+                                    <textarea name="message" class="form-control" ng-model="contact.message" ng-required="true" required cols="30" rows="10"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-block btn-lg" ng-disabled="contactForm.$invalid">SEND <i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="footer-sidebar-secodary">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 column copy-contact text-center">
+                        <h3 class="title">Room Reservations</h3>
+                        <div class="vcard">
+                            <p>reservations@copenhagen.ph</p>
+                            <p>(63 32) 238 4639</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 column copy-contact text-center">
+                        <h3 class="title">Events &amp; Functions</h3>
+                        <div class="vcard">
+                            <p>info-cebu@copenhagen.ph</p>
+                            <p>(63 32) 238 5684</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 column copy-contact text-center">
+                        <h3 class="title">Commercial Space</h3>
+                        <div class="vcard">
+                            <p>sales@copenhagen.ph</p>
+                            <p>(63 32) 238 5485</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <div ui-view="footer"></div>
+</div>

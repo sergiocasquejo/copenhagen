@@ -59,15 +59,18 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
 .controller('roomDetailsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh',
     function($scope, $rootScope, $state, $stateParams, API, sh) {
+        var sc = $scope;
         //Hide Top Booking Form
-        $scope.bookingFormTopHide = true;
+        sc.bookingFormTopHide = true;
         //Current Step
-        $scope.step = 1;
-        $scope.room = [];
+        sc.step = 1;
+        sc.room = [];
+        sc.booking = $rootScope.booking != null ? $rootScope.booking : {};
 
-        $scope.myInterval = 5000;
-        $scope.noWrapSlides = false;
-        $scope.active = 0;
+
+        sc.myInterval = 5000;
+        sc.noWrapSlides = false;
+        sc.active = 0;
         var currIndex = 0;
 
 
@@ -75,17 +78,17 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
             if (!response.data) {
                 $state.go('home');
             }
-            $scope.room = response.data;
-            fetchCalendarByRoomID($scope.room.id);
+            sc.room = response.data;
+            fetchCalendarByRoomID(sc.room.id);
         }, function(error) {
             showPopup('Error', error.data, sh);
             $state.go('home');
         });
 
-        $scope.events = [];
-        $scope.calendarView = 'month';
-        $scope.viewDate = moment().startOf('month').toDate();
-        var currentDate = moment($scope.viewDate).format('MMMM DD, YYYY');
+        sc.events = [];
+        sc.calendarView = 'month';
+        sc.viewDate = moment().startOf('month').toDate();
+        var currentDate = moment(sc.viewDate).format('MMMM DD, YYYY');
 
         function fetchCalendarByRoomID(roomID) {
             API.getRoomCalendar(roomID).then(function(response) {
@@ -97,14 +100,14 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                         startsAt: new Date(data.startsAt * 1000),
                         allDay: true
                     };
-                    $scope.events.push(event);
+                    sc.events.push(event);
                 });
             }, function(error) {
                 showPopup('Error', error.data, sh);
             });
         }
 
-        $scope.cellModifier = function(cell) {
+        sc.cellModifier = function(cell) {
             if (cell.events[0] !== undefined) {
                 if (cell.events[0].isActive == 0) {
                     cell.cssClass = 'bg-danger';
@@ -112,28 +115,29 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
             }
         };
 
-        $scope.book = function(isValid) {
+        sc.book = function(isValid) {
             if (isValid) {
+                console.log(sc.booking);
 
-                var date1 = new Date($rootScope.booking.checkIn);
-                var date2 = new Date($rootScope.booking.checkOut);
+                var date1 = new Date(sc.booking.checkIn);
+                var date2 = new Date(sc.booking.checkOut);
                 var timeDiff = Math.abs(date2.getTime() - date1.getTime());
                 var nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
-                console.log($rootScope.booking);
+
 
                 API.setBookingData({
-                    checkIn: $rootScope.booking.checkIn,
-                    checkOut: $rootScope.booking.checkOut,
-                    noOfAdults: $rootScope.booking.adult,
-                    noOfChild: $rootScope.booking.child,
-                    noOfRooms: $rootScope.booking.noRooms,
-                    roomRate: $scope.room.minimumRate,
+                    checkIn: sc.booking.checkIn,
+                    checkOut: sc.booking.checkOut,
+                    noOfAdults: sc.booking.adult,
+                    noOfChild: sc.booking.child,
+                    noOfRooms: sc.booking.noRooms,
+                    roomRate: sc.room.minimumRate,
                     noOfNights: nights,
                     room: {
-                        id: $scope.room.id,
-                        name: $scope.room.name,
-                        building: $scope.room.building,
-                        price: $scope.room.minimumRate
+                        id: sc.room.id,
+                        name: sc.room.name,
+                        building: sc.room.building,
+                        price: sc.room.minimumRate
                     }
                 });
 
@@ -198,4 +202,16 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
             };
             // $timeout(function() { $scope.load(); }, 1000, true);
         }
-    ]);
+    ])
+
+.controller('pageCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', '$timeout',
+    function($scope, $rootScope, $state, $stateParams, API, $timeout) {
+        var sc = $scope;
+
+        sc.send = function(isValid) {
+            if (isValid) {
+                //
+            }
+        }
+    }
+]);
