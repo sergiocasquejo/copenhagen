@@ -9,7 +9,40 @@
         .calendar-main,
         .calendar-form-main {
             background-color: $white;
+            border-left: solid 1px #f5f5f5;
             @include padding(20px);
+        }
+        .selected-date-content {
+            background-color: #2e6ea6;
+            color: #FFF;
+            padding: 20px 0;
+            label {
+                font-size: 16px;
+            }
+            .moment-picker {
+                padding: 10px 5px;
+                background-color: #FFF;
+                color: #7b7b7b;
+                @include border-radius(3px);
+                .display-date.ng-binding {
+                    font-size: 40px;
+                    font-weight: bold;
+                    line-height: 40px;
+                    margin-bottom: 0;
+                }
+                .display-month-year.ng-binding {
+                    font-size: 18px;
+                    line-height: 18px;
+                    margin-bottom: 0;
+                }
+            }
+        }
+        .no-date-selected {
+            .glyphicon {
+                font-size: 60px;
+                color: #cecece;
+                margin-top: 20%;
+            }
         }
     }
     section {

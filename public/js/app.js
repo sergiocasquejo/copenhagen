@@ -24,6 +24,7 @@ function showPopup(title, message, sh, showButton) {
 
 var copenhagenApp = angular.module('copenhagenApp', ['ngAnimate', 'ui.router', 'ui.bootstrap', 'mwl.calendar', 'angularFileUpload', 'ui.toggle', 'moment-picker', 'countrySelect'])
     .constant('CSRF_TOKEN', csrftoken)
+    .constant('BEDDING', ['single bed', 'semi double-bed', 'double bed', 'queen bed', 'king bed', 'super king bed', 'bunk bed', 'sofa bed', 'futon', 'male capsule', 'femail capsule'])
     .config(['$httpProvider', '$qProvider', 'CSRF_TOKEN',
 
         function($httpProvider, $qProvider, CSRF_TOKEN) {
@@ -62,17 +63,26 @@ var copenhagenApp = angular.module('copenhagenApp', ['ngAnimate', 'ui.router', '
 .factory('sh', function($uibModal) {
         var modalInstance = null;
 
-        function openModal(page, title, message, showButton) {
-
+        function openModal(_templateUrl, _title, _message, _showButton, _resolve) {
+            if (_resolve == undefined) {
+                var _resolve = {
+                    modalTitle: function() {
+                        return _title;
+                    },
+                    bodyMessage: function() {
+                        return _message;
+                    }
+                };
+            }
             return $uibModal.open({
                 animation: true,
-                templateUrl: page,
+                templateUrl: _templateUrl,
                 backdrop: 'static',
                 keyboard: false,
                 controller: function($scope, $uibModalInstance, modalTitle, bodyMessage) {
                     $scope.modalTitle = modalTitle;
                     $scope.modalMessage = bodyMessage;
-                    $scope.showButton = showButton;
+                    $scope.showButton = _showButton;
                     $scope.ok = function() {
                         $uibModalInstance.close('ok');
 
@@ -82,14 +92,7 @@ var copenhagenApp = angular.module('copenhagenApp', ['ngAnimate', 'ui.router', '
                         $uibModalInstance.dismiss('cancel');
                     };
                 },
-                resolve: {
-                    modalTitle: function() {
-                        return title;
-                    },
-                    bodyMessage: function() {
-                        return message;
-                    }
-                }
+                resolve: _resolve
             })
         }
 

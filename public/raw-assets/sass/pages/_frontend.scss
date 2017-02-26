@@ -28,20 +28,30 @@
             }
         }
         &.section-step-indicator {
+            margin-top: 10px;
             margin-bottom: 20px;
             .step {
-                background-color: #e6e6e6;
-                color: #969696;
-                padding: 15px 15px;
+                &:first-child {
+                    @include border-left-radius(4px);
+                }
+                &:last-child {
+                    @include border-right-radius(4px);
+                }
+                background-color: #17212c;
+                color: $white;
+                padding: 5px 15px;
                 text-transform: uppercase;
                 .counter {
                     border: solid 2px #969696;
-                    width: 25px;
-                    height: 25px;
+                    width: 40px;
+                    height: 40px;
                     display: inline-block;
                     border-radius: 75px;
                     margin-right: 20px;
                     text-align: center;
+                    vertical-align: middle;
+                    line-height: 38px;
+                    font-size: 20px;
                 }
                 &.active .counter {
                     background-color: #50a950;
@@ -77,27 +87,24 @@
                 position: relative;
                 .room-details {
                     width: 100%;
+                    background-color: rgba(255, 255, 255, 0.84);
                     position: absolute;
                     bottom: 0;
-                    background-color: rgba(0, 0, 0, 0.52);
-                    color: #FFF;
-                    .pull-left {
-                        width: 90%;
-                        padding: 10px;
-                        h3 {
-                            padding: 0;
-                            margin: 0;
-                            font-size: 18px;
-                        }
+                    padding: 10px 0;
+                    &:after {
+                        content: '';
+                        clear: Both;
+                        display: block;
                     }
-                    .pull-right {
-                        a {
-                            display: block;
-                            background-color: #d9ad43;
-                            font-size: 35px;
-                            line-height: 50px;
-                            padding: 10px 20px;
-                            color: #FFF;
+                    strong.price-container {
+                        font-size: 25px;
+                        margin-top: 20px;
+                        display: block;
+                        .price.soft-red {
+                            color: #ee595d;
+                        }
+                        .currency.dark-gray2 {
+                            font-size: 20px;
                         }
                     }
                 }

@@ -40,7 +40,6 @@ class RoomController extends Controller
         $room->minimumRate = $request->input('minimumRate', 0);
         $room->totalPerson = $request->input('totalPerson', 1);
         $room->location = $request->input('location', '');
-        $room->bed = $request->input('bed', '');
         $room->extraBed = $request->input('extraBed', 0);
         $room->bathrooms = $request->input('bathrooms', 0);
         $room->building = $request->input('building', 0);
@@ -77,7 +76,6 @@ class RoomController extends Controller
 			$room->minimumRate = $request->input('minimumRate', 0);
 			$room->totalPerson = $request->input('totalPerson', 1);
 			$room->location = $request->input('location', '');
-			$room->bed = $request->input('bed', '');
 			$room->extraBed = $request->input('extraBed', 0);
 			$room->bathrooms = $request->input('bathrooms', 0);
 			$room->building = $request->input('building', 0);
@@ -134,6 +132,34 @@ class RoomController extends Controller
         }
 
         return response()->json('failed', 400);
+    }
+
+    public function attachBeds(Request $request, $roomID) {
+        try {
+            $room = \App\Room::find($roomID);
+            $beds = $request->input('beds');
+            if ($beds) {
+                foreach ($beds as $i){
+                    $bed = new \App\Bed;
+                    if (isset($i['id']) && strpos($i['id'], '_static_') === false) {
+                        $bed = \App\Bed::find($i['id']);
+                    }
+                    $bed->qty = $i['qty'];
+                    $bed->type = $i['type'];
+                    
+                    $room->beds()->save($bed);
+                }
+
+                return response()->json(\App\Room::all()->toArray(), 200, [], JSON_UNESCAPED_UNICODE);
+            }
+        } catch(\Exception $e) {
+            return response()->json($e->getMessage(), 400, [], JSON_UNESCAPED_UNICODE);
+        }
+
+    }
+
+    public function detachBed(Request $request, $roomID, $bedID) {
+         \App\Bed::find($bedID)->delete();
     }
 
     public function types(Request $request) {

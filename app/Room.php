@@ -15,7 +15,6 @@ class Room extends Model
         'totalRooms' => 'required|numeric',
         'minimumRate' => 'required|numeric',
         'totalPerson' => 'required|numeric',
-        'bed' => 'required',
         'location' => 'required',
         'extraBed' => 'required',
         'roomSize' => 'required|numeric',
@@ -89,8 +88,12 @@ class Room extends Model
          return $this->belongsToMany('App\Rate', 'room_rates', 'roomID', 'rateID')->withPivot('price', 'rateID');
      }
 
+     public function beds() {
+         return $this->hasMany('App\Bed', 'roomID', 'id');
+     }
+
      public static function lazyLoad() {
-         return self::with('photos', 'aminities', 'rates');
+         return self::with('photos', 'aminities', 'rates', 'beds');
      }
 
       

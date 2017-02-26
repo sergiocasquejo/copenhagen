@@ -84,18 +84,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group" ng-class="{ 'has-error': roomForm.bed.$touched && roomForm.bed.$invalid }">
-                                    <label class="control-label col-sm-4" for="bed">Bed <span class="req">*</span></label>
-                                    <div class="col-sm-8">
-                                        <input type="text" name="bed" ng-model="room.bed" class="form-control" ng-required="true" required>
-                                    </div>
-                                </div>
-                                <div class="form-group" ng-class="{ 'has-error': roomForm.location.$touched && roomForm.location.$invalid }">
-                                    <label class="control-label col-sm-4" for="location">Location <span class="req">*</span></label>
-                                    <div class="col-sm-8">
-                                        <input type="text" name="location" ng-model="room.location" class="form-control" ng-required="true" required>
-                                    </div>
-                                </div>
+
                             </div>
                             <!--/.col-md-4-->
                             <div class="col-md-4">
@@ -121,10 +110,22 @@
                                         <input type="text" name="roomSize" ng-model="room.roomSize" min="0" ng-min="0" class="form-control" ng-required="true" required>
                                     </div>
                                 </div>
+                                <div class="form-group" ng-class="{ 'has-error': roomForm.location.$touched && roomForm.location.$invalid }">
+                                    <label class="control-label col-sm-4" for="location">Location <span class="req">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="location" ng-model="room.location" class="form-control" ng-required="true" required>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Amenities</label>
                                     <div class="col-md-8">
                                         <button type="button" class="btn btn-default" ng-click="openAminities($index, room)">{{ room.facilities.length }} Selected <i class="fa fa-caret-down" aria-hidden="true"></i></button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Bedding</label>
+                                    <div class="col-md-8">
+                                        <button type="button" class="btn btn-default" ng-click="openBedding($index, room)">{{ room.beds.length }} Selected <i class="fa fa-caret-down" aria-hidden="true"></i></button>
                                     </div>
                                 </div>
                                 <div class="form-group" ng-class="{ 'has-error': roomForm.bathrooms.$touched && roomForm.bathrooms.$invalid }">
@@ -181,6 +182,42 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" ng-click="cancel()" type="button">Cancel</button>
+        <button type="submit" ng-click="ok()" class="btn btn-primary" type="button">Apply</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="beddingPopup.html">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Bedding</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <form name="beddingForm" ng-submit="saveBedding(beddingForm.$valid)">
+            <div class="row" class="bedding-lists" ng-repeat="b in beds track by $index">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <select ng-model="beds[$index].qty" class="form-control" ng-options="i for i in [] | range:1:21"></select>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="form-group">x</div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <select ng-model="beds[$index].type" class="form-control" ng-options="i for i  in bedTypeLists"></select>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <a ng-if="$index > 0" class="trash-bed" ng-click="deleteBed($index)"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        <button class="btn btn-primary" ng-click="addBed()">Add another bed</button>
     </div>
     <div class="modal-footer">
         <button class="btn btn-default" ng-click="cancel()" type="button">Cancel</button>

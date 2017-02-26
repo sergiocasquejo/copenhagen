@@ -1,12 +1,18 @@
 footer {
     background: #17212c;
-    margin-top: 20px;
     .navbar-bottom {
-        padding: 2em 0 0 0;
-        li {
-            a {
-                color: $white;
-                padding: 0 10px;
+        padding: 5px 0 0 0;
+        ul {
+            margin-bottom: 5px;
+            li {
+                a {
+                    color: #747a81;
+                    padding: 0 10px;
+                    text-decoration: none;
+                    &:hover {
+                        color: $hoverColor;
+                    }
+                }
             }
         }
     }

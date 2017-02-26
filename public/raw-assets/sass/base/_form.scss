@@ -12,3 +12,24 @@
         @include paddingUpSideDown(10px, 10px);
     }
 }
+
+.panel-primary {
+    border-color: #17212c;
+    .panel-heading {
+        background: #17212c;
+        border-color: #17212c;
+    }
+}
+
+form[name=beddingForm] {
+    .trash-bed {
+        background-color: #eee;
+        width: 27px;
+        text-align: center;
+        vertical-align: middle;
+        padding: 5px;
+        display: inline-block;
+        @include border-radius(3px);
+        color: #333;
+    }
+}

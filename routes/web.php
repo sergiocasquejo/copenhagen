@@ -181,9 +181,12 @@ Route::group(['prefix' => 'api/v1'], function() {
             Route::resource('aminities', 'AminitiesController', ['only' => [
                 'index', 'store', 'update', 'destroy'
             ]]);
+
             Route::post('{roomId}/photos', 'PhotoController@store');
             Route::delete('{roomId}/photos/{id}', 'PhotoController@destroy');
             Route::post('{roomId}/aminities', 'RoomController@attachAminities');
+            Route::post('{roomId}/beds', 'RoomController@attachBeds');
+            Route::delete('{roomId}/beds/{bedId}', 'RoomController@detachBed');
         });
         Route::resource('rooms', 'RoomController', ['only' => [
                 'index', 'store', 'update', 'destroy'

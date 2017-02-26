@@ -24,11 +24,19 @@
                             <img class="img-responsive" src="/images/rooms/1.jpg" alt="">
                         </div>
                         <div class="room-details">
-                            <div class="pull-left">
+                            <div class="col-md-8">
                                 <h3>{{room.name}}</h3>
+                                <ul class="list-unstyled list-inline overview ng-scope">
+                                    <li class="ng-binding" ng-repeat="i in room.beds"><strong><i class="fa fa-bed" aria-hidden="true"></i> Bed: {{ i.qty }} {{ i.type }}</strong> </li>
+                                    <li class="ng-binding"><strong><i class="fa fa-home" aria-hidden="true"></i> Room size: {{ room.roomSize }} (sq.m)</strong> </li>
+                                </ul>
                             </div>
-                            <div class="pull-right">
-                                <a ui-sref="roomDetail({slug: room.slug})"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                            <div class="col-md-4 text-right">
+                                <strong class="price-container" data-selenium="price-container">
+                                    <span class="currency dark-gray2" data-selenium="hotel-currency" data-currency="PHP">PHP </span>
+                                    <span class="price soft-red" data-selenium="display-price">1, 255</span>
+                                </strong>
+                                <a ui-sref="roomDetail({slug: room.slug})" class="btn btn-success">View Details <i class="fa fa-angle-right" aria-hidden="true"></i></a>
                             </div>
 
                         </div>

@@ -1,12 +1,13 @@
 'use strict';
 copenhagenApp
-    .controller('roomCtrl', ['$scope', '$rootScope', '$state', 'API', 'FileUploader', 'CSRF_TOKEN', '$uibModal', '$log', 'sh',
-        function($scope, $rootScope, $state, API, FileUploader, CSRF_TOKEN, $uibModal, $log, sh) {
+    .controller('roomCtrl', ['$scope', '$rootScope', '$state', 'API', 'FileUploader', 'CSRF_TOKEN', '$uibModal', '$log', 'sh', 'BEDDING',
+        function($scope, $rootScope, $state, API, FileUploader, CSRF_TOKEN, $uibModal, $log, sh, BEDDING) {
             var sc = $scope;
             sc.loaded = false;
             sc.roomLists = {};
             sc.rateLists = null;
             sc.selectedRoom = null;
+            sc.beddingLists = BEDDING;
             var roomListIndex = null;
             API.getRooms().then(function(response) {
                 sc.roomLists = response.data;
@@ -149,6 +150,36 @@ copenhagenApp
 
             }
 
+            var beddingModalInstance;
+            sc.openBedding = function(index, room) {
+                roomListIndex = index;
+                beddingModalInstance = $uibModal.open({
+                    templateUrl: "beddingPopup.html",
+                    controller: 'ModalBeddingInstanceCtrl',
+                    scope: sc,
+                    size: 'md',
+                    resolve: {
+                        index: function() {
+                            return index;
+                        },
+                        room: function() {
+                            return room;
+                        },
+                        API: function() {
+                            return API;
+                        },
+                        sh: function() {
+                            return sh;
+                        }
+                    }
+                });
+                beddingModalInstance.result.then(function(data) {
+                    sc.roomLists[data.index].beds = data.data;
+                }, function() {
+                    $log.info('Modal dismissed at: ' + new Date());
+                });
+            }
+
 
 
         }
@@ -211,8 +242,60 @@ copenhagenApp
         $scope.ok = function() {
             $uibModalInstance.close('ok');
         };
-
         $scope.cancel = function() {
+            $uibModalInstance.dismiss('cancel');
+        };
+    })
+    .controller('ModalBeddingInstanceCtrl', function($scope, $uibModalInstance, index, room, API, BEDDING, sh) {
+        var sc = $scope;
+        var defaultBed = {
+            'id': '_static_' + new Date().getTime(),
+            'qty': 1,
+            'roomID': room.id,
+            'type': 'queen size'
+        };
+        sc.beds = room.beds;
+
+
+
+        if (room.beds == undefined || !room.beds.length) {
+            sc.beds = [defaultBed];
+        }
+
+
+
+        sc.bedTypeLists = BEDDING;
+
+        sc.addBed = function() {
+            sc.beds.push({
+                'id': '_static_' + new Date().getTime(),
+                'qty': 1,
+                'roomID': room.id,
+                'type': 'queen size'
+            });
+            console.log(sc.beds);
+
+        }
+
+        sc.deleteBed = function(index) {
+            var b = sc.beds[index];
+            if (b.id != undefined) {
+                API.deleteRoomBed(room.id, b.id).then(function(response) {}, function(error) {
+                    showPopup('Error', error.data, sh);
+                });
+            }
+            sc.beds.splice(index, 1);
+        }
+
+        sc.ok = function() {
+            API.saveRoomBed(room.id, { beds: sc.beds }).then(function(response) {
+                $uibModalInstance.close('ok');
+            }, function(error) {
+                showPopup('Error', error.data, sh);
+            });
+
+        };
+        sc.cancel = function() {
             $uibModalInstance.dismiss('cancel');
         };
     });

@@ -4,6 +4,7 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
         var sc = $scope;
         sc.loaded = false;
         sc.calendarView = 'month';
+        sc.hasSelectedDate = false;
         sc.viewDate = moment().startOf('month').toDate();
         var currentDate = moment(sc.viewDate).format('MMMM DD, YYYY');
 
@@ -35,16 +36,16 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
 
         function fetchCalendarByRoomID(roomID) {
             API.getRoomCalendar(roomID).then(function(response) {
-                angular.forEach(response.data, function(data) {
-                    var event = {
-                        title: data.title,
-                        startsAt: new Date(data.startsAt * 1000),
-                        endsAt: new Date(data.startsAt * 1000),
-                        cssClass: 'a-css-class-name', //A CSS class (or more, just separate with spaces) that will be added to the event when it is displayed on each view. Useful for marking an event as selected / active etc
-                        allDay: true // set to true to display the event as an all day event on the day view
-                    };
-                    sc.events.push(event);
-                });
+                // angular.forEach(response.data, function(data) {
+                //     var event = {
+                //         title: data.title,
+                //         startsAt: new Date(data.startsAt * 1000),
+                //         endsAt: new Date(data.startsAt * 1000),
+                //         cssClass: 'a-css-class-name',
+                //         allDay: true
+                //     };
+                //     sc.events.push(event);
+                // });
             }, function(error) {
                 showPopup('Error', error.data, sh);
             });
@@ -55,10 +56,14 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
         sc.rangeSelected = function(startDate, endDate) {
             sc.calendar.from = startDate;
             sc.calendar.to = endDate;
+            sc.hasSelectedDate = true;
+            console.log(sc.calendar.from, sc.calendar.to);
         };
 
         sc.dayClicked = function(day) {
-            console.log(day);
+            console.log('test');
+            sc.hasSelectedDate = true;
+            sc.calendar.to = sc.calendar.from = startDate;
             // sc.calendar.to = sc.calendar.from = date;
         };
 

@@ -21,14 +21,14 @@
                         <uib-tabset>
                             <uib-tab index="0" heading="Overview">
                                 <ul class="list-unstyled overview">
-                                    <li><strong><i class="fa fa-home" aria-hidden="true"></i> Available Room:</strong> {{ room.totalRooms }}</li>
-                                    <li><strong><i class="fa fa-user" aria-hidden="true"></i> Persons Allowed:</strong> {{ room.totalPerson }}</li>
-                                    <li><strong><i class="fa fa-bed" aria-hidden="true"></i> Bed:</strong> {{ room.bed }}</li>
-                                    <li><strong><i class="fa fa-bed" aria-hidden="true"></i> Exra Bed:</strong> {{ room.extraBed }}</li>
-                                    <li><strong><i class="fa fa-users" aria-hidden="true"></i> Room Size:</strong> {{ room.roomSize }} (sq.m)</li>
-                                    <li><strong><i class="fa fa-asterisk" aria-hidden="true"></i> Bath Room:</strong> {{ room.bathrooms }}</li>
-                                    <li><strong><i class="fa fa-building" aria-hidden="true"></i> Building:</strong> {{ room.building }}</li>
-                                    <li><strong><i class="fa fa-map-marker" aria-hidden="true"></i> Location:</strong> {{ room.location }}</li>
+                                    <li><strong><i class="fa fa-home" aria-hidden="true"></i> Available Room</strong>: {{ room.totalRooms }}</li>
+                                    <li><strong><i class="fa fa-user" aria-hidden="true"></i> Persons Allowed</strong>: {{ room.totalPerson }}</li>
+                                    <li ng-repeat="i in room.beds"><strong><i class="fa fa-bed" aria-hidden="true"></i> Bed</strong>: {{ i.qty }} {{ i.type }} </li>
+                                    <li><strong><i class="fa fa-bed" aria-hidden="true"></i> Exra Bed</strong>: {{ room.extraBed }}</li>
+                                    <li><strong><i class="fa fa-users" aria-hidden="true"></i> Room Size</strong>: {{ room.roomSize }} (sq.m)</li>
+                                    <li><strong><i class="fa fa-asterisk" aria-hidden="true"></i> Bath Room</strong>: {{ room.bathrooms }}</li>
+                                    <li><strong><i class="fa fa-building" aria-hidden="true"></i> Building</strong>: {{ room.building }}</li>
+                                    <li><strong><i class="fa fa-map-marker" aria-hidden="true"></i> Location</strong>: {{ room.location }}</li>
                                 </ul>
                             </uib-tab>
                             <uib-tab index="1" heading="Calendar">

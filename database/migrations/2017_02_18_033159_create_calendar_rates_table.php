@@ -36,7 +36,7 @@ class CreateCalendarRatesTable extends Migration
     public function down()
     {
         if (Schema::hasTable('calendar_rates')) {
-            Schema::dropIfExists('room_rates');
+            Schema::dropIfExists('calendar_rates');
         }
     }
 }
