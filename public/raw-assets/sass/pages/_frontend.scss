@@ -116,6 +116,35 @@
                 @include clearfix();
                 .img-area {
                     padding: 8px 6px 8px 8px;
+                    .img-inner {
+                        position: relative;
+                        img {
+                            width: 100%;
+                        }
+                        a {
+                            display: none;
+                            text-decoration: none;
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            bottom: 0;
+                            right: 0;
+                            background-color: rgba(0, 0, 0, 0.43);
+                            width: 100%;
+                            text-align: center;
+                            .lnr {
+                                font-size: 50px;
+                                color: #FFF;
+                                text-align: center;
+                                line-height: 4;
+                            }
+                        }
+                        &:hover {
+                            a {
+                                display: block;
+                            }
+                        }
+                    }
                 }
                 .item-flex-column {
                     padding: 8px 8px;
@@ -180,6 +209,36 @@
                     display: block;
                     padding: 10px;
                     display: none;
+                    border-top: solid 1px #cdd0d2;
+                    &.active {
+                        display: block;
+                    }
+                    .photo-item {
+                        position: relative;
+                        a {
+                            display: none;
+                            position: absolute;
+                            top: 0;
+                            bottom: 0;
+                            right: 0;
+                            left: 0;
+                            background-color: rgba(0, 0, 0, 0.43);
+                            width: 100%;
+                            text-align: center;
+                            text-decoration: none;
+                            .lnr {
+                                font-size: 50px;
+                                color: #FFF;
+                                text-align: center;
+                                line-height: 4;
+                            }
+                        }
+                        &:hover {
+                            a {
+                                display: block;
+                            }
+                        }
+                    }
                 }
             }
         }

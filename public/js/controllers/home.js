@@ -38,8 +38,8 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
     }
 ])
 
-.controller('roomAvailableCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh',
-    function($scope, $rootScope, $state, $stateParams, API, sh) {
+.controller('roomAvailableCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh', 'Lightbox',
+    function($scope, $rootScope, $state, $stateParams, API, sh, Lightbox) {
         var sc = $scope;
         sc.minPrice = 0;
         sc.maxPrice = 0;
@@ -92,6 +92,9 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
             sc.filter.pricing.value = sc.filter.pricing.options.ceil = sc.maxPrice;
 
         }
+        sc.togglePictures = function(index) {
+            sc.roomLists[index].showPictures = sc.roomLists[index].showPictures == 1 ? 0 : 1;
+        }
         sc.resetFilter = function() {
             sc.filter = {
                 building: '',
@@ -121,6 +124,17 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
             return function(item) {
                 return item[prop] <= val;
             }
+        }
+
+        sc.openLightboxModal = function(photos, index, caption) {
+            var images = [];
+            for (var i = 0; i < photos.length; i++) {
+                images.push({
+                    url: photos[i].file.orig,
+                    caption: caption
+                });
+            }
+            Lightbox.openModal(images, index);
         }
 
         API.getAvailableRooms().then(function(response) {
@@ -161,6 +175,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
             showPopup('Error', error.data, sh);
             $state.go('home');
         });
+
 
 
 

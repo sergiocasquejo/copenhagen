@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="/lib/angular-moment-picker/dist/angular-moment-picker.min.css" type="text/css">
     <link rel="stylesheet" href="/lib/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.min.css" type="text/css">
     <link rel="stylesheet" href="/lib/angularjs-slider/dist/rzslider.min.css" type="text/css">
+    <link rel="stylesheet" href="/lib/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.min.css" type="text/css">
     <link rel="stylesheet" href="/css/app.min.css" type="text/css">
 
     <!-- Scripts -->
@@ -47,6 +48,8 @@
     <script src="/lib/ng-country-select/dist/ng-country-select.min.js" type="text/javascript"></script>
     <script src="/lib/angular-animate/angular-animate.min.js"></script>
     <script src="/lib/angularjs-slider/dist/rzslider.min.js"></script>
+    <script src="/lib/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.min.js"></script>
+    
     <script src="/js/app.js" type="text/javascript"></script>
     <script src="/js/routes/index.js" type="text/javascript"></script>
     <script src="/js/services/api.js" type="text/javascript"></script>

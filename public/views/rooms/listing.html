@@ -59,6 +59,7 @@
                                 <article>
                                     <div class="img-area col-md-3 col-xs-4">
                                         <div class="img-inner">
+                                            <a ng-click="togglePictures($index)"><span class="lnr lnr-picture"></span></a>
                                             <img ng-src="{{ room.photos[0].file.thumbs }}">
                                         </div>
                                     </div>
@@ -86,19 +87,21 @@
                                             <a ui-sref="roomDetail({slug: room.slug})" class="btn btn-success btn-block">View Deal <span class="lnr lnr-chevron-right pull-right"></span></a>
                                         </div>
                                     </div>
-                                    <div class="item-slide-layout">
+                                    <div class="item-slide-layout" ng-class="{'active': room.showPictures == 1}">
                                         <div class="photo-wrap">
-                                            <div class="photo-item" ng-repeat="photo in room.photos">
-                                                <img ng-src="{{ photo.file.thumbs }}">
-                                            </div>
+                                            <a class="pull-right" ng-click="togglePictures($index)">hide</a>
+                                            <ul class="list-inline">
+                                                <li class="photo-item" ng-click="openLightboxModal(room.photos, $index, room.name)" ng-repeat="photo in room.photos track by $index">
+                                                    <a><span class="lnr lnr-picture"></span></a>
+                                                    <img ng-src="{{ photo.file.thumbs }}">
+
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </article>
                             </li>
                         </ul>
-
-
-
                     </div>
             </form>
             </div>
