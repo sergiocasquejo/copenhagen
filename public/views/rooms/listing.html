@@ -1,0 +1,107 @@
+<div class="main room-listings" ng-controller="roomAvailableCtrl">
+    <div ui-view="header"></div>
+    <section class="section-rooms-available section">
+        <div class="container">
+            <form name="roomListing">
+                <div class="row">
+                    <div class="loading" ng-hide="loaded">Loading...</div>
+                    <div class="col-md-3 hidden-xs" ng-if="roomLists.length > 0">
+                        <div class="sidebar room-filter">
+                            <div class="filter filter-building">
+                                <h5><span class="lnr lnr-apartment"></span> Building</h5>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <label>
+                                            <input type="radio" ng-model="filter.building" value=""/> All
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label>
+                                        <input type="radio" ng-model="filter.building" value="main" /> Main
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label>
+                                        <input type="radio" ng-model="filter.building" value="east"/> East
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--/.filter-->
+
+                            <div class="filter filter-price">
+                                <h5>Price</h5>
+                                <rzslider rz-slider-model="filter.pricing.value" rz-slider-options="filter.pricing.options"></rzslider>
+                            </div>
+                            <!--/.filter-->
+                            <div class="filter filter-search">
+                                <h5>Search room name</h5>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" ng-model="filter.search" placeholder="Search room name">
+                                        <div class="input-group-addon"><span class="lnr lnr-magnifier"></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/.filter-->
+                            <div class="filter filter-reset">
+
+                                <button type="button" ng-click="resetFilter()" class="btn btn-default btn-block">Reset Filters</button>
+
+                            </div>
+                            <!--/.filter-->
+                        </div>
+                    </div>
+                    <div class="col-md-9" ng-if="roomLists.length > 0">
+                        <span id="js_hotel_count" class="available-number hidden-xs"><strong class="result_count">{{ result.length }}</strong> out of {{ roomLists.length }} rooms</span>
+                        <ul class="list-unstyled">
+                            <li class="item" ng-repeat="room in result = (roomLists | filter: { name: filter.search, building: filter.building } | filter: lessThanEqualTo('minimumRate', filter.pricing.value))">
+                                <article>
+                                    <div class="img-area col-md-3 col-xs-4">
+                                        <div class="img-inner">
+                                            <img ng-src="{{ room.photos[0].file.thumbs }}">
+                                        </div>
+                                    </div>
+                                    <div class="item-flex-column col-md-9 col-xs-8">
+                                        <div class="item-details col-md-4">
+                                            <div itemprop="name" class="item-name">
+                                                <h3 class="name-text">{{ room.name }}</h3>
+                                                <ul class="list-unstyled overview">
+                                                    <li><span class="lnr lnr-crop"></span> Room Size: {{ room.roomSize }} (sq.m)</li>
+                                                    <li><span class="lnr lnr-apartment"></span> Building: {{ room.building }}</li>
+                                                    <li><span class="lnr lnr-map"></span> Location: {{ room.location }}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="item-aminities col-md-4 hidden-xs">
+                                            <h4>Aminities</h4>
+                                            <ul class="list-unstyled aminities">
+                                                <li ng-repeat="a in room.aminities | limitTo:8"><span class="lnr lnr-checkmark-circle"></span> {{ a.name }}</li>
+                                            </ul>
+                                        </div>
+                                        <div class="item-best-deals col-md-4">
+                                            <div class="price text-center">
+                                                <strong class="item-price">‎{{ room.minimumRate | currency: '₱ ':0 }}</strong>
+                                            </div>
+                                            <a ui-sref="roomDetail({slug: room.slug})" class="btn btn-success btn-block">View Deal <span class="lnr lnr-chevron-right pull-right"></span></a>
+                                        </div>
+                                    </div>
+                                    <div class="item-slide-layout">
+                                        <div class="photo-wrap">
+                                            <div class="photo-item" ng-repeat="photo in room.photos">
+                                                <img ng-src="{{ photo.file.thumbs }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                            </li>
+                        </ul>
+
+
+
+                    </div>
+            </form>
+            </div>
+    </section>
+    <div ui-view="footer"></div>
+    </div>

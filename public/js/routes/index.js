@@ -44,11 +44,55 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
             }
 
         })
+        .state('policy', {
+            url: '/policy',
+            views: {
+                '': {
+                    controller: 'pageCtrl',
+                    templateUrl: '/views/page/policy.html'
+                },
+                'header@policy': {
+                    templateUrl: '/views/_partials/header.html',
+                    controller: 'pageCtrl',
+                },
+                'bookingForm@policy': {
+                    templateUrl: '/views/booking/booking-form.html',
+                    controller: 'bookingFormCtrl'
+                },
+                'footer@policy': {
+                    templateUrl: '/views/_partials/footer.html',
+                    controller: 'pageCtrl',
+                }
+            }
+
+        })
+        .state('about', {
+            url: '/about-ironwood',
+            views: {
+                '': {
+                    controller: 'pageCtrl',
+                    templateUrl: '/views/page/about.html'
+                },
+                'header@about': {
+                    templateUrl: '/views/_partials/header.html',
+                    controller: 'pageCtrl',
+                },
+                'bookingForm@about': {
+                    templateUrl: '/views/booking/booking-form.html',
+                    controller: 'bookingFormCtrl'
+                },
+                'footer@about': {
+                    templateUrl: '/views/_partials/footer.html',
+                    controller: 'pageCtrl',
+                }
+            }
+
+        })
         .state('roomsAvailable', {
             url: '/available-rooms-cebu-hotels',
             views: {
                 '': {
-                    templateUrl: '/views/rooms/index.html'
+                    templateUrl: '/views/rooms/listing.html'
                 },
                 'header@roomsAvailable': {
                     templateUrl: '/views/_partials/header.html',

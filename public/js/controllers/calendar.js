@@ -57,7 +57,6 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
             sc.calendar.from = startDate;
             sc.calendar.to = endDate;
             sc.hasSelectedDate = true;
-            console.log(sc.calendar.from, sc.calendar.to);
         };
 
         sc.dayClicked = function(day) {

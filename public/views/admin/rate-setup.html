@@ -77,8 +77,8 @@
                         <td>{{ rate.mealType }}</td>
                         <td><span class="badge" ng-class="{'bg-danger': rate.active == 0 }">{{ rate.active == 1 ? 'active' : 'inactive' }}</span></td>
                         <td>
-                            <a ng-click="edit(rate)"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                            <a ng-click="delete(rate.id)"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                            <a ng-click="edit(rate)"><span class="lnr lnr-pencil"></span></a>
+                            <a ng-click="delete(rate.id)"><span class="lnr lnr-trash"></span></a>
                         </td>
                     </tr>
                 </tbody>

@@ -80,33 +80,106 @@
             }
         }
         &.section-rooms-available {
-            .item {
-                margin-bottom: 30px;
+            margin: 20px 0;
+            .room-filter {
+                background-color: #FFF;
+                box-shadow: 1px 2px 2px #ccc;
+                .filter {
+                    padding: 10px 20px;
+                    border-bottom: 1px solid #cdd0d2;
+                    .rzslider {
+                        .rz-bar {
+                            height: 6px;
+                            @include border-radius(4px);
+                        }
+                        .rz-bubble {
+                            font-size: 12px;
+                        }
+                        .rz-pointer {
+                            top: -10px;
+                            width: 25px;
+                            height: 25px;
+                            cursor: pointer;
+                            background-color: #66a400;
+                            &:after {
+                                top: 9px;
+                                left: 9px;
+                            }
+                        }
+                    }
+                }
             }
-            .room-inner {
-                position: relative;
-                .room-details {
-                    width: 100%;
-                    background-color: rgba(255, 255, 255, 0.84);
-                    position: absolute;
-                    bottom: 0;
-                    padding: 10px 0;
-                    &:after {
-                        content: '';
-                        clear: Both;
-                        display: block;
+            .item {
+                margin-bottom: 10px;
+                background-color: #FFF;
+                box-shadow: 1px 2px 2px #ccc;
+                @include clearfix();
+                .img-area {
+                    padding: 8px 6px 8px 8px;
+                }
+                .item-flex-column {
+                    padding: 8px 8px;
+                    .item-name,
+                    .item-aminities,
+                    .item-best-deals {
+                        min-height: 200px;
+                        border-right: 1px solid #cdd0d2;
                     }
-                    strong.price-container {
-                        font-size: 25px;
-                        margin-top: 20px;
-                        display: block;
-                        .price.soft-red {
-                            color: #ee595d;
-                        }
-                        .currency.dark-gray2 {
+                    .item-details {
+                        padding-left: 0;
+                        h3 {
+                            margin: 0 0 10px 0;
+                            font-family: Arial, Helvetica, Sans, Sans-Serif, Sans Serif;
                             font-size: 20px;
+                            font-weight: 700;
+                        }
+                        li {
+                            padding: 7px 0;
+                            .lnr {
+                                font-size: 20px;
+                                vertical-align: middle;
+                            }
                         }
                     }
+                    .item-aminities {
+                        h4 {
+                            margin: 0 0 10px 0;
+                        }
+                        .lnr {
+                            vertical-align: middle;
+                            color: #66a400;
+                        }
+                    }
+                    .item-best-deals {
+                        border: none;
+                        .price {
+                            min-height: 105px;
+                        }
+                        .item-price {
+                            font-size: 30px;
+                            color: #66a400;
+                            margin: 20px 0;
+                            display: block;
+                            font-family: Arial, Helvetica, Sans, Sans-Serif, Sans Serif;
+                        }
+                        .btn {
+                            background: #66a400;
+                            border: 1px solid #66a400;
+                            border-bottom: 1px solid #4c7b00;
+                            border-radius: 2px;
+                            padding: 7px 5px;
+                            font-size: 18px;
+                            .lnr {
+                                margin-top: 5px;
+                            }
+                        }
+                    }
+                }
+                .item-slide-layout {
+                    clear: both;
+                    display: block;
+                    padding: 10px;
+                    display: none;
                 }
             }
         }

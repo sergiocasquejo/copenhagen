@@ -1,3 +1,4 @@
+'use strict';
 copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', function($scope, $rootScope, $state, API) {
 
     $scope.myInterval = 5000;
@@ -40,26 +41,103 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 .controller('roomAvailableCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh',
     function($scope, $rootScope, $state, $stateParams, API, sh) {
         var sc = $scope;
+        sc.minPrice = 0;
+        sc.maxPrice = 0;
+        sc.result = 0;
+
         sc.roomLists = [];
         sc.loaded = false;
-        sc.buildingSelected = 'all';
+        var filterDefault = {
+            building: '',
+            search: '',
+            pricing: {
+                value: sc.maxPrice,
+                options: {
+                    floor: sc.minPrice,
+                    ceil: sc.maxPrice,
+                    translate: function(value, sliderId, label) {
+                        switch (label) {
+                            case 'model':
+                                return '‎₱' + Number(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                            case 'high':
+                                return '‎₱' + Number(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                            default:
+                                return '‎₱' + Number(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                        }
+                    }
+                }
+            }
+
+        };
+
+        sc.filter = filterDefault;
+
+        sc.getMinAndMaxPrice = function(data) {
+
+            for (var i = 0; i < data.length; i++) {
+                if (Number(data[i].minimumRate) > sc.maxPrice) {
+                    sc.maxPrice = data[i].minimumRate;
+                }
+            }
+
+
+
+            sc.minPrice = sc.maxPrice;
+            for (var i = 0; i < data.length; i++) {
+                if (Number(data[i].minimumRate) < sc.minPrice) {
+                    sc.minPrice = data[i].minimumRate;
+                }
+            }
+            sc.filter.pricing.options.floor = sc.minPrice;
+            sc.filter.pricing.value = sc.filter.pricing.options.ceil = sc.maxPrice;
+
+        }
+        sc.resetFilter = function() {
+            sc.filter = {
+                building: '',
+                search: '',
+                pricing: {
+                    value: sc.maxPrice,
+                    options: {
+                        floor: sc.minPrice,
+                        ceil: sc.maxPrice,
+                        translate: function(value, sliderId, label) {
+                            switch (label) {
+                                case 'model':
+                                    return '‎₱' + Number(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                case 'high':
+                                    return '‎₱' + Number(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                                default:
+                                    return '‎₱' + Number(value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                            }
+                        }
+                    }
+                }
+
+            };
+        }
+        sc.lessThanEqualTo = function(prop, val) {
+
+            return function(item) {
+                return item[prop] <= val;
+            }
+        }
+
         API.getAvailableRooms().then(function(response) {
             sc.roomLists = response.data;
+            sc.getMinAndMaxPrice(sc.roomLists);
             sc.loaded = true;
         }, function(error) {
             showPopup('Error', error.data, sh);
             sc.loaded = true;
         });
-
-        sc.selectedBuilding = function(selected) {
-            sc.buildingSelected = selected;
-        }
     }
 ])
 
 .controller('roomDetailsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh',
     function($scope, $rootScope, $state, $stateParams, API, sh) {
         var sc = $scope;
+
         //Hide Top Booking Form
         sc.bookingFormTopHide = true;
         //Current Step
@@ -79,41 +157,12 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                 $state.go('home');
             }
             sc.room = response.data;
-            fetchCalendarByRoomID(sc.room.id);
         }, function(error) {
             showPopup('Error', error.data, sh);
             $state.go('home');
         });
 
-        sc.events = [];
-        sc.calendarView = 'month';
-        sc.viewDate = moment().startOf('month').toDate();
-        var currentDate = moment(sc.viewDate).format('MMMM DD, YYYY');
 
-        function fetchCalendarByRoomID(roomID) {
-            API.getRoomCalendar(roomID).then(function(response) {
-                angular.forEach(response.data, function(data) {
-                    var event = {
-                        title: data.title,
-                        isActive: data.isActive,
-                        data: data,
-                        startsAt: new Date(data.startsAt * 1000),
-                        allDay: true
-                    };
-                    sc.events.push(event);
-                });
-            }, function(error) {
-                showPopup('Error', error.data, sh);
-            });
-        }
-
-        sc.cellModifier = function(cell) {
-            if (cell.events[0] !== undefined) {
-                if (cell.events[0].isActive == 0) {
-                    cell.cssClass = 'bg-danger';
-                }
-            }
-        };
 
         sc.book = function(isValid) {
             if (isValid) {

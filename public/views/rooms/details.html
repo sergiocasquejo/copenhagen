@@ -19,19 +19,19 @@
                             </div>
                         </div>
                         <uib-tabset>
-                            <uib-tab index="0" heading="Overview">
+                            <uib-tab index="0" heading="What’s around">
                                 <ul class="list-unstyled overview">
-                                    <li><strong><i class="fa fa-home" aria-hidden="true"></i> Available Room</strong>: {{ room.totalRooms }}</li>
-                                    <li><strong><i class="fa fa-user" aria-hidden="true"></i> Persons Allowed</strong>: {{ room.totalPerson }}</li>
-                                    <li ng-repeat="i in room.beds"><strong><i class="fa fa-bed" aria-hidden="true"></i> Bed</strong>: {{ i.qty }} {{ i.type }} </li>
-                                    <li><strong><i class="fa fa-bed" aria-hidden="true"></i> Exra Bed</strong>: {{ room.extraBed }}</li>
-                                    <li><strong><i class="fa fa-users" aria-hidden="true"></i> Room Size</strong>: {{ room.roomSize }} (sq.m)</li>
-                                    <li><strong><i class="fa fa-asterisk" aria-hidden="true"></i> Bath Room</strong>: {{ room.bathrooms }}</li>
-                                    <li><strong><i class="fa fa-building" aria-hidden="true"></i> Building</strong>: {{ room.building }}</li>
-                                    <li><strong><i class="fa fa-map-marker" aria-hidden="true"></i> Location</strong>: {{ room.location }}</li>
+                                    <li><strong><span class="lnr lnr-home"></span> Available Room</strong>: {{ room.totalRooms }}</li>
+                                    <li><strong><span class="lnr lnr-user"></span> Persons Allowed</strong>: {{ room.totalPerson }}</li>
+                                    <li ng-repeat="i in room.beds"><strong><span class="lnr lnr-user"></span> Bed</strong>: {{ i.qty }} {{ i.type }} </li>
+                                    <li><strong><span class="lnr lnr-users"></span> Extra Bed</strong>: {{ room.extraBed }}</li>
+                                    <li><strong><span class="lnr lnr-crop"></span> Room Size</strong>: {{ room.roomSize }} (sq.m)</li>
+                                    <li><strong><span class="lnr lnr-users"></span> Bath Room</strong>: {{ room.bathrooms }}</li>
+                                    <li><strong><span class="lnr lnr-apartment"></span> Building</strong>: {{ room.building }}</li>
+                                    <li><strong><span class="lnr lnr-map"></span> Location</strong>: {{ room.location }}</li>
                                 </ul>
                             </uib-tab>
-                            <uib-tab index="1" heading="Calendar">
+                            <!--<uib-tab index="1" heading="Calendar">
                                 <div class="row">
                                     <div class="col-md-6 text-center">
                                         <h3 class="page-title">{{ viewDate | date: 'MMMM yyyy' }}</h3>
@@ -51,10 +51,10 @@
                                     </mwl-calendar>
                                 </div>
 
-                            </uib-tab>
-                            <uib-tab index="2" heading="Aminities">
+                            </uib-tab>-->
+                            <uib-tab index="2" heading="Main Aminities">
                                 <ul class="list-unstyled aminities">
-                                    <li ng-repeat="a in room.aminities"><i class="fa fa-check" aria-hidden="true"></i> {{ a.name }}</li>
+                                    <li ng-repeat="a in room.aminities"><span class="lnr lnr-checkmark-circle"></span> {{ a.name }}</li>
                                 </ul>
                             </uib-tab>
                         </uib-tabset>
