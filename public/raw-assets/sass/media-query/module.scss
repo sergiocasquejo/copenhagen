@@ -1,5 +1,15 @@
 @media (max-width:425px) {
     .main {
+        .booking-box {
+            form {
+                >div {
+                    padding: 0 2px;
+                    .form-group {
+                        margin-bottom: 5px;
+                    }
+                }
+            }
+        }
         .navbar-inverse {
             .navbar-brand {
                 width: 200px;

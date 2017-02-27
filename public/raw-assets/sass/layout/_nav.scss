@@ -56,5 +56,19 @@
     .booking-box {
         padding: 10px 0;
         background-color: #37454d;
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            div[class*="col-"] {
+                padding: 0 2px;
+                .form-group {
+                    display: block;
+                    .form-control {
+                        display: block;
+                        width: 100%;
+                    }
+                }
+            }
+        }
     }
 }

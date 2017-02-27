@@ -26,7 +26,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
 .controller('bookingFormCtrl', ['$scope', '$rootScope', '$state', 'API',
     function($scope, $rootScope, $state, API) {
-        $scope.buttonText = 'Check Availability';
+        $scope.buttonText = 'Search';
         $scope.isInlineForm = true;
         $scope.booking = API.getBookingData();
         $scope.search = function(isValid) {

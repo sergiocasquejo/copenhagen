@@ -2,6 +2,7 @@ footer {
     background: #17212c;
     .navbar-bottom {
         padding: 5px 0 0 0;
+        border-bottom: 1px solid #273545;
         ul {
             margin-bottom: 5px;
             li {
@@ -16,10 +17,17 @@ footer {
             }
         }
     }
+    .footer-address {
+        .address {
+            padding: 5px 0;
+            a {
+                color: #747a81;
+            }
+        }
+    }
     .l-footer-secondary {
         background: #17212c;
-        padding: 2.5em 0 1em;
-        border-top: 1px solid #273545;
+        padding: 1em 0 1em;
         color: $white;
         .footer-brand {
             margin: 1em auto;
