@@ -222,28 +222,42 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                     checkOut: sc.booking.checkOut,
                     noOfRooms: sc.booking.noRooms,
                 }).then(function(response) {
-                    var date1 = new Date(sc.booking.checkIn);
-                    var date2 = new Date(sc.booking.checkOut);
-                    var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-                    var nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-
-                    API.setBookingData({
+                    API.bookingStep1({
+                        roomId: sc.room.id,
+                        rateId: sc.booking.rateSelected.id,
                         checkIn: sc.booking.checkIn,
                         checkOut: sc.booking.checkOut,
                         noOfAdults: sc.booking.adult,
                         noOfChild: sc.booking.child,
                         noOfRooms: sc.booking.noRooms,
-                        roomRate: sc.room.minimumRate,
-                        noOfNights: nights,
-                        room: {
-                            id: sc.room.id,
-                            name: sc.room.name,
-                            building: sc.room.building,
-                            price: sc.room.minimumRate
-                        }
+                    }).then(function(response) {
+                        var date1 = new Date(sc.booking.checkIn);
+                        var date2 = new Date(sc.booking.checkOut);
+                        var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+                        var nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+
+                        API.setBookingData({
+                            checkIn: sc.booking.checkIn,
+                            checkOut: sc.booking.checkOut,
+                            noOfAdults: sc.booking.adult,
+                            noOfChild: sc.booking.child,
+                            noOfRooms: sc.booking.noRooms,
+                            roomRate: sc.room.minimumRate,
+                            noOfNights: nights,
+                            room: {
+                                id: sc.room.id,
+                                name: sc.room.name,
+                                building: sc.room.building,
+                                price: sc.room.minimumRate
+                            }
+                        });
+                        $state.go('customerDetail');
+                    }, function(error) {
+                        showPopup('Error', error.data, sh);
                     });
-                    $state.go('customerDetail');
+
                 }, function(error) {
                     showPopup('Oops!', error.data, sh);
                 });

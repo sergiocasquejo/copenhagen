@@ -74,6 +74,43 @@ class BookingController extends Controller
         }
     }
 
+
+    public function step1(Request $request) {
+        $booking = new \App\Booking;
+        $validator = $booking->validate($request->input(), $booking->step1Rules);
+		if ($validator->passes()) {
+
+            $total = $booking->calculateTotalPrice(
+                $request->input('checkIn'), 
+                $request->input('checkOut'),
+                $request->input('noOfRooms'),
+                $request->input('roomId'),
+                $request->input('rateId')
+            );
+            session([
+                'roomId' => $request->input('roomId'),
+                'rateId' => $request->input('rateId'),
+                'checkIn' =>  $request->input('checkIn'),
+                'checkOut' => $request->input('checkOut'),
+                'noOfRooms' => $request->input('noOfRooms'),
+                'adult' => $request->input('adult'),
+                'child' => $request->input('child', 0),
+                'totalAmount' => $total
+            ]);
+            return response()->json('ok', 200, [], JSON_UNESCAPED_UNICODE);
+        }
+
+        $validationStr = '';
+        foreach ($validator->errors()->getMessages() as $k => $error) {
+            foreach ($error as $err) {
+                $validationStr .= $err .'<br/>';
+            }
+            
+        }
+
+        return response()->json($validationStr, 400, [], JSON_UNESCAPED_UNICODE);
+    }
+
     /**
      * Display the specified resource.
      *

@@ -66,6 +66,9 @@ Route::group(['prefix' => 'api/v1'], function() {
     |
     */
 
+    Route::group(['prefix' => 'booking'], function() {
+        Route::post('step1', 'BookingController@step1');
+    });
     
 
     Route::post('/book', function() {

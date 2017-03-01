@@ -54,7 +54,7 @@ class Booking extends Model
          return self::with('customer', 'room');
      }
 
-    private $rules = array(
+    public $rules = array(
         'roomID' => 'required',
         //'customerID' => 'required',
         'checkIn' => 'required',
@@ -70,10 +70,38 @@ class Booking extends Model
         //'status' => 'required',
     );
 
-    public function validate($data)
+     /**
+    * Get the error messages for the defined validation rules.
+    *
+    * @return array
+    */
+    public function messages()
     {
+        return [
+            'required' => ':attribute is required',
+            'unique' => ':attribute must be unique',
+            'required'  => ':attribute is required',
+            'numeric'  => ':attribute must be numeric',
+        ];
+    }
+
+    public $step1Rules = array(
+        'roomId' => 'required',
+        'rateId' => 'required',
+        'checkIn' => 'required',
+        'checkOut' => 'required',
+        'noOfRooms' => 'required|numeric',
+        'noOfAdults' => 'required|numeric',
+        'noOfChild' => 'numeric',
+    );
+
+    public function validate($data, $rules = false)
+    {
+        if (!$rules) {
+            $rules = $this->rules;
+        }
         // make a new validator object
-        $v = \Validator::make($data, $this->rules);
+        $v = \Validator::make($data, $rules, $this->messages());
         // return the result
         return $v;
     }
@@ -223,4 +251,29 @@ class Booking extends Model
 		$url = $this->apiUrl.':'.$this->apiSelectedPort.'/logout';
 		return $this->postToPrimeSoftAPI($url, $data);
 	}
+
+    public function calculateTotalPrice($checkIn, $checkOut, $totalRooms, $roomId, $rateId) {
+        $room = \App\Room::join('room_rates', 'rooms.id', '=', 'room_rates.roomID')
+            ->where(['rooms.id' => $roomId, 'room_rates.rateID' => $rateId, 'room_rates.isActive' => 1])
+            ->select(\DB::raw('room_rates.price'))->first();
+
+
+        $subTotal = 0;
+        $date = $checkIn;
+        while(strtotime($date) <= strtotime($checkOut)) {
+            $date = date('Y-m-d', strtotime($date));
+            $calendar = \App\Calendar::join('calendar_rates', 'calendar.id', '=', 'calendar_rates.calendarID')
+            ->where(['calendar.selectedDate' => $date, 'calendar.roomID' => $roomId, 'calendar_rates.rateID' => $rateId, 'calendar_rates.active' => 1])
+            ->select(\DB::raw('calendar_rates.price'))->first();
+            if ($calendar->price) {
+                $subTotal += (double)$calendar->price;
+            } else {
+                $subTotal += (double)$room->price;
+            }
+
+            $date = date ("Y-m-d", strtotime("+1 day", strtotime($date)));
+        }
+
+        return $subTotal * $totalRooms;
+    }
 }
