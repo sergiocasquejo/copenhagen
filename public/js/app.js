@@ -16,8 +16,8 @@ var csrftoken = (function() {
 
 function showPopup(title, message, sh, showButton) {
     var popupModal = sh.openModal('globalPopup.html', title, message, showButton);
-    popupModal.result.then(function(result) {
-        console.log(result);
+    return popupModal.result.then(function(result) {
+        return result;
     });
 }
 

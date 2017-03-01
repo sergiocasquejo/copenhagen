@@ -182,20 +182,34 @@
                     .item-best-deals {
                         border: none;
                         .price {
-                            min-height: 105px;
+                            margin: 10px 0;
+                            .item-price {
+                                font-size: 16px;
+                                color: #66a400;
+                                margin: 0;
+                                display: block;
+                                font-family: Arial, Helvetica, Sans, Sans-Serif, Sans Serif;
+                                span.per {
+                                    font-size: 14px;
+                                    font-weight: 400;
+                                    color: #5d5a5a;
+                                }
+                            }
                         }
-                        .item-price {
-                            font-size: 30px;
-                            color: #66a400;
-                            margin: 20px 0;
+                        .breakfast {
+                            width: 100%;
+                            text-align: center;
+                            border: solid 1px #66a400;
+                            padding: 0;
                             display: block;
-                            font-family: Arial, Helvetica, Sans, Sans-Serif, Sans Serif;
+                            @include border-radius(3px);
+                            font-size: 10px;
                         }
                         .btn {
                             background: #66a400;
                             border: 1px solid #66a400;
                             border-bottom: 1px solid #4c7b00;
-                            border-radius: 2px;
+                            @include border-radius(2px);
                             padding: 7px 5px;
                             font-size: 18px;
                             .lnr {
@@ -247,6 +261,27 @@
             .form-wrapper {
                 background-color: #FFF;
                 padding: 10px;
+                .best-deals-main {
+                    .price {
+                        margin: 10px 0;
+                        color: #66a400;
+                        font-size: 18px;
+                        span.per {
+                            font-size: 14px;
+                            font-weight: 400;
+                            color: #5d5a5a;
+                        }
+                        .breakfast {
+                            width: 100%;
+                            text-align: center;
+                            border: solid 1px #66a400;
+                            padding: 0;
+                            display: block;
+                            @include border-radius(3px);
+                            font-size: 10px;
+                        }
+                    }
+                }
                 form {
                     button {
                         display: block;
@@ -270,6 +305,17 @@
                 background-color: #FFF;
                 .tab-pane {
                     padding: 20px;
+                    mwl-calendar {
+                        .cal-day-notavailable {
+                            color: #FFF;
+                            background-color: #020202;
+                        }
+                        .day-label {
+                            font-size: 16px;
+                            margin-right: 10px;
+                            margin-top: 10px;
+                        }
+                    }
                     .aminities {
                         li {
                             padding: 5px;

@@ -152,7 +152,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 .controller('roomDetailsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh',
     function($scope, $rootScope, $state, $stateParams, API, sh) {
         var sc = $scope;
-
+        sc.today = new Date();
         //Hide Top Booking Form
         sc.bookingFormTopHide = true;
         //Current Step
@@ -167,11 +167,45 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
         var currIndex = 0;
 
 
+        sc.calendarView = 'month';
+        sc.hasSelectedDate = false;
+        sc.viewDate = moment().startOf('month').toDate();
+        var currentDate = moment(sc.viewDate).format('MMMM DD, YYYY');
+        sc.events = [];
+
+        var popupModal = null;
+
+        sc.showLoader = function() {
+            popupModal = sh.openModal('globalPopup.html', 'Loading...', '<div class="progress"><div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"><span class="sr-only">60% Complete</span></div></div>');
+        }
+
+
+        var fetchCalendar = function() {
+            API.fetchUnavailableCalendarByRoomId(sc.room.id).then(function(response) {
+
+                angular.forEach(response.data, function(data) {
+                    var event = {
+                        title: data.calendarTitle,
+                        startsAt: new Date(data.startsAt * 1000),
+                        info: data,
+                        allDay: true
+                    };
+                    sc.events.push(event);
+                });
+
+                popupModal.dismiss('cancel');
+            }, function(error) {
+                showPopup('Error', error.data, sh);
+            });
+        }
+
+
         API.getRoomBySlug($stateParams.slug).then(function(response) {
             if (!response.data) {
                 $state.go('home');
             }
             sc.room = response.data;
+            fetchCalendar();
         }, function(error) {
             showPopup('Error', error.data, sh);
             $state.go('home');
@@ -182,34 +216,42 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
         sc.book = function(isValid) {
             if (isValid) {
-                console.log(sc.booking);
-
-                var date1 = new Date(sc.booking.checkIn);
-                var date2 = new Date(sc.booking.checkOut);
-                var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-                var nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
-
-                API.setBookingData({
+                API.checkRoomAvailability({
+                    roomID: sc.room.id,
                     checkIn: sc.booking.checkIn,
                     checkOut: sc.booking.checkOut,
-                    noOfAdults: sc.booking.adult,
-                    noOfChild: sc.booking.child,
                     noOfRooms: sc.booking.noRooms,
-                    roomRate: sc.room.minimumRate,
-                    noOfNights: nights,
-                    room: {
-                        id: sc.room.id,
-                        name: sc.room.name,
-                        building: sc.room.building,
-                        price: sc.room.minimumRate
-                    }
+                }).then(function(response) {
+                    var date1 = new Date(sc.booking.checkIn);
+                    var date2 = new Date(sc.booking.checkOut);
+                    var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+                    var nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+
+                    API.setBookingData({
+                        checkIn: sc.booking.checkIn,
+                        checkOut: sc.booking.checkOut,
+                        noOfAdults: sc.booking.adult,
+                        noOfChild: sc.booking.child,
+                        noOfRooms: sc.booking.noRooms,
+                        roomRate: sc.room.minimumRate,
+                        noOfNights: nights,
+                        room: {
+                            id: sc.room.id,
+                            name: sc.room.name,
+                            building: sc.room.building,
+                            price: sc.room.minimumRate
+                        }
+                    });
+                    $state.go('customerDetail');
+                }, function(error) {
+                    showPopup('Oops!', error.data, sh);
                 });
 
-                $state.go('customerDetail');
+
             }
         }
-
+        sc.showLoader();
 
     }
 ])

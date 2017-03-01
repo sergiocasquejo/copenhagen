@@ -181,6 +181,8 @@ Route::group(['prefix' => 'api/v1'], function() {
             Route::resource('aminities', 'AminitiesController', ['only' => [
                 'index', 'store', 'update', 'destroy'
             ]]);
+            Route::post('availability', 'CalendarController@availability');
+            Route::get('{roomId}/calendar/unavailable', 'CalendarController@notAvailableDateByRoomId');
             Route::get('{roomId}/calendar/{start}/{end}', 'CalendarController@fetchCalendarByRoomIdAndDate');
             Route::post('{roomId}/photos', 'PhotoController@store');
             Route::delete('{roomId}/photos/{id}', 'PhotoController@destroy');

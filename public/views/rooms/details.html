@@ -31,7 +31,12 @@
                                     <li><strong><span class="lnr lnr-map"></span> Location</strong>: {{ room.location }}</li>
                                 </ul>
                             </uib-tab>
-                            <!--<uib-tab index="1" heading="Calendar">
+                            <uib-tab index="1" heading="Main Aminities">
+                                <ul class="list-unstyled aminities">
+                                    <li ng-repeat="a in room.aminities"><span class="lnr lnr-checkmark-circle"></span> {{ a.name }}</li>
+                                </ul>
+                            </uib-tab>
+                            <uib-tab index="2" heading="Calendar">
                                 <div class="row">
                                     <div class="col-md-6 text-center">
                                         <h3 class="page-title">{{ viewDate | date: 'MMMM yyyy' }}</h3>
@@ -51,12 +56,8 @@
                                     </mwl-calendar>
                                 </div>
 
-                            </uib-tab>-->
-                            <uib-tab index="2" heading="Main Aminities">
-                                <ul class="list-unstyled aminities">
-                                    <li ng-repeat="a in room.aminities"><span class="lnr lnr-checkmark-circle"></span> {{ a.name }}</li>
-                                </ul>
                             </uib-tab>
+
                         </uib-tabset>
                     </div>
                 </div>
@@ -64,41 +65,43 @@
                     <div class="form-wrapper">
                         <div class="room-detail_total text-center">
                             <h5>STARTING ROOM FROM</h5>
-                            <p class="price"><span class="amount"><i class="cur">Php</i> 800.00 <i>/day</i></span>
-                                <br/><span class="amount monthly"><i class="cur">Php</i> 12,000.00 <i>/month</i></span>
-                            </p>
+                            <div class="best-deals-main text-left">
+                                <div class="best-deals-inner">
+                                    <div class="price" ng-if="r.pivot.isActive==1 && r.isMonthly == 0" ng-repeat="r in room.rates">
+                                        <strong class="item-price">‎<input name="rate_{{ r.id }}" type="radio" ng-model="booking.rateSelected" ng-value="r" ng-init="$index == 0 ? booking.rateSelected = r : ''" ng-checked="booking.rateSelected==r.id"/> {{ r.pivot.price | currency: '₱':0 }}<span class="per">/night</span></strong>
+                                        <span class="breakfast" ng-if="r.mealType=='N' && r.isMonthly == 0">{{ r.name }} - with out breakfast</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div ng-if="room.isActive" class="booking-form">
                             <form autocomplete="off" novalidate="" ng-submit="book(bookingForm.$valid)" name="bookingForm" class="text-center" ng-class="{'form-inline': isInlineForm}">
                                 <div class="form-group" ng-class="{ 'has-error': bookingForm.checkIn.$touched && bookingForm.checkIn.$invalid }">
-                                    <div class="input-group" moment-picker="booking.checkIn" format="YYYY-MM-DD">
+                                    <div class="input-group" data-min-date="today" moment-picker="booking.checkIn" format="YYYY-MM-DD">
                                         <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-                                        <input autocomplete="off" class="form-control" name="checkIn" placeholder="Check In" ng-model="booking.checkIn" ng-model-options="{ updateOn: 'blur' }" ng-required="true" required>
+                                        <input autocomplete="off" data-min-date="today" class="form-control" name="checkIn" placeholder="Check In" ng-model="booking.checkIn" ng-model-options="{ updateOn: 'blur' }" ng-required="true" required>
                                     </div>
                                 </div>
                                 <div class="form-group" ng-class="{'has-error':  bookingForm.checkOut.$touched && bookingForm.checkOut.$invalid}">
-                                    <div class="input-group" min-date="booking.checkIn" moment-picker="booking.checkOut" format="YYYY-MM-DD">
+                                    <div class="input-group" data-min-date="booking.checkIn" min-date="booking.checkIn" moment-picker="booking.checkOut" format="YYYY-MM-DD">
                                         <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-                                        <input autocomplete="off" name="checkOut" class="form-control" placeholder="Check Out" ng-model="booking.checkOut" ng-model-options="{ updateOn: 'blur' }" ng-required="true" required>
+                                        <input autocomplete="off" data-min-date="booking.checkIn" name="checkOut" class="form-control" placeholder="Check Out" ng-model="booking.checkOut" ng-model-options="{ updateOn: 'blur' }" ng-required="true" required>
                                     </div>
                                 </div>
                                 <div class="form-group" ng-class="{'has-error':  bookingForm.noRooms.$touched && bookingForm.noRooms.$invalid}">
-                                    <select name="room" class="form-control" data-ng-model="booking.noRooms">
+                                    <select name="room" class="form-control" data-ng-model="booking.noRooms" ng-options="room for room in [] | range:1:room.totalRooms + 1">
                                         <option value="">Rooms</option>
-                                        <option ng-repeat="i in [] | range:1:room.totalRooms">{{ i }}</option>
                                     </select>
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-md-6" ng-class="{'has-error':  bookingForm.adult.$touched && bookingForm.adult.$invalid}">
-                                        <select name="adult" class="form-control" data-ng-model="booking.adult" ng-required="true" required>
+                                        <select name="adult" class="form-control" data-ng-model="booking.adult" ng-required="true" required ng-options="adult for adult in [] | range:1:room.totalPerson + 1">
                                         <option value="">Adult</option>
-                                            <option ng-repeat="i in [] | range:1:room.totalPerson">{{ i }}</option>
                                     </select>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <select name="child" class="form-control" data-ng-model="booking.child">
-                                        <option value="0">Child</option>
-                                        <option ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">{{ i }}</option>
+                                        <select name="child" class="form-control" data-ng-model="booking.child" ng-options="room for room in [] | range:1:11">
+                                        <option value="">Child</option>
                                     </select>
                                     </div>
                                 </div>
@@ -120,6 +123,7 @@
     <script id="customMonthCell.html" type="text/ng-template">
         <div mwl-droppable on-drop="vm.handleEventDrop(dropData.event, day.date, dropData.draggedFromDate)" mwl-drag-select="!!vm.onDateRangeSelect" on-drag-select-start="vm.onDragSelectStart(day)" on-drag-select-move="vm.onDragSelectMove(day)" on-drag-select-end="vm.onDragSelectEnd(day)"
             class="cal-month-day {{ day.cssClass }}" ng-class="{
+                'cal-day-notavailable': day.events.length > 0,
                 'cal-day-outmonth': !day.inMonth,
                 'cal-day-inmonth': day.inMonth,
                 'cal-day-weekend': day.isWeekend,
@@ -129,8 +133,8 @@
                 'cal-day-selected': vm.dateRangeSelect && vm.dateRangeSelect.startDate <= day.date && day.date <= vm.dateRangeSelect.endDate,'cal-day-open': dayIndex === vm.openDayIndex}">
 
             <!-- data-cal-date  ng-click="vm.calendarCtrl.dateClicked(day.date)"-->
-            <span class="pull-right" ng-bind="day.label"></span>
-            <small style="position: absolute; bottom: 10px; left: 5px" ng-repeat="event in day.events">{{ event.isActive && event.data.availability > 0 ? event.data.availability : 'Not'  }} Available</small>
+            <span class="pull-right day-label" ng-bind="day.label"></span>
+            <small style="position: absolute; bottom: 10px; left: 5px" class="calendar-day-title" ng-if="day.events.length > 0">not available</small>
         </div>
     </script>
 </div>

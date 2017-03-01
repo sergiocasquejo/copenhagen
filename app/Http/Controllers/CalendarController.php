@@ -103,4 +103,38 @@ class CalendarController extends Controller
     {
         //
     }
+
+    public function notAvailableDateByRoomId($roomId) {
+        $calendar = \App\Calendar::lazyload()->where([
+            'roomID' => $roomId
+        ])->where(function($q){
+            $q->where('availability', 0)
+                ->orWhere('isActive', 0);
+        })->get();
+
+        return response()->json($calendar, 200, [], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function availability(Request $request) {
+        $noOfRooms = $request->input('noOfRooms', 0);
+        $hasNoRoomAvailable = \App\Calendar::where([
+            'roomID' => $request->input('roomID'), 
+            ['selectedDate', '>=', date('Y-m-d', strtotime($request->input('checkIn')))],
+            ['selectedDate', '<=', date('Y-m-d', strtotime($request->input('checkOut')))]
+        ])->where(function($q) use($noOfRooms) {
+            $q->where('availability', '<', $noOfRooms)
+                ->orWhere('isActive', 0);
+        })->get();
+
+        if ($hasNoRoomAvailable->count() == 0) {
+            return response()->json('available', 200, [], JSON_UNESCAPED_UNICODE);
+        }
+
+        $str = '<table class="table table-striped">'. '<tr><td>Date</td><td>Quantity</td><td>Status</td></tr>';
+        foreach ($hasNoRoomAvailable as $d) {
+            $str .= '<tr><td>'. date('D F d Y', strtotime($d->selectedDate)) . '</td><td>' . $d->availability . '</td><td>' . (!$d->isActive ? 'not' : '' ) . ' available' . '</td></tr>';
+        }
+        $str .= '</table>';
+        return response()->json('<p>Selected date has no room available</p>' . $str, 400, [], JSON_UNESCAPED_UNICODE);
+    }
 }

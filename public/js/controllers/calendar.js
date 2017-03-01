@@ -14,10 +14,13 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
         sc.roomTypes = [];
         sc.calendar = {
             roomType: null,
-            from: sc.currentDate,
-            to: sc.currentDate,
+            from: currentDate,
+            to: currentDate,
             rates: []
         };
+
+        var popupModal = null;
+
 
         API.getRoomTypes().then(function(response) {
             sc.roomTypes = response.data;
@@ -38,20 +41,27 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
             showPopup('Error', error.data, sh);
         });
 
+        sc.showLoader = function() {
+            popupModal = sh.openModal('globalPopup.html', 'Loading...', '<div class="progress"><div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"><span class="sr-only">60% Complete</span></div></div>');
+        }
+
         function fetchCalendarByRoomID(roomID, params) {
+            sc.events = [];
             API.fetchCalendarByRoomIdAndDate(roomID, params.start, params.end).then(function(response) {
 
                 angular.forEach(response.data, function(data) {
                     var event = {
                         title: data.calendarTitle,
                         startsAt: new Date(data.startsAt * 1000),
-                        endsAt: new Date(data.startsAt * 1000),
+                        //endsAt: new Date(data.startsAt * 1000),
                         cssClass: 'a-css-class-name',
                         info: data,
                         allDay: true
                     };
                     sc.events.push(event);
                 });
+
+                popupModal.dismiss('cancel');
             }, function(error) {
                 showPopup('Error', error.data, sh);
             });
@@ -65,13 +75,6 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
             sc.hasSelectedDate = true;
         };
 
-        // sc.dayClicked = function(day) {
-        //     sc.hasSelectedDate = true;
-        //     sc.calendar.to = sc.calendar.from = day;
-        //     // sc.calendar.to = sc.calendar.from = date;
-        //     console.log(day);
-        // };
-
         sc.getCalStartAndEndDate = function(date) {
             var startDate = moment(date).subtract(moment(date).day() - 0, "days").format('YYYY-MM-DD');
             var endDate = moment(date).endOf('month').add(6 - moment(date).endOf('month').day(), "days").format('YYYY-MM-DD');
@@ -82,22 +85,40 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
 
             sc.hasSelectedDate = true;
             sc.calendar.to = sc.calendar.from = date;
-            if (cell.events[0].info != undefined) {
+            if (cell.events.length != 0) {
                 sc.calendar.rates = cell.events[0].info.calendarRates;
                 sc.calendar.availability = cell.events[0].info.availability;
                 sc.calendar.isActive = cell.events[0].info.isActive;
+            } else {
+                sc.calendar.rates = sc.calendar.roomType.roomRates;
+                sc.calendar.availability = sc.calendar.roomType.totalRooms;
+                sc.calendar.isActive = sc.calendar.roomType.isActive;
             }
 
 
-            console.log(sc.calendar);
+
 
         }
+
+        sc.changeCalendarViewMonth = function(viewDate) {
+            sc.showLoader();
+            var params = sc.getCalStartAndEndDate(viewDate);
+            fetchCalendarByRoomID(sc.calendar.roomType.id, params);
+
+        };
 
 
         // Save Calendar
         sc.saveCalendar = function(isValid) {
             if (isValid) {
-                API.saveCalendar(sc.calendar).then(function(response) {
+                API.saveCalendar({
+                    roomID: sc.calendar.roomID,
+                    from: moment(sc.calendar.from).format('YYYY-MM-DD'),
+                    to: moment(sc.calendar.to).format('YYYY-MM-DD'),
+                    availability: sc.calendar.availability,
+                    isActive: sc.calendar.isActive,
+                    rates: sc.calendar.rates
+                }).then(function(response) {
                     var params = sc.getCalStartAndEndDate(sc.viewDate);
                     fetchCalendarByRoomID(sc.calendar.roomType.id, params);
                 }, function(error) {
@@ -105,5 +126,8 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
                 });
             }
         }
+
+
+        sc.showLoader();
     }
 ]);

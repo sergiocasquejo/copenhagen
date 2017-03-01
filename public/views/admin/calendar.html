@@ -15,12 +15,12 @@
                     </div>
                     <div class="col-md-6 text-right">
                         <div class="btn-group">
-                            <button class="btn btn-primary" mwl-date-modifier date="viewDate" decrement="calendarView">
+                            <button class="btn btn-primary" ng-click="changeCalendarViewMonth(viewDate)" mwl-date-modifier date="viewDate" decrement="calendarView">
                                 Previous
                             </button>
-                            <button class="btn btn-default" mwl-date-modifier date="viewDate" set-to-today>
+                            <button class="btn btn-default" ng-click="changeCalendarViewMonth(viewDate)" mwl-date-modifier date="viewDate" set-to-today>
                                 Today</button>
-                            <button class="btn btn-primary" mwl-date-modifier date="viewDate" increment="calendarView">
+                            <button class="btn btn-primary" ng-click="changeCalendarViewMonth(viewDate)" mwl-date-modifier date="viewDate" increment="calendarView">
                                 Next
                             </button>
                         </div>
@@ -123,7 +123,7 @@
                 'cal-day-selected': vm.dateRangeSelect && vm.dateRangeSelect.startDate <= day.date && day.date <= vm.dateRangeSelect.endDate,'cal-day-open': dayIndex === vm.openDayIndex}">
 
             <!-- data-cal-date  ng-click="vm.calendarCtrl.dateClicked(day.date)"-->
-            <span class="pull-right" ng-bind="day.label"></span>
+            <span class="pull-right day-label" ng-bind="day.label"></span>
             <small style="position: absolute; bottom: 10px; left: 5px" class="calendar-day-title" ng-repeat="event in day.events" ng-bind-html="event.title | unsafe"></small>
         </div>
     </script>

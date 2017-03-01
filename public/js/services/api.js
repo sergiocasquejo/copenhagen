@@ -125,6 +125,14 @@ copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$window', functi
             return $http.get(urlBase + '/bookings');
         }
 
+        api.checkRoomAvailability = function(params) {
+            return $http.post(urlBase + '/rooms/availability', params);
+        }
+
+        api.fetchUnavailableCalendarByRoomId = function(roomID) {
+            return $http.get(urlBase + '/rooms/' + roomID + '/calendar/unavailable');
+        }
+
         return api;
     }])
     .factory('authHttpResponseInterceptor', ['$q', '$location', function($q, $location) {

@@ -82,8 +82,13 @@
                                             </ul>
                                         </div>
                                         <div class="item-best-deals col-md-4">
-                                            <div class="price text-center">
-                                                <strong class="item-price">‎{{ room.minimumRate | currency: '₱ ':0 }}</strong>
+                                            <div class="best-deals-main text-center">
+                                                <div class="best-deals-inner">
+                                                    <div class="price" ng-if="r.pivot.isActive==1" ng-repeat="r in room.rates">
+                                                        <strong class="item-price">‎{{ r.pivot.price | currency: '₱':0 }}<span class="per">/{{ r.isMonthly ? 'month' : 'night' }}</span></strong>
+                                                        <span class="breakfast" ng-if="r.mealType=='N' && r.isMonthly == 0">{{ r.name }} - with out breakfast</span>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <a ui-sref="roomDetail({slug: room.slug})" class="btn btn-success btn-block">View Deal <span class="lnr lnr-chevron-right pull-right"></span></a>
                                         </div>
@@ -95,7 +100,6 @@
                                                 <li class="photo-item" ng-click="openLightboxModal(room.photos, $index, room.name)" ng-repeat="photo in room.photos track by $index">
                                                     <a><span class="lnr lnr-picture"></span></a>
                                                     <img ng-src="{{ photo.file.thumbs }}">
-
                                                 </li>
                                             </ul>
                                         </div>
