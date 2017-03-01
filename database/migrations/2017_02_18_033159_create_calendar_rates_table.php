@@ -19,7 +19,7 @@ class CreateCalendarRatesTable extends Migration
                 $table->integer('rateID')->unsigned();
                 $table->integer('calendarID')->unsigned();
                 $table->double('price')->default(0);
-                $table->string('active')->default(1);
+                $table->integer('active')->default(1);
                 $table->foreign('rateID')->references('id')->on('rates')
                 ->onDelete('cascade');
                 $table->foreign('calendarID')->references('id')->on('calendar')

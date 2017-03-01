@@ -29,6 +29,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
         $scope.buttonText = 'Search';
         $scope.isInlineForm = true;
         $scope.booking = API.getBookingData();
+        $scope.today = new Date();
         $scope.search = function(isValid) {
             if (isValid) {
                 API.setBookingData({ checkIn: $scope.booking.checkIn, checkOut: $scope.booking.checkOut, adult: $scope.booking.adult, child: $scope.booking.child });

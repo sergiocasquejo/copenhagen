@@ -13,7 +13,7 @@ class Room extends Model
         'name' => 'required|unique:rooms,name',
         'slug' => 'required|unique:rooms,slug',
         'totalRooms' => 'required|numeric',
-        'minimumRate' => 'required|numeric',
+        // 'minimumRate' => 'required|numeric',
         'totalPerson' => 'required|numeric',
         'location' => 'required',
         'extraBed' => 'required',
@@ -67,8 +67,8 @@ class Room extends Model
             $photos = $model->photos()->get();
             foreach ($photos as $i => $photo) {
                 if ($photo->file) {
-                    foreach(json_decode($photo->file) as $key => $file) {
-                        File::delete(public_path() . $file);
+                    foreach($photo->file as $key => $file) {
+                        \File::delete(public_path() . $file);
                     }
                 }
             }
@@ -85,16 +85,21 @@ class Room extends Model
      }
 
      public function rates() {
-         return $this->belongsToMany('App\Rate', 'room_rates', 'roomID', 'rateID')->withPivot('price', 'rateID');
+         return $this->belongsToMany('App\Rate', 'room_rates', 'roomID', 'rateID')->withPivot('price', 'rateID', 'isActive');
      }
 
      public function beds() {
          return $this->hasMany('App\Bed', 'roomID', 'id');
      }
 
+     public function calendar() {
+         return $this->hasMany('App\Calendar', 'roomID', 'id');
+     }
+
      public static function lazyLoad() {
          return self::with('photos', 'aminities', 'rates', 'beds');
      }
+     
 
       
 
@@ -107,7 +112,7 @@ class Room extends Model
     {
         $roomRates = array();
         return $this->rates()->get()->map(function($item) use($roomRates){
-            $roomRates[$item->pivot->rateID] = $item->pivot->price;
+            $roomRates[$item->pivot->rateID] = ['name' => $item->name, 'price' => $item->pivot->price, 'isActive' => $item->pivot->isActive];
             return $roomRates;
         });
 

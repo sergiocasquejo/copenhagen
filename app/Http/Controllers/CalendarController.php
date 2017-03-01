@@ -13,8 +13,9 @@ class CalendarController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(\App\Calendar::lazyLoad()->get(), 200);
     }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -24,7 +25,50 @@ class CalendarController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        $calendar = new \App\Calendar;
+        
+        $validator = $calendar->validate($request->input(), $calendar->rules);
+		if ($validator->passes()) {
+            $date = $request->input('from');
+            $end_date = $request->input('to');
+            try {
+                while(strtotime($date) <= strtotime($end_date)) {
+                    $date = date('Y-m-d', strtotime($date));
+                    $calendar = \App\Calendar::firstOrNew(array('selectedDate' => $date));
+                    $calendar->roomID = $request->input('roomID');
+                    $calendar->selectedDate = $date;
+                    $calendar->availability = $request->input('availability', 0);
+                    $calendar->isActive = $request->input('isActive', 0);
+                    if ($calendar->save()) {
+                        $calRates = $request->input('rates');
+                        if ($calRates) {
+                            foreach ($calRates as $i => $rates) {
+                                foreach($rates as $rateID => $r) { 
+                                    $a[$rateID] = array('price' => (float)$r['price'], 'active'  => $r['active'] == true );
+                                    $calendar->rates()->sync($a);
+                                }
+                            }
+                        }
+                    }
+
+                    $date = date ("Y-m-d", strtotime("+1 day", strtotime($date)));
+                }
+                return response()->json('success', 200, [], JSON_UNESCAPED_UNICODE);
+            }catch(\Exception $e) {
+                return response()->json($e->getMessage(), 400, [], JSON_UNESCAPED_UNICODE);
+            }
+        } 
+
+        $validationStr = '';
+        foreach ($validator->errors()->getMessages() as $k => $error) {
+            foreach ($error as $err) {
+                $validationStr .= $err .'<br/>';
+            }
+            
+        }
+
+        return response()->json($validationStr, 400, [], JSON_UNESCAPED_UNICODE);
+        
     }
 
     /**
@@ -33,34 +77,22 @@ class CalendarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function showByRoomId($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+    public function fetchCalendarByRoomIdAndDate($roomID, $start, $end) {
+        $calendar =  \App\Calendar::lazyLoad()->where([
+            'roomID' => $roomID, 
+            array('selectedDate', '>=', date('Y-m-d', strtotime($start))), 
+            array('selectedDate', '<=', date('Y-m-d', strtotime($end)))
+            ])->orderBy('selectedDate')->get();
+        return response()->json($calendar, 200, [], JSON_UNESCAPED_UNICODE);
+        
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
+    
     /**
      * Remove the specified resource from storage.
      *

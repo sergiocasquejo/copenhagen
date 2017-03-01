@@ -1,40 +1,42 @@
 <form novalidate="" autocomplete="off" ng-submit="search(bookingForm.$valid)" name="bookingForm" class="text-center" ng-class="{'form-inline': isInlineForm}">
     <div class="col-xs-6 col-sm-3">
         <div class="form-group" ng-class="{ 'has-error': bookingForm.checkIn.$touched && bookingForm.checkIn.$invalid }">
-            <div class="input-group" moment-picker="booking.checkIn" format="YYYY-MM-DD">
+            <div class="input-group" data-min-date="today" data-min-view="year" data-today="true" moment-picker="booking.checkIn" format="YYYY-MM-DD">
                 <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-                <input autocomplete="off" class="form-control" name="checkIn" placeholder="Check In" ng-model="booking.checkIn" ng-model-options="{ updateOn: 'blur' }" ng-required="true" required>
+                <input type="text" data-min-date="today" autocomplete="off " class="form-control " name="checkIn " placeholder="Check In " ng-model="booking.checkIn " ng-model-options="{ updateOn: 'blur' } " ng-required="true " required readonly>
+                <!--<span class="date form-control">{{ booking.checkIn }}</span>-->
             </div>
         </div>
     </div>
-    <div class="col-xs-6 col-sm-3">
-        <div class="form-group" ng-class="{'has-error':  bookingForm.checkOut.$touched && bookingForm.checkOut.$invalid}">
-            <div class="input-group" min-date="booking.checkIn" moment-picker="booking.checkOut" format="YYYY-MM-DD">
-                <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-                <input autocomplete="off" class="form-control" name="checkOut" placeholder="Check Out" ng-model="booking.checkOut" ng-model-options="{ updateOn: 'blur' }" ng-required="true" required>
+    <div class="col-xs-6 col-sm-3 ">
+        <div class="form-group " ng-class="{ 'has-error': bookingForm.checkOut.$touched && bookingForm.checkOut.$invalid} ">
+            <div class="input-group" data-min-date="booking.checkIn" moment-picker="booking.checkOut " format="YYYY-MM-DD ">
+                <span class="input-group-addon "><i class="fa fa-calendar " aria-hidden="true "></i></span>
+                <input type="text" data-min-date="booking.checkIn" autocomplete="off " class="form-control " name="checkOut " placeholder="Check Out " ng-model="booking.checkOut " ng-model-options="{ updateOn: 'blur' } " ng-required="true " required readonly>
+                <!--<span class="date form-control">{{ booking.checkOut }}</span>-->
             </div>
         </div>
     </div>
-    <div class="col-xs-4  col-sm-2">
-        <div class="form-group" ng-class="{'has-error':  bookingForm.adult.$touched && bookingForm.adult.$invalid}">
-            <select name="adult" class="form-control" data-ng-model="booking.adult" ng-required="true" required>
-                        <option value="">Adult</option>
-                        <option ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">{{ i }}</option>
+    <div class="col-xs-4 col-sm-2 ">
+        <div class="form-group " ng-class="{ 'has-error': bookingForm.adult.$touched && bookingForm.adult.$invalid} ">
+            <select name="adult " class="form-control " data-ng-model="booking.adult " ng-required="true " required>
+                        <option value=" ">Adult</option>
+                        <option ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] ">{{ i }}</option>
                     </select>
         </div>
     </div>
-    <div class="col-xs-4  col-sm-2">
-        <div class="form-group">
-            <select name="child" class="form-control" data-ng-model="booking.child">
-                        <option value="">Child</option>
-                        <option ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">{{ i }}</option>
+    <div class="col-xs-4 col-sm-2 ">
+        <div class="form-group ">
+            <select name="child " class="form-control " data-ng-model="booking.child ">
+                        <option value=" ">Child</option>
+                        <option ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] ">{{ i }}</option>
                     </select>
         </div>
     </div>
 
-    <div class="col-xs-4  col-sm-2">
-        <div class="form-group">
-            <button class="btn-block btn btn-success" ng-disabled="bookingForm.$invalid"><span class="hidden-xs">{{ buttonText }}</span><span class="visible-xs">Check</span></button>
+    <div class="col-xs-4 col-sm-2 ">
+        <div class="form-group ">
+            <button class="btn-block btn btn-success " ng-disabled="bookingForm.$invalid "><span class="hidden-xs ">{{ buttonText }}</span><span class="visible-xs ">Check</span></button>
         </div>
     </div>
 </form>

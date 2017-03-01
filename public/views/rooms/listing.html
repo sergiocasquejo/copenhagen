@@ -68,9 +68,10 @@
                                             <div itemprop="name" class="item-name">
                                                 <h3 class="name-text">{{ room.name }}</h3>
                                                 <ul class="list-unstyled overview">
-                                                    <li><span class="lnr lnr-crop"></span> Room Size: {{ room.roomSize }} (sq.m)</li>
+                                                    <li ng-repeat="bed in room.beds"><span class="lnr lnr-layers"></span> {{ bed.qty }} {{ bed.type }}</li>
                                                     <li><span class="lnr lnr-apartment"></span> Building: {{ room.building }}</li>
                                                     <li><span class="lnr lnr-map"></span> Location: {{ room.location }}</li>
+                                                    <li><a ui-sref="accomodation"><span class="lnr lnr-lock"></span> Policy</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -89,7 +90,7 @@
                                     </div>
                                     <div class="item-slide-layout" ng-class="{'active': room.showPictures == 1}">
                                         <div class="photo-wrap">
-                                            <a class="pull-right" ng-click="togglePictures($index)">hide</a>
+                                            <a class="pull-right" ng-click="togglePictures($index)"><span class="lnr lnr-cross"></span></a>
                                             <ul class="list-inline">
                                                 <li class="photo-item" ng-click="openLightboxModal(room.photos, $index, room.name)" ng-repeat="photo in room.photos track by $index">
                                                     <a><span class="lnr lnr-picture"></span></a>

@@ -42,6 +42,7 @@ class RateController extends Controller
             $rate->roomCode = $request->input('roomCode');
             $rate->mealType = $request->input('mealType');
             $rate->description = $request->input('description');
+            $rate->isMonthly = $request->input('isMonthly', 0);
             $rate->active = $request->input('active', 0);
             if ($rate->save()) {
                 return response()->json($this->getAllRates(), 200, [], JSON_UNESCAPED_UNICODE);   
@@ -72,6 +73,7 @@ class RateController extends Controller
             $rate->roomCode = $request->input('roomCode');
             $rate->mealType = $request->input('mealType');
             $rate->description = $request->input('description');
+            $rate->isMonthly = $request->input('isMonthly', 0);
             $rate->active = $request->input('active', 0);
             if ($rate->save()) {
                 return response()->json($this->getAllRates(), 200, [], JSON_UNESCAPED_UNICODE);   

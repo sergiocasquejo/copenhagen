@@ -19,6 +19,7 @@ class CreateRoomRatesTable extends Migration
                 $table->integer('rateID')->unsigned();
                 $table->integer('roomID')->unsigned();
                 $table->double('price')->default(0);
+                $table->integer('isActive')->default(0);
                 $table->foreign('rateID')->references('id')->on('rates')
                 ->onDelete('cascade');
                 $table->foreign('roomID')->references('id')->on('rooms')

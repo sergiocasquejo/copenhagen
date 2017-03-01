@@ -61,6 +61,9 @@
             margin: 0 auto;
             div[class*="col-"] {
                 padding: 0 2px;
+                .input-group {
+                    width: 100%;
+                }
                 .form-group {
                     display: block;
                     .form-control {

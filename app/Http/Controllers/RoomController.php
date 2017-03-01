@@ -37,7 +37,6 @@ class RoomController extends Controller
         $room->slug = $request->input('slug');
         $room->roomSize = $request->input('roomSize', 0);
         $room->totalRooms = $request->input('totalRooms', 0);
-        $room->minimumRate = $request->input('minimumRate', 0);
         $room->totalPerson = $request->input('totalPerson', 1);
         $room->location = $request->input('location', '');
         $room->extraBed = $request->input('extraBed', 0);
@@ -73,7 +72,6 @@ class RoomController extends Controller
 			$room->slug = str_slug($request->input('name'));
 			$room->roomSize = $request->input('roomSize', 0);
 			$room->totalRooms = $request->input('totalRooms', 0);
-			$room->minimumRate = $request->input('minimumRate', 0);
 			$room->totalPerson = $request->input('totalPerson', 1);
 			$room->location = $request->input('location', '');
 			$room->extraBed = $request->input('extraBed', 0);
@@ -85,10 +83,11 @@ class RoomController extends Controller
 			if ($room->save()) {
                 $roomRates = $request->input('roomRates');
                 if ($roomRates) {
-                    foreach ($roomRates as $i => $r) {
-                        $rateId = array_keys($r)[0];
-                        $a[$rateId] = array('price' => $r[$rateId]);
-                        $room->rates()->sync($a);
+                    foreach ($roomRates as $i => $rates) {
+                        foreach($rates as $rateID => $r) { 
+                            $a[$rateID] = array('price' => (float)$r['price'], 'isActive'  => $r['isActive'] );
+                            $room->rates()->sync($a);
+                        }
                     }
                 }
                 
@@ -164,7 +163,7 @@ class RoomController extends Controller
 
     public function types(Request $request) {
         try {
-            $types = \App\Room::select(['*', \DB::raw('CONCAT(name, " ", building, " - ID ", id) AS title')])->get()->toArray();
+            $types = \App\Room::with('rates')->select(['*', \DB::raw('CONCAT(name, " ", building, " - ID ", id) AS title')])->get()->toArray();
             return response()->json($types, 200, [], JSON_UNESCAPED_UNICODE);
         }catch(\Exception $e) {
             return response()->json($e->getMessage(), 400, [], JSON_UNESCAPED_UNICODE);

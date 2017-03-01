@@ -24,7 +24,7 @@ function showPopup(title, message, sh, showButton) {
 
 var copenhagenApp = angular.module('copenhagenApp', ['ngAnimate', 'ui.router', 'ui.bootstrap', 'mwl.calendar', 'angularFileUpload', 'ui.toggle', 'moment-picker', 'countrySelect', 'rzModule', 'bootstrapLightbox'])
     .constant('CSRF_TOKEN', csrftoken)
-    .constant('BEDDING', ['single bed', 'semi double-bed', 'double bed', 'queen bed', 'king bed', 'super king bed', 'bunk bed', 'sofa bed', 'futon', 'male capsule', 'femail capsule'])
+    .constant('BEDDING', ['single bed', 'single bed with pull-out', 'twin bed', 'double deck/bunk bed', 'queen bed', 'king bed'])
     .config(['$httpProvider', '$qProvider', 'CSRF_TOKEN',
 
         function($httpProvider, $qProvider, CSRF_TOKEN) {

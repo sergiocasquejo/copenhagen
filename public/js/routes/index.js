@@ -22,6 +22,28 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
             }
 
         })
+        .state('meetings', {
+            url: '/meetings',
+            views: {
+                '': {
+                    controller: 'pageCtrl',
+                    templateUrl: '/views/page/meetings.html'
+                },
+                'header@meetings': {
+                    templateUrl: '/views/_partials/header.html',
+                    controller: 'pageCtrl',
+                },
+                'bookingForm@meetings': {
+                    templateUrl: '/views/booking/booking-form.html',
+                    controller: 'bookingFormCtrl'
+                },
+                'footer@meetings': {
+                    templateUrl: '/views/_partials/footer.html',
+                    controller: 'pageCtrl',
+                }
+            }
+
+        })
         .state('contact', {
             url: '/contact-location',
             views: {
@@ -38,6 +60,28 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                     controller: 'bookingFormCtrl'
                 },
                 'footer@contact': {
+                    templateUrl: '/views/_partials/footer.html',
+                    controller: 'pageCtrl',
+                }
+            }
+
+        })
+        .state('accomodation', {
+            url: '/cebu-accommodation',
+            views: {
+                '': {
+                    controller: 'pageCtrl',
+                    templateUrl: '/views/page/accomodation.html'
+                },
+                'header@accomodation': {
+                    templateUrl: '/views/_partials/header.html',
+                    controller: 'pageCtrl',
+                },
+                'bookingForm@accomodation': {
+                    templateUrl: '/views/booking/booking-form.html',
+                    controller: 'bookingFormCtrl'
+                },
+                'footer@accomodation': {
                     templateUrl: '/views/_partials/footer.html',
                     controller: 'pageCtrl',
                 }

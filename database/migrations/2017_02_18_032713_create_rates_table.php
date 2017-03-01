@@ -21,7 +21,8 @@ class CreateRatesTable extends Migration
                 $table->string('roomCode');
                 $table->string('mealType');
                 $table->string('description')->nullable();
-                $table->string('active')->default(1);
+                $table->integer('isMonthly')->default(0);
+                $table->integer('active')->default(1);
             });
         }
     }

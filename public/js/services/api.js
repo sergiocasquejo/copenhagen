@@ -103,8 +103,8 @@ copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$window', functi
             return $http.post(urlBase + '/calendar', calendar);
         }
 
-        api.getRoomCalendar = function(roomID) {
-            return $http.get(urlBase + '/room/' + roomID + '/calendar');
+        api.fetchCalendarByRoomIdAndDate = function(roomID, start, end) {
+            return $http.get(urlBase + '/rooms/' + roomID + '/calendar/' + start + '/' + end);
         }
         api.setBookingData = function(data) {
             $rootScope.booking = data;
