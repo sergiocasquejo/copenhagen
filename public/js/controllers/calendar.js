@@ -45,7 +45,14 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
             popupModal = sh.openModal('globalPopup.html', 'Loading...', '<div class="progress"><div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"><span class="sr-only">60% Complete</span></div></div>');
         }
 
+        sc.updateCalendar = function() {
+            sc.showLoader();
+            fetchCalendarByRoomID(sc.calendar.roomType.id, sc.getCalStartAndEndDate(sc.viewDate));
+        }
+
+
         function fetchCalendarByRoomID(roomID, params) {
+            console.log(params);
             sc.events = [];
             API.fetchCalendarByRoomIdAndDate(roomID, params.start, params.end).then(function(response) {
 

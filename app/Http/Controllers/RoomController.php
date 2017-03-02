@@ -92,6 +92,21 @@ class RoomController extends Controller
                         }
                     }
                 }
+                $countMonthlyRate = 0;
+                $countRegRate = 0;
+                foreach($room->rates()->get() as $r) {
+                    if ($r->isMonthly && $r->pivot->isActive) {
+                        $countMonthlyRate +=1;
+                    } else if ($r->pivot->isActive) {
+                        $countRegRate +=1;
+                    }
+                }
+                //Disable room if more than 1 monthly rate
+                if ($countRegRate == 0 || $countMonthlyRate != 1) {
+                    $room->isActive  = 0;
+                    $room->save();
+                    return response()->json('Must have 1 monthly rate && must have regular rate enabled.', 400, [], JSON_UNESCAPED_UNICODE);   
+                }
                 
                 return response()->json(\App\Room::lazyLoad()->get(), 200, [], JSON_UNESCAPED_UNICODE);   
 			}
@@ -165,7 +180,10 @@ class RoomController extends Controller
 
     public function types(Request $request) {
         try {
-            $types = \App\Room::with('rates')->select(['*', \DB::raw('CONCAT(name, " ", building, " - ID ", id) AS title')])->get()->toArray();
+            $types = \App\Room::with('rates')
+                ->select(['*', \DB::raw('CONCAT(name, " ", building, " - ID ", id) AS title')])
+                ->where('isActive', 1)
+                ->get()->toArray();
             return response()->json($types, 200, [], JSON_UNESCAPED_UNICODE);
         }catch(\Exception $e) {
             return response()->json($e->getMessage(), 400, [], JSON_UNESCAPED_UNICODE);
