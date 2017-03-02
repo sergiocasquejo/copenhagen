@@ -9,6 +9,7 @@ copenhagenApp
             sc.selectedRoom = null;
             sc.beddingLists = BEDDING;
             var roomListIndex = null;
+            var popupModal = null;
             API.getRooms().then(function(response) {
                 sc.roomLists = response.data;
                 sc.loaded = true;
@@ -30,7 +31,9 @@ copenhagenApp
 
             sc.deletePhoto = function(index, roomID, photoID) {
                 API.deletePhoto(roomID, photoID).then(function(response) {
+                    console.log(index);
                     if (sc.roomLists[index]) {
+
                         sc.roomLists[index].photos = response.data;
                     }
                 }, function(error) {
@@ -56,6 +59,14 @@ copenhagenApp
                 }
             }
 
+
+
+            sc.showLoader = function() {
+                popupModal = sh.openModal('globalPopup.html', 'Loading...', '<div class="progress"><div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"><span class="sr-only">60% Complete</span></div></div>');
+            }
+
+
+
             // Photos Upoader
             var uploader = sc.uploader = new FileUploader({
                 formData: [{ '_token': CSRF_TOKEN }],
@@ -65,12 +76,18 @@ copenhagenApp
 
             sc.setPhotoRoomID = function(roomID, index) {
                 roomListIndex = index;
-                uploader.url = '/api/v1/rooms/' + roomID + '/photos';
+                uploader.url = '/rooms/' + roomID + '/photos';
                 uploader.formData.push({ 'roomID': roomID });
             }
             sc.clearUploadQueue = function() {
                 uploader.queue = [];
             }
+
+            uploader.onProgressAll = function(progress) {
+                sc.showLoader();
+            };
+
+
             uploader.onAfterAddingFile = function(fileItem) {
                 fileItem.upload();
             };
@@ -78,8 +95,14 @@ copenhagenApp
                 if (sc.roomLists[roomListIndex]) {
                     sc.roomLists[roomListIndex].photos = response;
                 }
-                //roomListIndex = null;
+
+                popupModal.dismiss('cancel');
+
             };
+
+
+
+
 
 
             var controller = sc.controller = {

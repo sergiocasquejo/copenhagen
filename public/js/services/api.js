@@ -1,5 +1,5 @@
 copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$window', function($http, $rootScope, $state, $window) {
-        var urlBase = '/api/v1';
+        var urlBase = '';
         var api = {};
         api.login = function(auth) {
             return $http.post(urlBase + '/login', auth);

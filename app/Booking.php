@@ -253,10 +253,25 @@ class Booking extends Model
 	}
 
     public function calculateTotalPrice($checkIn, $checkOut, $totalRooms, $roomId, $rateId) {
-        $room = \App\Room::join('room_rates', 'rooms.id', '=', 'room_rates.roomID')
-            ->where(['rooms.id' => $roomId, 'room_rates.rateID' => $rateId, 'room_rates.isActive' => 1])
-            ->select(\DB::raw('room_rates.price'))->first();
+        
+        $datetime1 = new \DateTime($checkIn);
+        $datetime2 = new \DateTime($checkOut);
+        $interval = $datetime1->diff($datetime2);
+        // echo $interval->format('%y years %m months and %d days');
+        
 
+        // $room = \App\Room::join('room_rates', 'rooms.id', '=', 'room_rates.roomID')
+        //     ->where(['rooms.id' => $roomId, 'room_rates.rateID' => $rateId, 'room_rates.isActive' => 1])
+        //     ->select(\DB::raw('room_rates.price'))->first();
+
+        $room = \App\Room::with(array('rates' => function($q) use($rateId) {
+            $q->where('isMonthly', 1) ->orWhere('rates.id', $rateId);
+        }))->find($roomId)->toArray();
+        dd($room);
+
+        if ($interval->format('%m') > 0) {
+            $checkIn = date ("Y-m-d", strtotime("+". $interval->format('%m')  ." month", strtotime($checkIn)));
+        }
 
         $subTotal = 0;
         $date = $checkIn;
@@ -265,9 +280,11 @@ class Booking extends Model
             $calendar = \App\Calendar::join('calendar_rates', 'calendar.id', '=', 'calendar_rates.calendarID')
             ->where(['calendar.selectedDate' => $date, 'calendar.roomID' => $roomId, 'calendar_rates.rateID' => $rateId, 'calendar_rates.active' => 1])
             ->select(\DB::raw('calendar_rates.price'))->first();
+            // use calendar price if it has set
             if ($calendar->price) {
                 $subTotal += (double)$calendar->price;
             } else {
+                // Use default price
                 $subTotal += (double)$room->price;
             }
 

@@ -84,9 +84,11 @@ class RoomController extends Controller
                 $roomRates = $request->input('roomRates');
                 if ($roomRates) {
                     foreach ($roomRates as $i => $rates) {
-                        foreach($rates as $rateID => $r) { 
-                            $a[$rateID] = array('price' => (float)$r['price'], 'isActive'  => $r['isActive'] );
-                            $room->rates()->sync($a);
+                        if ($rates) {
+                            foreach($rates as $rateID => $r) { 
+                                $a[$rateID] = array('price' => (float)$r['price'], 'isActive'  => $r['isActive'] );
+                                $room->rates()->sync($a);
+                            }
                         }
                     }
                 }

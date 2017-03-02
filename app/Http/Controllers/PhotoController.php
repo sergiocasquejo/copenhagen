@@ -79,7 +79,7 @@ class PhotoController extends Controller
     public function destroy($roomId, $id)
     {
         \App\Photo::find($id)->delete();
-        $photos = \App\Room::find($roomId)->photos();
+        $photos = \App\Room::find($roomId)->photos()->get();
         return response()->json($photos, 200, [], JSON_UNESCAPED_UNICODE);
     }
 }
