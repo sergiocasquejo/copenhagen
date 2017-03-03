@@ -54,22 +54,43 @@ class Booking extends Model
          return self::with('customer', 'room');
      }
 
-    public $rules = array(
+    public $rules = [
         'roomId' => 'required',
-        //'customerID' => 'required',
         'checkIn' => 'required',
-        //'checkInTime' => 'required',
         'checkOut' => 'required',
-        // 'checkOutTime' => 'required',
         'noOfRooms' => 'required|numeric',
         'noOfNights' => 'required|numeric',
         'noOfAdults' => 'required|numeric',
         'noOfChild' => 'numeric',
         'roomRate' => 'required|numeric',
-        'totalAmount' => 'required|numeric',
-        //'status' => 'required',
-    );
+        'totalAmount' => 'required|numeric'
+    ];
 
+
+    public $step1Rules = [
+        'roomId' => 'required',
+        'rateId' => 'required',
+        'checkIn' => 'required',
+        'checkOut' => 'required',
+        'noOfRooms' => 'required|numeric',
+        'noOfAdults' => 'required|numeric',
+        'noOfChild' => 'numeric',
+    ];
+
+    public $step2Rules = [
+        'roomId' => 'required',
+        'rateId' => 'required',
+        'checkIn' => 'required',
+        'checkOut' => 'required',
+        'noOfRooms' => 'required|numeric',
+        'noOfAdults' => 'required|numeric',
+        'noOfChild' => 'numeric',
+    ];
+
+    public $step3Rules = [
+        'agree' => 'required',
+        'paymentMethod' => 'required'
+    ];
      /**
     * Get the error messages for the defined validation rules.
     *
@@ -85,25 +106,19 @@ class Booking extends Model
         ];
     }
 
-    public $step1Rules = array(
-        'roomId' => 'required',
-        'rateId' => 'required',
-        'checkIn' => 'required',
-        'checkOut' => 'required',
-        'noOfRooms' => 'required|numeric',
-        'noOfAdults' => 'required|numeric',
-        'noOfChild' => 'numeric',
-    );
-
-    public $step2Rules = array(
-        'roomId' => 'required',
-        'rateId' => 'required',
-        'checkIn' => 'required',
-        'checkOut' => 'required',
-        'noOfRooms' => 'required|numeric',
-        'noOfAdults' => 'required|numeric',
-        'noOfChild' => 'numeric',
-    );
+    
+    public function validateStep1($data, $rules) {
+        if (!$rules) {
+            $rules = $this->rules;
+        }
+        // make a new validator object
+        $v = \Validator::make($data, $rules, $this->messages());
+        $v->sometimes('noOfNights', 'required', function ($input) {
+            return $input->noOfNights > 30;
+        });
+        // return the result
+        return $v;
+    }
 
     public function validate($data, $rules = false)
     {

@@ -309,8 +309,14 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
             $scope.step = 3;
             $scope.pay = function(isValid) {
                 if (isValid) {
-                    API.bookingStep({}, 3).then(function(response) {
-                        console.log(response);
+                    var data = $rootScope.booking;
+                    API.bookingStep({
+                        agree: data.accept,
+                        paymentMethod: data.paymentType
+                    }, 3).then(function(response) {
+                        if (response.data == 'success') {
+                            $state.go('paymentPesopay');
+                        }
                     }, function(error) {
                         showPopup('Error', error.data, sh);
                     });

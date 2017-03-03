@@ -91,29 +91,36 @@ class BookingController extends Controller
 
     private function step1(Request $request) {
         $booking = new \App\Booking;
-        $validator = $booking->validate($request->input(), $booking->step1Rules);
-		if ($validator->passes()) {
+        // Calculate total nights
+        $totalNights = $booking->countTotalNights($request->input('checkIn'), $request->input('checkOut'));
 
+        $validator = $booking->validateStep1(
+            array_add($request->input(), 'noOfNights', $totalNights), 
+            $booking->step1Rules
+        );
+
+        
+		if ($validator->passes()) {
+            // Calculate total rates
             $roomRate = $booking->calculateTotalPrice(
                 $request->input('checkIn'), 
-                $request->input('checkOut'),
-                $request->input('roomId'),
+                $request->input('checkOut'), 
+                $request->input('roomId'), 
                 $request->input('rateId')
             );
-
             $step1Data = [
                 'roomId' => $request->input('roomId'),
                 'rateId' => $request->input('rateId'),
                 'checkIn' =>  $request->input('checkIn'),
                 'checkOut' => $request->input('checkOut'),
                 'noOfRooms' => $request->input('noOfRooms'),
-                'noOfAdults' => $request->input('noOfAdults'),
+                'noOfAdults' => $request->input('noOfAdults', 1),
                 'noOfChild' => $request->input('noOfChild', 0),
-                'noOfNights' => $booking->countTotalNights($request->input('checkIn'), $request->input('checkOut')),
+                'noOfNights' => $request->input('noOfNights', 1),
                 'roomRate' => $roomRate,
                 'totalAmount' => $roomRate * $request->input('noOfRooms', 1)
             ];
-
+            //Save data to session
             $request->session()->put('booking', $step1Data);
             return response()->json($step1Data, 200, [], JSON_UNESCAPED_UNICODE);
         }
@@ -171,78 +178,77 @@ class BookingController extends Controller
     }
 
     private function step3(Request $request) {
-        $customer = \App\Customer::firstOrNew(['email' => $request->input('email')]);
+        
         $booking = new \App\Booking;
-
-        $rules = $customer->rules;
-        if ($customer->id) {
-            $rules['email'] = $rules['email'] .','. $customer->id . ',id';
-        }
-
-        $validator = $customer->validate($request->session()->get('booking'), $rules);
+        $validator = $booking->validate($request->input(), $booking->step3Rules);
         if ($validator->passes()) {
-            $roomRate = $request->session()->get('booking.totalRoomRate');
-            $noOfAdults = $request->session()->get('booking.adult', 1);
-            $noOfChild = $request->session()->get('booking.child', 0);
-            $noOfRooms = $request->session()->get('booking.noOfRooms', 0);
-            $totalAmount = $request->session()->get('booking.totalAmount', 0);
-            $booking->refId = time();
-            $booking->checkInTime = $booking::CHECK_IN_TIME;
-            $booking->checkOutTime = $booking::CHECK_OUT_TIME;
-            $booking->roomID = $request->session()->get('booking.roomId');
-            $booking->checkIn = $request->session()->get('booking.checkIn');
-            $booking->checkOut = $request->session()->get('booking.checkOut');
-            $booking->rateCode = $request->session()->get('booking.roomId');
-            $booking->mealType = $request->session()->get('booking.roomId');
-            $booking->roomTypeCode = $request->session()->get('booking.roomId');
-            $booking->companyCode = $request->session()->get('booking.roomId');
-            $booking->noOfRooms = $request->session()->get('booking.noOfRooms');
-            $booking->noOfNights = $request->session()->get('booking.noOfNights');
-            $booking->noOfAdults = $request->session()->get('booking.adult');
-            $booking->noOfChild = $request->session()->get('booking.child');
-            $booking->roomRate = $request->session()->get('booking.totalRoomRate');
-            $booking->totalAmount = $request->session()->get('booking.totalAmount');
-            $booking->specialInstructions = $request->session()->get('booking.specialInstructions');
-            $booking->billingInstructions = $request->session()->get('booking.billingInstructions');
-            $booking->status = $booking::BOOKING_PENDING;
+            $customer = \App\Customer::firstOrNew(['email' => $request->session()->get('booking.email')]);
+            $rules = $customer->rules;
+            if ($customer->id)
+                $rules['email'] = $rules['email'] .','. $customer->id . ',id';
 
-            $input = $request->session()->get('booking');
-            $input['customerID'] = $customer->id;
-            $input['totalAmount'] = $booking->totalAmount;
-            // dd($input);
-            $validator = $booking->validate($input);
+            $validator = $customer->validate($request->session()->get('booking'), $rules);
             if ($validator->passes()) {
+                $booking->refId = \Hash::make(time());
+                $roomRate = $request->session()->get('booking.totalRoomRate');
+                $noOfAdults = $request->session()->get('booking.adult', 1);
+                $noOfChild = $request->session()->get('booking.child', 0);
+                $noOfRooms = $request->session()->get('booking.noOfRooms', 0);
+                $totalAmount = $request->session()->get('booking.totalAmount', 0);
+                $booking->checkInTime = $booking::CHECK_IN_TIME;
+                $booking->checkOutTime = $booking::CHECK_OUT_TIME;
+                $booking->roomID = $request->session()->get('booking.roomId');
+                $booking->checkIn = $request->session()->get('booking.checkIn');
+                $booking->checkOut = $request->session()->get('booking.checkOut');
+                $booking->rateCode = $request->session()->get('booking.roomId');
+                $booking->mealType = $request->session()->get('booking.roomId');
+                $booking->roomTypeCode = $request->session()->get('booking.roomId');
+                $booking->companyCode = $request->session()->get('booking.roomId');
+                $booking->noOfRooms = $request->session()->get('booking.noOfRooms');
+                $booking->noOfNights = $request->session()->get('booking.noOfNights');
+                $booking->noOfAdults = $request->session()->get('booking.noOfAdults');
+                $booking->noOfChild = $request->session()->get('booking.child');
+                $booking->roomRate = $request->session()->get('booking.roomRate');
+                $booking->totalAmount = $request->session()->get('booking.totalAmount');
+                $booking->specialInstructions = $request->session()->get('booking.specialInstructions');
+                $booking->billingInstructions = $request->session()->get('booking.billingInstructions');
+                $booking->status = $booking::BOOKING_PENDING;
 
-                try {
-                    $customer->salutation = $request->session()->get('booking.salutation');
-                    $customer->firstname = $request->session()->get('booking.firstname');
-                    $customer->middleName = $request->session()->get('booking.middleName');
-                    $customer->lastname = $request->session()->get('booking.lastname');
-                    $customer->email = $request->session()->get('booking.email');
-                    $customer->address1 = $request->session()->get('booking.address1');
-                    $customer->address2 = $request->session()->get('booking.address2');
-                    $customer->city = $request->session()->get('booking.city');
-                    $customer->state = $request->session()->get('booking.state');
-                    $customer->zipcode = $request->session()->get('booking.zipcode');
-                    $customer->countryCode = $request->session()->get('booking.country');
-                    $customer->contact = $request->session()->get('booking.contact');
-                    if ($customer->save()) {
-                        // $booking->customerID = $customer->id;
-                        if ($customer->bookings()->save($booking)) {
-                            $request->session()->forget('booking');
+                $input = $request->session()->get('booking');
+                $input['customerID'] = $customer->id;
+                $input['totalAmount'] = $booking->totalAmount;
+                $validator = $booking->validate($input);
+                if ($validator->passes()) {
 
-                            $request->session(['orderRef' => $booking->refId]);
-                            return response()->json('success', 200, [], JSON_UNESCAPED_UNICODE);
+                    try {
+                        $customer->salutation = $request->session()->get('booking.salutation');
+                        $customer->firstname = $request->session()->get('booking.firstname');
+                        $customer->middleName = $request->session()->get('booking.middleName');
+                        $customer->lastname = $request->session()->get('booking.lastname');
+                        $customer->email = $request->session()->get('booking.email');
+                        $customer->address1 = $request->session()->get('booking.address1');
+                        $customer->address2 = $request->session()->get('booking.address2');
+                        $customer->city = $request->session()->get('booking.city');
+                        $customer->state = $request->session()->get('booking.state');
+                        $customer->zipcode = $request->session()->get('booking.zipcode');
+                        $customer->countryCode = $request->session()->get('booking.country');
+                        $customer->contact = $request->session()->get('booking.contact');
+                        if ($customer->save()) {
+                            if ($booking = $customer->bookings()->save($booking)) {
+                                // $request->session()->forget('booking');
+                                $request->session()->put('orderRef', $booking->refId);
+                                return response()->json('success', 200, [], JSON_UNESCAPED_UNICODE);
+                            }
                         }
+                    }catch(\Exception $e) {
+                        if (\App::environment('local')) {
+                            return response()->json($e->getMessage(), 400, [], JSON_UNESCAPED_UNICODE);
+                        }
+                        return response()->json('Oops!. Something went wrong with your booking. :(', 400, [], JSON_UNESCAPED_UNICODE);
                     }
-                }catch(\Exception $e) {
-                    if (App::environment('local')) {
-                        return response()->json($e->getMessage(), 400, [], JSON_UNESCAPED_UNICODE);
-                    }
-                    return response()->json('Oops!. Something went wrong with your booking. :(', 400, [], JSON_UNESCAPED_UNICODE);
                 }
             }
-        } 
+        }
 
         $validationStr = '';
         foreach ($validator->errors()->getMessages() as $k => $error) {
