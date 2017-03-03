@@ -75,6 +75,7 @@ class Booking extends Model
         'noOfRooms' => 'required|numeric',
         'noOfAdults' => 'required|numeric',
         'noOfChild' => 'numeric',
+        'noOfNights' => 'required|numeric'
     ];
 
     public $step2Rules = [
@@ -114,7 +115,7 @@ class Booking extends Model
         // make a new validator object
         $v = \Validator::make($data, $rules, $this->messages());
         $v->sometimes('noOfNights', 'required', function ($input) {
-            return $input->noOfNights > 30;
+            return $input->noOfNights <= 30;
         });
         // return the result
         return $v;
