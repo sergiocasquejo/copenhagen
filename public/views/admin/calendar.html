@@ -83,13 +83,13 @@
                     </div>
                     <h3>Rate Plan</h3>
                     <hr>
-                    <div class="form-group row" ng-if="r.pivot.isActive == 1 && r.isMonthly == 0" ng-repeat="r in calendar.roomType.rates  track by $index">
+                    <div class="form-group row" ng-if="r.pivot.isActive == 1 && r.isMonthly == 0" ng-repeat="r in calendar.roomType.rates | filter:pivot.isActive:1">
                         <label class="control-label col-sm-4">{{ r.name }}</label>
                         <div class="col-sm-4">
-                            <input type="number" ng-model="calendar.rates[$index][r.id].price" min="0" ng-min="0" class="form-control" ng-disabled="!calendar.rates[$index][r.id].active">
+                            <input type="number" ng-model="calendar.calendarRates[r.id].price" min="0" ng-min="0" class="form-control" ng-disabled="!calendar.calendarRates[r.id].active">
                         </div>
                         <div class="col-sm-4">
-                            <toggle ng-model="calendar.rates[$index][r.id].active" on="Yes" off="No" onstyle="btn-success" size="btn-sm"></toggle>
+                            <toggle ng-model="calendar.calendarRates[r.id].active" on="Yes" off="No" onstyle="btn-success" size="btn-sm"></toggle>
                         </div>
                     </div>
                     <div class="row">

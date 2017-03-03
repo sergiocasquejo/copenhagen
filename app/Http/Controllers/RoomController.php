@@ -180,7 +180,10 @@ class RoomController extends Controller
 
     public function types(Request $request) {
         try {
-            $types = \App\Room::with('rates')
+            $types = \App\Room::with(array('rates' => function($q) {
+                $q->where('isMonthly', 0);
+                $q->wherePivot('isActive', 1);
+            }))
                 ->select(['*', \DB::raw('CONCAT(name, " ", building, " - ID ", id) AS title')])
                 ->where('isActive', 1)
                 ->get()->toArray();

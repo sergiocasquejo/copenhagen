@@ -40,10 +40,10 @@ class CalendarController extends Controller
                     $calendar->availability = $request->input('availability', 0);
                     $calendar->isActive = $request->input('isActive', 0);
                     if ($calendar->save()) {
-                        $calRates = $request->input('rates');
-                        if ($calRates) {
-                            foreach ($calRates as $i => $rates) {
-                                foreach($rates as $rateID => $r) { 
+                        $rates = $request->input('rates');
+                        if ($rates) {
+                            foreach($rates as $rateID => $r) {
+                                if ($r) {
                                     $a[$rateID] = array('price' => (float)$r['price'], 'active'  => $r['active'] == true );
                                     $calendar->rates()->sync($a);
                                 }

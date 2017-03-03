@@ -222,8 +222,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                     checkOut: sc.booking.checkOut,
                     noOfRooms: sc.booking.noRooms,
                 }).then(function(response) {
-
-                    API.bookingStep1({
+                    API.bookingStep({
                         roomId: sc.room.id,
                         rateId: sc.booking.rateSelected.id,
                         checkIn: sc.booking.checkIn,
@@ -231,21 +230,16 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                         noOfAdults: sc.booking.adult,
                         noOfChild: sc.booking.child,
                         noOfRooms: sc.booking.noRooms,
-                    }).then(function(response) {
-                        var date1 = new Date(sc.booking.checkIn);
-                        var date2 = new Date(sc.booking.checkOut);
-                        var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-                        var nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
-
+                    }, 1).then(function(response) {
                         API.setBookingData({
                             checkIn: sc.booking.checkIn,
                             checkOut: sc.booking.checkOut,
                             noOfAdults: sc.booking.adult,
                             noOfChild: sc.booking.child,
                             noOfRooms: sc.booking.noRooms,
-                            roomRate: sc.room.minimumRate,
-                            noOfNights: nights,
+                            roomRate: response.data.roomRate,
+                            totalAmount: response.data.totalAmount,
+                            noOfNights: response.data.noOfNights,
                             room: {
                                 id: sc.room.id,
                                 name: sc.room.name,
@@ -278,8 +272,30 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
         $scope.step = 2;
         $scope.submitCustomerDetail = function(isValid) {
             if (isValid) {
-                API.setBookingData($rootScope.booking);
-                $state.go('paymentDetail');
+                var data = $rootScope.booking;
+                API.bookingStep({
+                    salutation: data.salutation,
+                    firstname: data.firstname,
+                    lastname: data.lastname,
+                    middleName: data.middleName,
+                    email: data.email,
+                    contact: data.contact,
+                    specialInstructions: data.specialInstructions,
+                    address1: data.address1,
+                    address2: data.address2,
+                    state: data.state,
+                    city: data.city,
+                    zipcode: data.zipcode,
+                    country: data.country,
+                    billingInstructions: data.billingInstructions
+                }, 2).then(function(response) {
+                    API.setBookingData(data);
+                    $state.go('paymentDetail');
+                }, function(error) {
+                    showPopup('Error', error.data, sh);
+                });
+
+
             }
         }
     }
@@ -293,13 +309,8 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
             $scope.step = 3;
             $scope.pay = function(isValid) {
                 if (isValid) {
-                    API.setBookingData($rootScope.booking);
-                    var data = $rootScope.booking;
-                    data.roomID = data.room.id;
-                    API.book(data).then(function(response) {
-                        if (response.data == 'success') {
-                            $state.go('paymentPesopay');
-                        }
+                    API.bookingStep({}, 3).then(function(response) {
+                        console.log(response);
                     }, function(error) {
                         showPopup('Error', error.data, sh);
                     });

@@ -52,7 +52,6 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
 
 
         function fetchCalendarByRoomID(roomID, params) {
-            console.log(params);
             sc.events = [];
             API.fetchCalendarByRoomIdAndDate(roomID, params.start, params.end).then(function(response) {
 
@@ -89,19 +88,17 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
             return { 'start': startDate, 'end': endDate };
         }
         sc.timespanClicked = function(date, cell) {
-
             sc.hasSelectedDate = true;
             sc.calendar.to = sc.calendar.from = date;
             if (cell.events.length != 0) {
-                sc.calendar.rates = cell.events[0].info.calendarRates;
+                sc.calendar.calendarRates = cell.events[0].info.calendarRates;
                 sc.calendar.availability = cell.events[0].info.availability;
                 sc.calendar.isActive = cell.events[0].info.isActive;
             } else {
-                sc.calendar.rates = sc.calendar.roomType.roomRates;
+                sc.calendar.calendarRates = sc.calendar.roomType.roomRates;
                 sc.calendar.availability = sc.calendar.roomType.totalRooms;
                 sc.calendar.isActive = sc.calendar.roomType.isActive;
             }
-
 
 
 
@@ -113,8 +110,6 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
             fetchCalendarByRoomID(sc.calendar.roomType.id, params);
 
         };
-
-
         // Save Calendar
         sc.saveCalendar = function(isValid) {
             if (isValid) {
@@ -124,7 +119,7 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
                     to: moment(sc.calendar.to).format('YYYY-MM-DD'),
                     availability: sc.calendar.availability,
                     isActive: sc.calendar.isActive,
-                    rates: sc.calendar.rates
+                    rates: sc.calendar.calendarRates
                 }).then(function(response) {
                     var params = sc.getCalStartAndEndDate(sc.viewDate);
                     fetchCalendarByRoomID(sc.calendar.roomType.id, params);

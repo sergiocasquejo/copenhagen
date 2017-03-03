@@ -17,7 +17,7 @@
 
         </div>
         <div class="panel-footer">
-            <p><span class="lbl">Total:</span><strong>{{ booking.roomRate * (booking.noOfNights *  booking.noOfRooms) | currency:'PHP ' }}</strong></p>
+            <p><span class="lbl">Total:</span><strong>{{ booking.totalAmount | currency:'PHP ' }}</strong></p>
         </div>
         <!--/.panel-->
     </div>
