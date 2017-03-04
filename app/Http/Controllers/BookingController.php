@@ -189,7 +189,7 @@ class BookingController extends Controller
 
             $validator = $customer->validate($request->session()->get('booking'), $rules);
             if ($validator->passes()) {
-                $booking->refId = \Hash::make(time());
+                $booking->refId = time();
                 $roomRate = $request->session()->get('booking.totalRoomRate');
                 $noOfAdults = $request->session()->get('booking.adult', 1);
                 $noOfChild = $request->session()->get('booking.child', 0);

@@ -38,7 +38,7 @@ class Booking extends Model
         'lastPayment');
     public function customer()
     {
-        return $this->belongsTo('App\Customer', 'customerID', 'id');
+        return $this->belongsTo('App\Customer', 'customerID');
     }
 
     public function room()
@@ -75,7 +75,7 @@ class Booking extends Model
         'noOfRooms' => 'required|numeric',
         'noOfAdults' => 'required|numeric',
         'noOfChild' => 'numeric',
-        'noOfNights' => 'required|numeric'
+        'noOfNights' => 'required|numeric|max:30'
     ];
 
     public $step2Rules = [
@@ -104,6 +104,7 @@ class Booking extends Model
             'unique' => ':attribute must be unique',
             'required'  => ':attribute is required',
             'numeric'  => ':attribute must be numeric',
+            'max' => ':attribute must not exists :max days'
         ];
     }
 
@@ -173,20 +174,15 @@ class Booking extends Model
         return $this->payment()->orderBy('id', 'desc')->first();
     }
 
+    public function nf($n, $s = false, $d = 2, $p = '.', $t = ', ') {
+        return  ($s ? config('payment.currSymbol') : '') . number_format($n, $d, $p, $t);
+    }
+
     // Count total Nights
     public function countTotalNights($checkIn, $checkOut) {
         return intval(abs(strtotime($checkOut) - strtotime($checkIn)) / 86400);
     }
-    /**
-     * calculateTotaPrice 
-     * Calculate total price 
-     *@param $roomRate - The room calculateTotaPrice
-     *@param $noOfRooms - Total room selected
-     *@param $totalNights - Total nights
-     */
-    public function calculateTotaPrice($roomRate, $noOfRooms, $totalNights) {
-        return $roomRate * ($noOfRooms * $totalNights);
-    }
+
 
     public function setupPrimeSoftData(Booking $booking) {
         // Login to primesoft

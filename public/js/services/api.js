@@ -136,6 +136,10 @@ copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$window', functi
             return $http.post(urlBase + '/booking/step/' + step, params);
         }
 
+        api.sendContact = function(params) {
+            return $http.post(urlBase + '/contact', params);
+        }
+
         return api;
     }])
     .factory('authHttpResponseInterceptor', ['$q', '$location', function($q, $location) {

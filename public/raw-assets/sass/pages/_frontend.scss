@@ -1,5 +1,8 @@
 .main {
     section {
+        .about-us-img {
+            margin-bottom: 20px;
+        }
         .panel-customer-details,
         .panel-room-details {
             .panel-body {
@@ -335,7 +338,16 @@
         }
     }
     .footer-sidebar-secodary {
-        margin-top: 3em;
+        margin-top: 2em;
+        margin-bottom: 2em;
+        .col-md-4 {
+            .box-item {
+                border-right: solid 1px #dcdbdb;
+            }
+            &:last-child .box-item {
+                border: none;
+            }
+        }
     }
 }
 

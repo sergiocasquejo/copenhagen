@@ -3,7 +3,8 @@ namespace Serge\Payment;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Mail\Reservation;
+use Illuminate\Support\Facades\Mail;
 
 
 class PaymentController extends Controller {
@@ -94,7 +95,7 @@ class PaymentController extends Controller {
                 $payerAuth, 
                 config('payment.'.$default . '.secureHashSecret'), 
                 $secureHash);
-        $booking = Booking::where(['refId' => $ref])->firstOrFail();
+        $booking = App\Booking::where(['refId' => $ref])->firstOrFail();
         $payment = new Payment;
 
         if ($successCode == 0 && $verified) {
@@ -105,7 +106,7 @@ class PaymentController extends Controller {
             // Update your database for Transaction Accepted and send email or notify your
             // customer.
             $payment->status = 'paid';
-            
+           
 
             // In case if your database or your system got problem, you can send a void
             // transaction request. See API guide for more details
@@ -115,12 +116,23 @@ class PaymentController extends Controller {
             $payment->status = 'rejected';
         }
 
+        $booking->status = 'completed';
+        $booking->save();
+        
         $payment->totalAmount = $amt;
         $payment->method = 'pesopay';
         $payment->referenceID = $payRef;
-        $payment->customData = serialize(Request::all());
+        $payment->customData = serialize($request->input());
         
         $booking->payment()->save($payment);
+
+        try {
+            Mail::to(Config('mail.emails.reservation'))
+            ->cc(Config('mail.emails.info'))
+            ->send(new Reservation($booking));
+        } catch (\Swift_TransportException  $e) {
+            return response()->json('Failed to send your message. Please try later or contact the administrator by another method.', 400, [], JSON_UNESCAPED_UNICODE);
+        }
     }
 }
 

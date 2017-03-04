@@ -120,4 +120,9 @@ return [
         ],
     ],
 
+    'emails' => [
+        'reservation' => 'serg.casquejo@gmail.com',//'reservations@copenhagen.ph', 
+        'info' => 'info-cebu@copenhagen.ph'
+    ],
+
 ];

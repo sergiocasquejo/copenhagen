@@ -30,6 +30,8 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
         $scope.isInlineForm = true;
         $scope.booking = API.getBookingData();
         $scope.today = new Date();
+
+
         $scope.search = function(isValid) {
             if (isValid) {
                 API.setBookingData({ checkIn: $scope.booking.checkIn, checkOut: $scope.booking.checkOut, adult: $scope.booking.adult, child: $scope.booking.child });
@@ -342,13 +344,27 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
         }
     ])
 
-.controller('pageCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', '$timeout',
-    function($scope, $rootScope, $state, $stateParams, API, $timeout) {
+.controller('pageCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', '$timeout', 'sh',
+    function($scope, $rootScope, $state, $stateParams, API, $timeout, sh) {
         var sc = $scope;
-
+        sc.contactButtonText = 'SEND';
         sc.send = function(isValid) {
             if (isValid) {
-                //
+                sc.contactButtonText = 'SENDING...';
+                API.sendContact({
+                    firstname: sc.contact.firstname,
+                    lastname: sc.contact.lastname,
+                    email: sc.contact.email,
+                    phone: sc.contact.phone,
+                    message: sc.contact.message
+                }).then(function(response) {
+                    sc.contact = null;
+                    showPopup('Sent', response.data, sh);
+                    sc.contactButtonText = 'SEND';
+                }, function(error) {
+                    showPopup('Error', error.data, sh);
+                    sc.contactButtonText = 'SEND';
+                });
             }
         }
     }

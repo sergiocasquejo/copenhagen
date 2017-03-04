@@ -15,6 +15,15 @@ Route::get('/', function ($any = null) {
     return view('app');
 });
 
+Route::get('/test', function ($any = null) {
+    $booking = \App\Booking::find(2);
+    return view('emails.booking')
+        ->with('booking', $booking)
+        ->with('name', $booking->customer->firstName)
+        ->with('pageHeading', 'You have successfully booked!')
+        ->with('message', 'You have received this email because you have successfully booked with us.. please see below the information of your booking.');
+});
+
 
 
 /*
@@ -55,6 +64,8 @@ Route::post('login', function() {
     }
 });
 
+Route::post('contact', 'PageController@contact');
+
 /*
 |--------------------------------------------------------------------------
 | Booked API Routes
@@ -80,6 +91,11 @@ Route::group(['prefix' => 'booking'], function() {
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::group(['prefix' => 'rooms'], function() {
+    Route::get('{roomId}/calendar/unavailable', 'CalendarController@notAvailableDateByRoomId');
+    Route::post('availability', 'CalendarController@availability');
+});
     
 Route::group(['middleware' => 'auth'], function() {
     Route::resource('rates', 'RateController', ['only' => [
@@ -94,8 +110,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('aminities', 'AminitiesController', ['only' => [
             'index', 'store', 'update', 'destroy'
         ]]);
-        Route::post('availability', 'CalendarController@availability');
-        Route::get('{roomId}/calendar/unavailable', 'CalendarController@notAvailableDateByRoomId');
+        
+        
         Route::get('{roomId}/calendar/{start}/{end}', 'CalendarController@fetchCalendarByRoomIdAndDate');
         Route::post('{roomId}/photos', 'PhotoController@store');
         Route::delete('{roomId}/photos/{id}', 'PhotoController@destroy');

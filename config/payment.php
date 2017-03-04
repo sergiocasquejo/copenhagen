@@ -19,4 +19,5 @@ return array(
     'successUrl' => env('PAYMENT_PESOPAY_SUCCESS_URL'),
     'failUrl' => env('PAYMENT_PESOPAY_FAIL_URL'),
     'cancelUrl' => env('PAYMENT_PESOPAY_CANCELL_URL'),
+    'currSymbol' => env('PAYMENT_CURR_SYMBOL')
 );

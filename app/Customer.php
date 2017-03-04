@@ -9,7 +9,7 @@ class Customer extends Model
 {
     
     protected $table = 'customers';
-    protected $fillable = array('email');
+    protected $fillable = array('id', 'userID', 'email', 'salutation', 'firstName', 'lastName', 'middleName', 'address1', 'address2', 'state', 'city', 'zipcode', 'countryCode', 'contact', 'created_at', 'updated_at');
     public function bookings()
     {
         return $this->hasMany('App\Booking', 'customerID', 'id');
