@@ -11,7 +11,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap-theme.min.css" type="text/css">
+    <!--<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap-theme.min.css" type="text/css">-->
     <link rel="stylesheet" href="/lib/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="/lib/angular-bootstrap-toggle/dist/angular-bootstrap-toggle.min.css" type="text/css">
     <link rel="stylesheet" href="/lib/angular-moment-picker/dist/angular-moment-picker.min.css" type="text/css">
