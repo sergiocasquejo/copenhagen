@@ -43,6 +43,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
 .controller('roomAvailableCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh', 'Lightbox',
     function($scope, $rootScope, $state, $stateParams, API, sh, Lightbox) {
+
         var sc = $scope;
         sc.minPrice = 0;
         sc.maxPrice = 0;
@@ -78,8 +79,13 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
         sc.getMinAndMaxPrice = function(data) {
 
             for (var i = 0; i < data.length; i++) {
-                if (Number(data[i].minimumRate) > sc.maxPrice) {
-                    sc.maxPrice = data[i].minimumRate;
+                var rates = data[i].rates;
+                for (var z = 0; z < rates.length; z++) {
+                    if (rates[z].pivot.isActive) {
+                        if (Number(rates[z].pivot.price) > sc.maxPrice) {
+                            sc.maxPrice = rates[z].pivot.price;
+                        }
+                    }
                 }
             }
 
@@ -87,10 +93,16 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
             sc.minPrice = sc.maxPrice;
             for (var i = 0; i < data.length; i++) {
-                if (Number(data[i].minimumRate) < sc.minPrice) {
-                    sc.minPrice = data[i].minimumRate;
+                var rates = data[i].rates;
+                for (var z = 0; z < rates.length; z++) {
+                    if (rates[z].pivot.isActive) {
+                        if (Number(rates[z].pivot.price) < sc.minPrice) {
+                            sc.minPrice = rates[z].pivot.price;
+                        }
+                    }
                 }
             }
+
             sc.filter.pricing.options.floor = sc.minPrice;
             sc.filter.pricing.value = sc.filter.pricing.options.ceil = sc.maxPrice;
 
@@ -125,7 +137,11 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
         sc.lessThanEqualTo = function(prop, val) {
 
             return function(item) {
-                return item[prop] <= val;
+                for (var i = 0; i < item['rates'].length; i++) {
+                    if (item['rates'][i].pivot.isActive) {
+                        return item['rates'][i].pivot.price <= val;
+                    }
+                }
             }
         }
 
