@@ -24,6 +24,16 @@ Route::get('/test', function ($any = null) {
         ->with('message', 'You have received this email because you have successfully booked with us.. please see below the information of your booking.');
 });
 
+Route::get('/contact', function ($any = null) {
+    return view('emails.contact')->with([
+            'firstname' => 'John',
+            'lastname' => 'Doe',
+            'email' => 'john.doe@gmail.com',
+            'phone' => '111-111-1111',
+            'message' => 'Lorem ipsum dolor',
+        ]);
+});
+
 
 
 /*

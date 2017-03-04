@@ -116,7 +116,7 @@ class BookingController extends Controller
                 'noOfRooms' => $request->input('noOfRooms'),
                 'noOfAdults' => $request->input('noOfAdults', 1),
                 'noOfChild' => $request->input('noOfChild', 0),
-                'noOfNights' => $request->input('noOfNights', 1),
+                'noOfNights' => $totalNights,
                 'roomRate' => $roomRate,
                 'totalAmount' => $roomRate * $request->input('noOfRooms', 1)
             ];
