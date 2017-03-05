@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" ng-init="isCollapsed=true" ng-click="isCollapsed = !isCollapsed">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -13,7 +13,7 @@
                     </button>
                         <a class="navbar-brand" ui-sref="home"></a>
                     </div>
-                    <div id="navbar" class="collapse navbar-collapse">
+                    <div id="navbar" class="collapse navbar-collapse" uib-collapse="isCollapsed">
                         <ul class="nav navbar-nav">
                             <li class="active"><a ui-sref="home">Home</a></li>
                             <li><a ui-sref="roomsAvailable">Accomodation</a></li>

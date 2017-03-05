@@ -1,6 +1,5 @@
 'use strict';
 copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', function($scope, $rootScope, $state, API) {
-
     $scope.myInterval = 5000;
     $scope.noWrapSlides = false;
     $scope.active = 0;
@@ -41,14 +40,14 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
     }
 ])
 
-.controller('roomAvailableCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh', 'Lightbox',
-    function($scope, $rootScope, $state, $stateParams, API, sh, Lightbox) {
+.controller('roomAvailableCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh', 'Lightbox', 'BEDDING',
+    function($scope, $rootScope, $state, $stateParams, API, sh, Lightbox, BEDDING) {
 
         var sc = $scope;
         sc.minPrice = 0;
         sc.maxPrice = 0;
         sc.result = 0;
-
+        sc.roomTypeLists = BEDDING;
         sc.roomLists = [];
         sc.loaded = false;
         var filterDefault = {
@@ -134,13 +133,23 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
             };
         }
-        sc.lessThanEqualTo = function(prop, val) {
+        sc.lessThanEqualTo = function(val) {
 
             return function(item) {
                 for (var i = 0; i < item['rates'].length; i++) {
                     if (item['rates'][i].pivot.isActive) {
                         return item['rates'][i].pivot.price <= val;
                     }
+                }
+            }
+        }
+
+        sc.hasThisBedTypes = function(types) {
+            return function(item) {
+                if (types == undefined) return true;
+
+                for (var i = 0; i < item.beds.length; i++) {
+                    return types[item.beds[i].type] == true;
                 }
             }
         }

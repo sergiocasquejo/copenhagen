@@ -1,4 +1,7 @@
 @media (max-width:425px) {
+    .box {
+        box-shadow: none;
+    }
     .main {
         .booking-box {
             form {
@@ -29,8 +32,16 @@
             &.section-rooms-available {
                 .item {
                     .img-area {
-                        img {
-                            width: 100%;
+                        .img-inner {
+                            a {
+                                .lnr {
+                                    font-size: 40px;
+                                    line-height: 2;
+                                }
+                            }
+                            img {
+                                width: 100%;
+                            }
                         }
                     }
                     .item-flex-column {
@@ -58,13 +69,13 @@
                             border-top: 1px solid #cdd0d2;
                             margin-top: 10px;
                             .price {
-                                width: 45%;
-                                display: inline-block;
+                                width: 100%;
+                                display: block;
                                 vertical-align: middle;
                             }
                             .btn {
-                                width: 50%;
-                                display: inline-block;
+                                width: 100%;
+                                display: block;
                                 vertical-align: middle;
                                 font-size: 16px;
                                 .lnr {

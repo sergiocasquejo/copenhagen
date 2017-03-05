@@ -85,7 +85,7 @@ class Room extends Model
      }
 
      public function rates() {
-         return $this->belongsToMany('App\Rate', 'room_rates', 'roomID', 'rateID')->withPivot('price', 'rateID', 'isActive');
+         return $this->belongsToMany('App\Rate', 'room_rates', 'roomID', 'rateID')->withPivot('price', 'rateID', 'isActive')->orderBy('isMonthly');;
      }
 
      public function beds() {
@@ -101,7 +101,6 @@ class Room extends Model
      }
      
 
-      
 
     public function getFacilitiesAttribute()
     {

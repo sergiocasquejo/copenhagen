@@ -187,11 +187,12 @@
                         .price {
                             margin: 10px 0;
                             .item-price {
-                                font-size: 16px;
+                                font-size: 20px;
                                 color: #66a400;
                                 margin: 0;
                                 display: block;
                                 font-family: Arial, Helvetica, Sans, Sans-Serif, Sans Serif;
+                                font-weight: 400;
                                 span.per {
                                     font-size: 14px;
                                     font-weight: 400;
@@ -202,7 +203,6 @@
                         .breakfast {
                             width: 100%;
                             text-align: center;
-                            border: solid 1px #66a400;
                             padding: 0;
                             display: block;
                             @include border-radius(3px);
