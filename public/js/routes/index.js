@@ -154,10 +154,10 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
         })
         .state('roomDetail', {
             url: '/rooms-suites/:slug',
-            controller: 'roomDetailsCtrl',
             views: {
                 '': {
                     templateUrl: '/views/rooms/details.html',
+                    controller: 'roomDetailsCtrl',
                 },
                 'header@roomDetail': {
                     templateUrl: '/views/_partials/header.html'
@@ -167,6 +167,7 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                 },
                 'bookingForm@roomDetail': {
                     templateUrl: '/views/booking/booking-form.html',
+                    controller: 'bookingFormCtrl'
                 },
                 'footer@roomDetail': {
                     templateUrl: '/views/_partials/footer.html'

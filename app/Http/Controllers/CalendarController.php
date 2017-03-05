@@ -119,8 +119,8 @@ class CalendarController extends Controller
         $noOfRooms = $request->input('noOfRooms', 0);
         $hasNoRoomAvailable = \App\Calendar::where([
             'roomID' => $request->input('roomID'), 
-            ['selectedDate', '>=', date('Y-m-d', strtotime($request->input('checkIn')))],
-            ['selectedDate', '<=', date('Y-m-d', strtotime($request->input('checkOut')))]
+            ['selectedDate', '>=', date('Y-m-d', strtotime(trim($request->input('checkIn'))))],
+            ['selectedDate', '<=', date('Y-m-d', strtotime(trim($request->input('checkOut'))))]
         ])->where(function($q) use($noOfRooms) {
             $q->where('availability', '<', $noOfRooms)
                 ->orWhere('isActive', 0);

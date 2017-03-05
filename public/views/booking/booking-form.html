@@ -8,7 +8,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-6 col-sm-3 ">
+    <div class="col-xs-6 col-sm-3">
         <div class="form-group checkout-form-group" ng-class="{ 'has-error': bookingForm.checkOut.$touched && bookingForm.checkOut.$invalid} ">
             <div class="input-group" data-min-date="booking.checkIn" moment-picker="booking.checkOut " format="YYYY-MM-DD ">
                 <span class="input-group-addon "><i class="fa fa-calendar " aria-hidden="true "></i></span>
@@ -17,7 +17,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-4 col-sm-2 ">
+    <!--<div class="col-xs-3 col-sm-2">
         <div class="form-group " ng-class="{ 'has-error': bookingForm.adult.$touched && bookingForm.adult.$invalid} ">
             <select name="adult " class="form-control " data-ng-model="booking.adult " ng-required="true " required>
                         <option value="">Adult</option>
@@ -25,18 +25,59 @@
                     </select>
         </div>
     </div>
-    <div class="col-xs-4 col-sm-2 ">
+    <div class="col-xs-3 col-sm-2">
         <div class="form-group ">
+
             <select name="child " class="form-control " data-ng-model="booking.child ">
                         <option value="">Child</option>
                         <option ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] ">{{ i }}</option>
                     </select>
         </div>
+    </div>-->
+    <div class="col-xs-3 col-sm-4">
+        <!--<div class="form-group" ng-class="{'has-error':  bookingForm.noRooms.$touched && bookingForm.noRooms.$invalid}">
+            <select name="room" class="form-control" data-ng-model="booking.noRooms" ng-options="room for room in [] | range:1:11">
+                <option value="">Rooms</option>
+            </select>
+        </div>-->
+        <div class="guest-selection-panel-dd">
+            <input type="text" class="form-control oneline-guests guest-search" ng-click="isopen=!isopen" value="{{ booking.noRooms | number }} rooms, {{ booking.adult | number }} adults, {{ booking.child | number }} children" data-selenium="occupancyBox" readonly="">
+            <span class="lnr lnr-chevron-down" ng-click="isopen=!isopen"></span>
+            <div class="guest-selection-panel" ng-class="{'open': isopen}">
+                <div class="occ-dropdown-desktop">
+                    <ul class="occupancy-selected list-unstyled">
+                        <li class="occupancy-box-container">
+                            <span ng-click="occMinus('rooms')" class="occ-minus remove-room btn-blue">-</span>
+                            <div class="occupancy-selected" data-selenium="desktop-occ-room-label">
+                                <span class="occ-number rooms">{{ booking.noRooms | number }}</span>
+                                <span class="occ-label occ-label-fixed-width roomsLabel">Rooms</span>
+                            </div>
+                            <span ng-click="occPlus('rooms')" class="occ-plus add-room btn-blue">+</span>
+                        </li>
+                        <li class="occupancy-box-container">
+                            <span ng-click="occMinus('adults')" class="occ-minus remove-adult btn-blue">-</span>
+                            <div class="occupancy-selected" data-selenium="desktop-occ-adult-label">
+                                <span class="occ-number adults">{{ booking.adult | number }}</span>
+                                <span class="occ-label occ-label-fixed-width adultsLabel">Adults</span>
+                            </div>
+                            <span ng-click="occPlus('adults')" class="occ-plus add-adult btn-blue">+</span>
+                        </li>
+                        <li class="occupancy-box-container">
+                            <span ng-click="occMinus('children')" class="occ-minus remove-children btn-blue">-</span>
+                            <div class="occupancy-selected" data-selenium="desktop-occ-children-label">
+                                <span class="occ-number children">{{ booking.child | number }}</span>
+                                <span class="occ-label occ-label-fixed-width childrenLabel">Children</span>
+                            </div>
+                            <span ng-click="occPlus('children')" class="occ-plus add-children btn-blue">+</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="col-xs-4 col-sm-2 ">
+    <div class="col-xs-3 col-sm-2">
         <div class="form-group ">
-            <button class="btn-block btn btn-success " ng-disabled="bookingForm.$invalid "><span class="hidden-xs ">{{ buttonText }}</span><span class="visible-xs ">Check</span></button>
+            <button class="btn-block btn btn-success " ng-disabled="bookingForm.$invalid "><span class="lnr lnr-magnifier"></span></button>
         </div>
     </div>
 </form>

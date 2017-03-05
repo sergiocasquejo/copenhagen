@@ -37,4 +37,10 @@ form[name=beddingForm] {
 .form-control {
     box-shadow: none;
     border: solid 1px #757575;
+    @include border-radius(3px);
+    -webkit-appearance: none;
+}
+
+select.form-control {
+    background: #FFF url(../images/checkron.png) no-repeat right center;
 }

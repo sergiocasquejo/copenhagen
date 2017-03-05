@@ -68,19 +68,21 @@
                             padding: 0;
                             border-top: 1px solid #cdd0d2;
                             margin-top: 10px;
+                            .best-deals-main {
+                                min-height: auto;
+                                height: auto;
+                                width: 100%;
+                                display: block;
+                                margin-top: 10px;
+                            }
                             .price {
                                 width: 100%;
                                 display: block;
-                                vertical-align: middle;
                             }
                             .btn {
                                 width: 100%;
                                 display: block;
-                                vertical-align: middle;
                                 font-size: 16px;
-                                .lnr {
-                                    display: none;
-                                }
                             }
                             .item-price {
                                 font-size: 20px;

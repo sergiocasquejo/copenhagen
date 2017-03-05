@@ -25,15 +25,55 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
 .controller('bookingFormCtrl', ['$scope', '$rootScope', '$state', 'API',
     function($scope, $rootScope, $state, API) {
-        $scope.buttonText = 'Search';
-        $scope.isInlineForm = true;
-        $scope.booking = API.getBookingData();
-        $scope.today = new Date();
+        var sc = $scope;
+        sc.buttonText = 'Search';
+        sc.isInlineForm = true;
+        $rootScope.booking = API.getBookingData();
+        sc.today = new Date();
+        $rootScope.booking.adult = $rootScope.booking.adult || 1;
+        $rootScope.booking.child = $rootScope.booking.child || 0;
+        $rootScope.booking.noRooms = $rootScope.booking.noRooms || 1;
+        sc.occMinus = function(type) {
+            switch (type) {
+                case 'rooms':
+                    $rootScope.booking.noRooms = $rootScope.booking.noRooms > 0 ? $rootScope.booking.noRooms - 1 : 0;
+                    break;
+                case 'adults':
+                    $rootScope.booking.adult = $rootScope.booking.adult > 0 ? $rootScope.booking.adult - 1 : 0;
+                    break;
+                case 'children':
+                    $rootScope.booking.child = $rootScope.booking.child > 0 ? $rootScope.booking.child - 1 : 0;
+                    break;
+            }
 
+        }
+        sc.occPlus = function(type) {
+            switch (type) {
+                case 'rooms':
+                    if ($rootScope.booking.noRooms < 10)
+                        $rootScope.booking.noRooms += 1;
+                    break;
+                case 'adults':
+                    if ($rootScope.booking.adult < 36)
+                        $rootScope.booking.adult += 1;
+                    break;
+                case 'children':
+                    if ($rootScope.booking.child < 36)
+                        $rootScope.booking.child += 1;
+                    break;
+            }
 
-        $scope.search = function(isValid) {
+        }
+
+        sc.search = function(isValid) {
             if (isValid) {
-                API.setBookingData({ checkIn: $scope.booking.checkIn, checkOut: $scope.booking.checkOut, adult: $scope.booking.adult, child: $scope.booking.child });
+                API.setBookingData({
+                    checkIn: $rootScope.booking.checkIn,
+                    checkOut: $rootScope.booking.checkOut,
+                    noRooms: $rootScope.booking.noRooms,
+                    adult: $rootScope.booking.adult,
+                    child: $rootScope.booking.child
+                });
                 $state.go('roomsAvailable');
             }
         }
@@ -181,11 +221,11 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
         var sc = $scope;
         sc.today = new Date();
         //Hide Top Booking Form
-        sc.bookingFormTopHide = true;
+        //sc.bookingFormTopHide = true;
         //Current Step
         sc.step = 1;
         sc.room = [];
-        sc.booking = $rootScope.booking != null ? $rootScope.booking : {};
+        $rootScope.booking != null ? $rootScope.booking : {};
 
 
         sc.myInterval = 5000;
@@ -373,6 +413,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
     function($scope, $rootScope, $state, $stateParams, API, $timeout, sh) {
         var sc = $scope;
         sc.contactButtonText = 'SEND';
+
         sc.send = function(isValid) {
             if (isValid) {
                 sc.contactButtonText = 'SENDING...';

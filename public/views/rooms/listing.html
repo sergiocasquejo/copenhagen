@@ -95,13 +95,14 @@
                                         <div class="item-best-deals col-md-4">
                                             <div class="best-deals-main text-center">
                                                 <div class="best-deals-inner">
-                                                    <div class="price" ng-if="r.pivot.isActive==1" ng-repeat="r in room.rates">
-                                                        <span class="breakfast"><span class="lnr lnr-alarm"></span> {{ r.isMonthly ? 'monthly' : 'nightly' }} rates with {{ r.mealType=='N' ? 'out' : '' }} breakfast as low as</span>
+                                                    <div class="price" ng-class="{'monthly': r.isMonthly, 'nightly': !r.isMonthly}" ng-if="r.pivot.isActive==1" ng-repeat="r in room.rates">
+                                                        <span class="breakfast"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ r.isMonthly ? 'Monthly' : 'Nightly' }} rates with {{ r.mealType=='N' ? 'out' : '' }} breakfast as low as</span>
                                                         <strong class="item-price">‎{{ r.pivot.price | currency: '₱':0 }}</strong>
                                                     </div>
                                                 </div>
+                                                <a ui-sref="roomDetail({slug: room.slug})" class="btn btn-success btn-block">View Deal <span class="lnr lnr-chevron-right pull-right"></span></a>
                                             </div>
-                                            <a ui-sref="roomDetail({slug: room.slug})" class="btn btn-success btn-block">View Deal <span class="lnr lnr-chevron-right pull-right"></span></a>
+
                                         </div>
                                     </div>
                                     <div class="item-slide-layout" ng-class="{'active': room.showPictures == 1}">

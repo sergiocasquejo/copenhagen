@@ -64,13 +64,6 @@
             }
         }
         &.section-banner {
-            .booking-form {
-                position: absolute;
-                z-index: 999;
-                background-color: rgba(255, 255, 255, 0.68);
-                width: 100%;
-                padding: 10px;
-            }
             .carousel-inner {
                 .item {
                     width: 100%;
@@ -184,19 +177,26 @@
                     }
                     .item-best-deals {
                         border: none;
-                        .price {
-                            margin: 10px 0;
-                            .item-price {
-                                font-size: 20px;
-                                color: #66a400;
-                                margin: 0;
-                                display: block;
-                                font-family: Arial, Helvetica, Sans, Sans-Serif, Sans Serif;
-                                font-weight: 400;
-                                span.per {
-                                    font-size: 14px;
+                        .best-deals-main {
+                            display: table-cell;
+                            vertical-align: bottom;
+                            min-height: 200px;
+                            height: 200px;
+                            .price {
+                                margin: 0 0;
+                                &.monthly {
+                                    .item-price {
+                                        font-size: 16px;
+                                        color: #F44336;
+                                    }
+                                }
+                                .item-price {
+                                    font-size: 24px;
+                                    color: #03a9f4;
+                                    margin: 0;
+                                    display: block;
+                                    font-family: Arial, Helvetica, Sans, Sans-Serif, Sans Serif;
                                     font-weight: 400;
-                                    color: #5d5a5a;
                                 }
                             }
                         }
@@ -207,16 +207,17 @@
                             display: block;
                             @include border-radius(3px);
                             font-size: 10px;
+                            color: #A0A0A0;
                         }
                         .btn {
-                            background: #66a400;
-                            border: 1px solid #66a400;
-                            border-bottom: 1px solid #4c7b00;
                             @include border-radius(2px);
+                            background-clip: padding-box;
                             padding: 7px 5px;
-                            font-size: 18px;
+                            font-size: 16px;
+                            margin-top: 15px;
+                            height: 40px;
                             .lnr {
-                                margin-top: 5px;
+                                margin-top: 3px;
                             }
                         }
                     }
