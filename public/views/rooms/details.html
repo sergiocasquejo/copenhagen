@@ -68,8 +68,9 @@
                             <div class="best-deals-main text-left">
                                 <div class="best-deals-inner">
                                     <div class="price" ng-if="r.pivot.isActive==1 && r.isMonthly == 0" ng-repeat="r in room.rates">
-                                        <strong class="item-price">‎<input name="rate_{{ r.id }}" type="radio" ng-model="booking.rateSelected" ng-value="r" ng-init="$index == 0 ? booking.rateSelected = r : ''" ng-checked="booking.rateSelected==r.id"/> {{ r.pivot.price | currency: '₱':0 }}<span class="per">/night</span></strong>
-                                        <span class="breakfast" ng-if="r.mealType=='N' && r.isMonthly == 0">{{ r.name }} - with out breakfast</span>
+                                        <span class="breakfast"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ r.isMonthly ? 'Monthly' : 'Nightly' }} rates with {{ r.mealType=='N' ? 'out' : '' }} breakfast as low as</span>
+                                        <label class="item-price">‎<input name="rate_{{ r.id }}" type="radio" ng-model="booking.rateSelected" ng-value="r" ng-init="$index == 0 ? booking.rateSelected = r : ''" ng-init="booking.rateSelected=r.id"/> {{ r.pivot.price | currency: '₱':0 }}</label>
+
                                     </div>
                                 </div>
                             </div>
