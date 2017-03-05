@@ -105,7 +105,7 @@ class RoomController extends Controller
                 if ($countRegRate == 0 || $countMonthlyRate != 1) {
                     $room->isActive  = 0;
                     $room->save();
-                    return response()->json('Must have 1 monthly rate && must have regular rate enabled.', 400, [], JSON_UNESCAPED_UNICODE);   
+                    return response()->json('Must have 1 monthly rate and must have regular rate enabled.', 400, [], JSON_UNESCAPED_UNICODE);   
                 }
                 
                 return response()->json(\App\Room::lazyLoad()->get(), 200, [], JSON_UNESCAPED_UNICODE);   

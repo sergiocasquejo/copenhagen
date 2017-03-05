@@ -77,7 +77,7 @@ class Calendar extends Model
         $roomRates =  array();
         $x = $this->rates(function($q) {
             $q->where('isMonthly', 0);
-                $q->wherePivot('active', 1);
+            $q->wherePivot('active', 1);
         })->get();/*->map(function($item) use($roomRates){
             $roomRates[$item->pivot->rateID] = ['id' => $item->pivot->rateID, 'name' => $item->name, 'price' => $item->pivot->price, 'active' => $item->pivot->active];
             return json_encode($roomRates);

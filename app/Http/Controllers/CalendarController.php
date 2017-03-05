@@ -34,7 +34,7 @@ class CalendarController extends Controller
             try {
                 while(strtotime($date) <= strtotime($end_date)) {
                     $date = date('Y-m-d', strtotime($date));
-                    $calendar = \App\Calendar::firstOrNew(array('selectedDate' => $date));
+                    $calendar = \App\Calendar::firstOrNew(array('selectedDate' => $date, 'roomID' => $request->input('roomID')));
                     $calendar->roomID = $request->input('roomID');
                     $calendar->selectedDate = $date;
                     $calendar->availability = $request->input('availability', 0);

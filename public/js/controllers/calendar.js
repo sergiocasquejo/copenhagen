@@ -53,6 +53,10 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
 
         function fetchCalendarByRoomID(roomID, params) {
             sc.events = [];
+            sc.calendar.calendarRates = null;
+            sc.availability = null;
+            sc.isActive = 0;
+
             API.fetchCalendarByRoomIdAndDate(roomID, params.start, params.end).then(function(response) {
 
                 angular.forEach(response.data, function(data) {
@@ -114,7 +118,7 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
         sc.saveCalendar = function(isValid) {
             if (isValid) {
                 API.saveCalendar({
-                    roomID: sc.calendar.roomID,
+                    roomID: sc.calendar.roomType.id,
                     from: moment(sc.calendar.from).format('YYYY-MM-DD'),
                     to: moment(sc.calendar.to).format('YYYY-MM-DD'),
                     availability: sc.calendar.availability,
