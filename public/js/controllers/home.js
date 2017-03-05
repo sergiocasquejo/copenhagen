@@ -28,11 +28,12 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
         var sc = $scope;
         sc.buttonText = 'Search';
         sc.isInlineForm = true;
-        $rootScope.booking = API.getBookingData();
+        $rootScope.booking = API.getBookingData() || {
+            adult: 1,
+            child: 0,
+            noRooms: 1
+        };
         sc.today = new Date();
-        $rootScope.booking.adult = $rootScope.booking.adult || 1;
-        $rootScope.booking.child = $rootScope.booking.child || 0;
-        $rootScope.booking.noRooms = $rootScope.booking.noRooms || 1;
         sc.occMinus = function(type) {
             switch (type) {
                 case 'rooms':
