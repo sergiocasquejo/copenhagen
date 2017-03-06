@@ -8,6 +8,24 @@
             }
         }
     }
+    .carousel-control {
+        .lnr {
+            position: absolute;
+            top: 50%;
+            z-index: 5;
+            display: inline-block;
+            margin-top: -10px;
+            font-size: 30px;
+            &.lnr-chevron-left {
+                left: 50%;
+                margin-left: -10px;
+            }
+            &.lnr-chevron-right {
+                right: 50%;
+                margin-left: -10px;
+            }
+        }
+    }
 }
 
 .section-banner-content {
@@ -17,5 +35,33 @@
                 max-height: 550px;
             }
         }
+    }
+}
+
+.carousel-fade {
+    .carousel-inner {
+        .item {
+            transition-property: opacity;
+        }
+        .item,
+        .active.left,
+        .active.right {
+            opacity: 0;
+        }
+        .active,
+        .next.left,
+        .prev.right {
+            opacity: 1;
+        }
+        .next,
+        .prev,
+        .active.left,
+        .active.right {
+            left: 0;
+            transform: translate3d(0, 0, 0);
+        }
+    }
+    .carousel-control {
+        z-index: 2;
     }
 }

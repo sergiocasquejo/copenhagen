@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse" ng-controller="headerCtrl">
 
     <div class="menu-nav">
         <div class="container">
@@ -15,12 +15,12 @@
                     </div>
                     <div id="navbar" class="collapse navbar-collapse" uib-collapse="isCollapsed">
                         <ul class="nav navbar-nav">
-                            <li class="active"><a ui-sref="home">Home</a></li>
-                            <li><a ui-sref="roomsAvailable">Accomodation</a></li>
-                            <li><a>Dining</a></li>
-                            <li><a ui-sref="meetings">Mettings</a></li>
-                            <li><a href="#contact">Gallery</a></li>
-                            <li><a ui-sref="contact">Contact & Location</a></li>
+                            <li ng-class="{ active: isActive('/')}"><a ui-sref="home">Home</a></li>
+                            <li ng-class="{ active: isActive('/available-rooms-cebu-hotels')}"><a ui-sref="roomsAvailable">Accomodation</a></li>
+                            <li ng-class="{ active: isActive('/dining')}"><a>Dining</a></li>
+                            <li ng-class="{ active: isActive('/meetings')}"><a ui-sref="meetings">Mettings</a></li>
+                            <li ng-class="{ active: isActive('/gallery')}"><a>Gallery</a></li>
+                            <li ng-class="{ active: isActive('/contact-location')}"><a ui-sref="contact">Contact & Location</a></li>
                         </ul>
                     </div>
                     <!--/.nav-collapse -->

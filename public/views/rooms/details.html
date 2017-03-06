@@ -3,21 +3,55 @@
     <div ui-view="steps"></div>
     <section class="section-rooms-details section">
         <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h1 class="page-title">{{ room.name }}</h1>
+            <div class="box">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-title">{{ room.name }}</h1>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-9">
-                    <div class="room-inner">
-                        <div class="room-image">
-                            <div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
-                                <div uib-slide ng-repeat="photo in room.photos" index="$index">
-                                    <img ng-src="{{ photo.file.orig }}" style="margin:auto;">
+                <div class="row">
+                    <div class="col-md-3 col-md-push-9">
+                        <div class="form-wrapper">
+                            <div class="room-detail_total text-center">
+                                <h5>STARTING ROOM FROM</h5>
+                                <div class="best-deals-main">
+                                    <div class="best-deals-inner">
+                                        <div class="price" ng-if="r.pivot.isActive==1 && r.isMonthly == 0" ng-repeat="r in room.rates">
+                                            <span class="breakfast"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ r.isMonthly ? 'Monthly' : 'Nightly' }} rates with {{ r.mealType=='N' ? 'out' : '' }} breakfast as low as</span>
+                                            <label class="item-price">‎<input name="rate_{{ r.id }}" type="radio" ng-model="booking.rateSelected" ng-if="room.rates.length > 1" ng-value="r" ng-init="$index == 0 ? booking.rateSelected = r : ''" ng-init="booking.rateSelected=r.id"/> {{ r.pivot.price | currency: '₱':0 }}</label>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="room.isActive" class="booking-form">
+                                <form autocomplete="off" novalidate="" ng-submit="book(bookingForm.$valid)" name="bookingForm" class="text-center" ng-class="{'form-inline': isInlineForm}">
+                                    <button class="btn btn-success" ng-disabled="bookingForm.$invalid">Book Now</button>
+                                </form>
+                            </div>
+                            <button ng-if="!room.isActive" class="btn btn-danger btn-block">Room is not available</button>
+                        </div>
+
+
+
+                    </div>
+                    <!--/.col-md-3-->
+                    <div class="col-md-9 col-md-pull-3">
+                        <div class="room-inner">
+                            <div class="room-image">
+                                <div class="carousel-fade" template-url="/uib/template/carousel/carousel.html" uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
+                                    <div uib-slide ng-repeat="photo in room.photos" index="$index">
+                                        <img ng-src="{{ photo.file.orig }}" style="margin:auto;">
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <!--/.col-md-9-->
+                </div>
+                <!--/.row-->
+                <div class="row">
+                    <div class="col-md-9">
                         <uib-tabset>
                             <uib-tab index="0" heading="What’s around">
                                 <ul class="list-unstyled overview">
@@ -61,61 +95,6 @@
                         </uib-tabset>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="form-wrapper">
-                        <div class="room-detail_total text-center">
-                            <h5>STARTING ROOM FROM</h5>
-                            <div class="best-deals-main text-left">
-                                <div class="best-deals-inner">
-                                    <div class="price" ng-if="r.pivot.isActive==1 && r.isMonthly == 0" ng-repeat="r in room.rates">
-                                        <span class="breakfast"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ r.isMonthly ? 'Monthly' : 'Nightly' }} rates with {{ r.mealType=='N' ? 'out' : '' }} breakfast as low as</span>
-                                        <label class="item-price">‎<input name="rate_{{ r.id }}" type="radio" ng-model="booking.rateSelected" ng-value="r" ng-init="$index == 0 ? booking.rateSelected = r : ''" ng-init="booking.rateSelected=r.id"/> {{ r.pivot.price | currency: '₱':0 }}</label>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div ng-if="room.isActive" class="booking-form">
-                            <form autocomplete="off" novalidate="" ng-submit="book(bookingForm.$valid)" name="bookingForm" class="text-center" ng-class="{'form-inline': isInlineForm}">
-                                <!--<div class="form-group" ng-class="{ 'has-error': bookingForm.checkIn.$touched && bookingForm.checkIn.$invalid }">
-                                    <div class="input-group" data-min-date="today" moment-picker="booking.checkIn" format="YYYY-MM-DD">
-                                        <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-                                        <input autocomplete="off" data-min-date="today" class="form-control" name="checkIn" placeholder="Check In" ng-model="booking.checkIn" ng-model-options="{ updateOn: 'blur' }" ng-required="true" required>
-                                    </div>
-                                </div>
-                                <div class="form-group" ng-class="{'has-error':  bookingForm.checkOut.$touched && bookingForm.checkOut.$invalid}">
-                                    <div class="input-group" data-min-date="booking.checkIn" min-date="booking.checkIn" moment-picker="booking.checkOut" format="YYYY-MM-DD">
-                                        <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-                                        <input autocomplete="off" data-min-date="booking.checkIn" name="checkOut" class="form-control" placeholder="Check Out" ng-model="booking.checkOut" ng-model-options="{ updateOn: 'blur' }" ng-required="true" required>
-                                    </div>
-                                </div>
-                                <div class="form-group" ng-class="{'has-error':  bookingForm.noRooms.$touched && bookingForm.noRooms.$invalid}">
-                                    <select name="room" class="form-control" data-ng-model="booking.noRooms" ng-options="room for room in [] | range:1:room.totalRooms + 1">
-                                        <option value="">Rooms</option>
-                                    </select>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-md-6" ng-class="{'has-error':  bookingForm.adult.$touched && bookingForm.adult.$invalid}">
-                                        <select name="adult" class="form-control" data-ng-model="booking.adult" ng-required="true" required ng-options="adult for adult in [] | range:1:room.totalPerson + 1">
-                                        <option value="">Adult</option>
-                                    </select>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <select name="child" class="form-control" data-ng-model="booking.child" ng-options="room for room in [] | range:1:11">
-                                        <option value="">Child</option>
-                                    </select>
-                                    </div>
-                                </div>-->
-                                <button class="btn btn-success" ng-disabled="bookingForm.$invalid">Book Now</button>
-                            </form>
-                        </div>
-                        <button ng-if="!room.isActive" class="btn btn-danger btn-block">Room is not available</button>
-                    </div>
-
-                </div>
-
-
-
             </div>
         </div>
     </section>

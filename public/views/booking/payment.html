@@ -20,11 +20,12 @@
 
                                 <div class="checkbox" ng-class="{'has-error':  paymentForm.accept.$touched && paymentForm.accept.$invalid}">
                                     <label class="control-label" for="accept">
-                                        <input type="checkbox" ng-model="booking.accept"  ng-required="true" required> I accept to the <a>Terms of Sale</a>
+                                        <input type="checkbox" ng-model="booking.accept"  ng-required="true" required> I accept to the <a ui-sref="policy" target="_blank">Terms of Sale</a>
                                     </label>
                                 </div>
                                 <p>
-                                    By accepting the terms & conditions, I have read and agree to all the terms and conditions set forth by Iron Wood Property Ventures Corp. If you would like more information please access our Help section to read the <a>terms</a>                                    and <a>privacy policy</a>
+                                    By accepting the terms & conditions, I have read and agree to all the terms and conditions set forth by Iron Wood Property Ventures Corp. If you would like more information please access our Help section to read the
+                                    <a ui-sref="policy" target="_blank">terms</a> and <a ui-sref="policy" target="_blank">privacy policy</a>
                                 </p>
 
                                 <button class="btn btn-success btn-block" ng-disabled="paymentForm.$invalid">Pay Now <span class="fa fa-long-arrow-right"></span></button>

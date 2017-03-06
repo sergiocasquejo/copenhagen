@@ -9,7 +9,7 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                 },
                 'header@home': {
                     templateUrl: '/views/_partials/header.html',
-                    controller: 'homeCtrl',
+                    controller: 'headerCtrl',
                 },
                 'bookingForm@home': {
                     templateUrl: '/views/booking/booking-form.html',
@@ -31,7 +31,7 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                 },
                 'header@meetings': {
                     templateUrl: '/views/_partials/header.html',
-                    controller: 'pageCtrl',
+                    controller: 'headerCtrl',
                 },
                 'bookingForm@meetings': {
                     templateUrl: '/views/booking/booking-form.html',
@@ -53,7 +53,7 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                 },
                 'header@contact': {
                     templateUrl: '/views/_partials/header.html',
-                    controller: 'pageCtrl',
+                    controller: 'headerCtrl',
                 },
                 'bookingForm@contact': {
                     templateUrl: '/views/booking/booking-form.html',
@@ -75,7 +75,7 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                 },
                 'header@accomodation': {
                     templateUrl: '/views/_partials/header.html',
-                    controller: 'pageCtrl',
+                    controller: 'headerCtrl',
                 },
                 'bookingForm@accomodation': {
                     templateUrl: '/views/booking/booking-form.html',
@@ -97,7 +97,7 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                 },
                 'header@policy': {
                     templateUrl: '/views/_partials/header.html',
-                    controller: 'pageCtrl',
+                    controller: 'headerCtrl',
                 },
                 'bookingForm@policy': {
                     templateUrl: '/views/booking/booking-form.html',
@@ -119,7 +119,7 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                 },
                 'header@about': {
                     templateUrl: '/views/_partials/header.html',
-                    controller: 'pageCtrl',
+                    controller: 'headerCtrl',
                 },
                 'bookingForm@about': {
                     templateUrl: '/views/booking/booking-form.html',
@@ -136,11 +136,12 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
             url: '/available-rooms-cebu-hotels',
             views: {
                 '': {
-                    templateUrl: '/views/rooms/listing.html'
+                    templateUrl: '/views/rooms/listing.html',
+                    controller: 'roomAvailableCtrl'
                 },
                 'header@roomsAvailable': {
                     templateUrl: '/views/_partials/header.html',
-                    controller: 'roomAvailableCtrl'
+                    controller: 'headerCtrl'
                 },
                 'bookingForm@roomsAvailable': {
                     templateUrl: '/views/booking/booking-form.html',
@@ -160,7 +161,8 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                     controller: 'roomDetailsCtrl',
                 },
                 'header@roomDetail': {
-                    templateUrl: '/views/_partials/header.html'
+                    templateUrl: '/views/_partials/header.html',
+                    controller: 'headerCtrl'
                 },
                 'steps@roomDetail': {
                     templateUrl: '/views/booking/steps.html'
@@ -183,7 +185,8 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                     templateUrl: '/views/booking/customer-details.html'
                 },
                 'header@customerDetail': {
-                    templateUrl: '/views/_partials/header.html'
+                    templateUrl: '/views/_partials/header.html',
+                    controller: 'headerCtrl'
                 },
                 'steps@customerDetail': {
                     templateUrl: '/views/booking/steps.html'
@@ -208,7 +211,8 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                     templateUrl: '/views/booking/payment.html',
                 },
                 'header@paymentDetail': {
-                    templateUrl: '/views/_partials/header.html'
+                    templateUrl: '/views/_partials/header.html',
+                    controller: 'headerCtrl'
                 },
                 'steps@paymentDetail': {
                     templateUrl: '/views/booking/steps.html'

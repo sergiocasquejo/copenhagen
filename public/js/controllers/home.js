@@ -411,28 +411,35 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
     ])
 
 .controller('pageCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', '$timeout', 'sh',
-    function($scope, $rootScope, $state, $stateParams, API, $timeout, sh) {
-        var sc = $scope;
-        sc.contactButtonText = 'SEND';
+        function($scope, $rootScope, $state, $stateParams, API, $timeout, sh) {
+            var sc = $scope;
+            sc.contactButtonText = 'SEND';
 
-        sc.send = function(isValid) {
-            if (isValid) {
-                sc.contactButtonText = 'SENDING...';
-                API.sendContact({
-                    firstname: sc.contact.firstname,
-                    lastname: sc.contact.lastname,
-                    email: sc.contact.email,
-                    phone: sc.contact.phone,
-                    message: sc.contact.message
-                }).then(function(response) {
-                    sc.contact = null;
-                    showPopup('Sent', response.data, sh);
-                    sc.contactButtonText = 'SEND';
-                }, function(error) {
-                    showPopup('Error', error.data, sh);
-                    sc.contactButtonText = 'SEND';
-                });
+            sc.send = function(isValid) {
+                if (isValid) {
+                    sc.contactButtonText = 'SENDING...';
+                    API.sendContact({
+                        firstname: sc.contact.firstname,
+                        lastname: sc.contact.lastname,
+                        email: sc.contact.email,
+                        phone: sc.contact.phone,
+                        message: sc.contact.message
+                    }).then(function(response) {
+                        sc.contact = null;
+                        showPopup('Sent', response.data, sh);
+                        sc.contactButtonText = 'SEND';
+                    }, function(error) {
+                        showPopup('Error', error.data, sh);
+                        sc.contactButtonText = 'SEND';
+                    });
+                }
             }
         }
-    }
-]);
+    ])
+    .controller('headerCtrl', ['$scope', '$location',
+        function($scope, $location) {
+            $scope.isActive = function(viewLocation) {
+                return viewLocation === $location.path();
+            };
+        }
+    ]);
