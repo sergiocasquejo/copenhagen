@@ -135,6 +135,6 @@ class CalendarController extends Controller
             $str .= '<tr><td>'. date('D F d Y', strtotime($d->selectedDate)) . '</td><td>' . $d->availability . '</td><td>' . (!$d->isActive ? 'not' : '' ) . ' available' . '</td></tr>';
         }
         $str .= '</table>';
-        return response()->json('<p>Selected date has no room available</p>' . $str, 400, [], JSON_UNESCAPED_UNICODE);
+        return response()->json('<p>Selected date has no enough room available.</p>' . $str, 400, [], JSON_UNESCAPED_UNICODE);
     }
 }
