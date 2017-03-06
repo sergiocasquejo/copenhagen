@@ -220,7 +220,7 @@ class RoomController extends Controller
 
     public function showAvailable()
     {
-		return response()->json(\App\Room::lazyLoad()->where('isActive', 1)->get(), 200);
+		return response()->json(\App\Room::lazyLoad()->where('isActive', 1)->orderBy('created_at', 'DESC')->get(), 200);
 	}
 
     
