@@ -29,6 +29,14 @@
             }
         }
         section {
+            &.section-step-indicator {
+                .step {
+                    &:after,
+                    &:before {
+                        display: none;
+                    }
+                }
+            }
             &.section-rooms-available {
                 .item {
                     .img-area {

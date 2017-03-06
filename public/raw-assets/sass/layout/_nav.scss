@@ -96,6 +96,7 @@
             }
             .guest-selection-panel-dd {
                 position: relative;
+                border-left: 3px solid #5cb85c;
                 .form-control {
                     width: 100%;
                     @include border-radius(0);

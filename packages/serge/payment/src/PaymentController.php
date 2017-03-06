@@ -117,8 +117,18 @@ class PaymentController extends Controller {
         }
 
         $booking->status = 'completed';
-        $booking->save();
+        if ($booking->save()) {
+            //Update room availability
+            \App\Calendar::updateAvailability(
+                $booking->roomID, 
+                $booking->noOfRooms, 
+                $booking->checkIn, 
+                $booking->checkOut
+            );
+        }
         
+
+
         $payment->totalAmount = $amt;
         $payment->method = 'pesopay';
         $payment->referenceID = $payRef;

@@ -34,11 +34,46 @@
             margin-top: 10px;
             margin-bottom: 20px;
             .step {
+                position: relative;
+                &.active {
+                    background-color: #62b762;
+                }
+                &:after,
+                &:before {
+                    content: '';
+                    clear: both;
+                    display: block;
+                    position: absolute;
+                    right: -5px;
+                    top: -5px;
+                    border-left: solid 30px #f5f5f5;
+                    z-index: 1;
+                }
+                &:before {
+                    height: 40px;
+                    -ms-transform: rotate(20deg);
+                    -webkit-transform: rotate(-20deg);
+                    transform: rotate(-20deg);
+                    right: -5px;
+                    top: -6px;
+                }
+                &:after {
+                    right: -5px;
+                    top: 22px;
+                    height: 40px;
+                    -ms-transform: rotate(20deg);
+                    -webkit-transform: rotate(20deg);
+                    transform: rotate(20deg);
+                }
                 &:first-child {
                     @include border-left-radius(4px);
                 }
                 &:last-child {
                     @include border-right-radius(4px);
+                    &:after,
+                    &:before {
+                        display: none;
+                    }
                 }
                 background-color: #17212c;
                 color: $white;
@@ -55,6 +90,7 @@
                     vertical-align: middle;
                     line-height: 38px;
                     font-size: 20px;
+                    margin-left: 1em;
                 }
                 &.active .counter {
                     background-color: #50a950;

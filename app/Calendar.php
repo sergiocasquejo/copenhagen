@@ -91,4 +91,20 @@ class Calendar extends Model
 
         return $roomRates;
     }
+
+    public static function updateAvailability($roomID, $noOfRooms, $checkIn, $checkOut) {
+        $date = $checkIn;
+        while(strtotime($date) <= strtotime($checkOut)) {
+            $date = date('Y-m-d', strtotime($date));
+            $calendar = \App\Calendar::find(array('selectedDate' => $date, 'roomID' => $roomID));
+            if ($calendar) {
+                $availability = $calendar->availability - $noOfRooms;
+                $calendar->availability = $availability;
+                $calendar->isActive = $availability  <= 0 ? 0 : 1;
+                $calendar->save();
+            }
+
+            $date = date ("Y-m-d", strtotime("+1 day", strtotime($date)));
+        }
+    }
 }
