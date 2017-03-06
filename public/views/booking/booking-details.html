@@ -10,10 +10,10 @@
             <p><span class="lbl"><i class="fa fa-clock-o" aria-hidden="true"></i> Time In:</span><span>2:00:00 pm</span></p>
             <p><span class="lbl"><i class="fa fa-calendar" aria-hidden="true"></i> Check Out:</span><span>{{ booking.checkOut | date: "EEEE MMMM dd, yyyy"  }}</span></p>
             <p><span class="lbl"><i class="fa fa-clock-o" aria-hidden="true"></i> Time Out:</span><span>2:00:00 pm</span></p>
-            <p><span class="lbl"><i class="fa fa-user" aria-hidden="true"></i> Guest: </span><span>{{ booking.noOfRooms }} Adult(s) {{ booking.noOfChild ? booking.noOfChild : 0 | number }} Child</span></p>
+            <p><span class="lbl"><i class="fa fa-user" aria-hidden="true"></i> Guest: </span><span>{{ booking.adult | number }} Adult(s) {{ booking.child ? booking.child : 0 | number }} Child</span></p>
             <p><span class="lbl"><i class="fa fa-area-chart" aria-hidden="true"></i> Rate: </span><span>{{ booking.roomRate | currency:'PHP ' }}</span></p>
             <p><span class="lbl"><i class="fa fa-moon-o" aria-hidden="true"></i> Nights: </span><span>x {{ booking.noOfNights }}</span></p>
-            <p><span class="lbl"><i class="fa fa-bed" aria-hidden="true"></i> Rooms: </span><span>x {{ booking.noOfRooms }}</span></p>
+            <p><span class="lbl"><i class="fa fa-bed" aria-hidden="true"></i> Rooms: </span><span>x {{ booking.noRooms }}</span></p>
 
         </div>
         <div class="panel-footer">
