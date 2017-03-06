@@ -302,9 +302,9 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                         API.setBookingData({
                             checkIn: sc.booking.checkIn,
                             checkOut: sc.booking.checkOut,
-                            noOfAdults: sc.booking.adult,
-                            noOfChild: sc.booking.child,
-                            noOfRooms: sc.booking.noRooms,
+                            adult: sc.booking.adult,
+                            child: sc.booking.child,
+                            noRooms: sc.booking.noRooms,
                             roomRate: response.data.roomRate,
                             totalAmount: response.data.totalAmount,
                             noOfNights: response.data.noOfNights,
