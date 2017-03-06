@@ -110,10 +110,18 @@ class Room extends Model
     public function getRoomRatesAttribute()
     {
         $roomRates = array();
-        return $this->rates()->get()->map(function($item) use($roomRates){
-            $roomRates[$item->pivot->rateID] = ['name' => $item->name, 'price' => $item->pivot->price, 'isActive' => $item->pivot->isActive];
-            return $roomRates;
-        });
+        $rates = $this->rates()->get();
+
+        if ($rates) {
+            foreach ($rates as $item) {
+                $roomRates[$item->pivot->rateID] = ['name' => $item->name, 'price' => $item->pivot->price, 'isActive' => $item->pivot->isActive];
+            }
+        }
+        
+        // ->map(function($item) use($roomRates){
+        //     $roomRates[$item->pivot->rateID] = ['name' => $item->name, 'price' => $item->pivot->price, 'isActive' => $item->pivot->isActive];
+        //     return $roomRates;
+        // });
 
         return $roomRates;
     }

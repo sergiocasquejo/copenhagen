@@ -47,7 +47,12 @@ class PhotoController extends Controller
             $photo->default = 0;
             
             $room = \App\Room::findOrFail($id);
-            $room->photos()->save($photo);
+            try {
+                $room->photos()->save($photo);
+            } catch(\Exception $e) {
+                \Log::info('ERROR: '.$e->getMessage());
+                return response()->json('Oops! Error please report to administrator.', 400, [], JSON_UNESCAPED_UNICODE);
+            }
 
             $photos = $room->photos()->get();
             foreach($photos as $i => $photo) {

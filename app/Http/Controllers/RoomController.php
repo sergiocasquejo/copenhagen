@@ -14,9 +14,13 @@ class RoomController extends Controller
     */
     public function index()
     {
-		return response()->json(\App\Room::lazyLoad()->get(), 200);
+		return response()->json($this->fetchAll(), 200);
 	}
-	
+
+    public function fetchAll() {
+        return \App\Room::lazyLoad()->orderBy('created_at', 'DESC')->get();
+    }
+ 	
 	
 	/**
 	* Store a newly created resource in storage.
@@ -44,9 +48,13 @@ class RoomController extends Controller
         $room->building = $request->input('building', 0);
         $room->isActive = $request->input('isActive', 0);
         $room->sort = $request->input('sort', 0);
-        
-        if ($room->save()) {
-            return response()->json(\App\Room::lazyLoad()->get(), 200, [], JSON_UNESCAPED_UNICODE);   
+        try {
+            if ($room->save()) {
+                return response()->json($this->fetchAll(), 200, [], JSON_UNESCAPED_UNICODE);   
+            }
+        } catch(\Exception $e) {
+            \Log::info('ERROR: '.$e->getMessage());
+            return response()->json('Oops! Error please report to administrator.', 400, [], JSON_UNESCAPED_UNICODE);
         }
     
 
@@ -79,37 +87,41 @@ class RoomController extends Controller
 			$room->building = $request->input('building', 0);
 			$room->isActive = $request->input('isActive', 0);
 			$room->sort = $request->input('sort', 0);
-			
-			if ($room->save()) {
-                $roomRates = $request->input('roomRates');
-                if ($roomRates) {
-                    foreach ($roomRates as $i => $rates) {
-                        if ($rates) {
-                            foreach($rates as $rateID => $r) { 
-                                $a[$rateID] = array('price' => (float)$r['price'], 'isActive'  => $r['isActive'] );
+			try {
+                if ($room->save()) {
+                    $rates = $request->input('roomRates');
+                    if ($rates) {
+                        foreach($rates as $rateID => $r) { 
+                            if ($r) {
+                                $isActive = $r['price'] > 0 ? $r['isActive'] : 0;
+                                $a[$rateID] = array('price' => (float)$r['price'], 'isActive'  => $isActive );
                                 $room->rates()->sync($a);
                             }
                         }
+                            
                     }
-                }
-                $countMonthlyRate = 0;
-                $countRegRate = 0;
-                foreach($room->rates()->get() as $r) {
-                    if ($r->isMonthly && $r->pivot->isActive) {
-                        $countMonthlyRate +=1;
-                    } else if ($r->pivot->isActive) {
-                        $countRegRate +=1;
+                    $countMonthlyRate = 0;
+                    $countRegRate = 0;
+                    foreach($room->rates()->get() as $r) {
+                        if ($r->isMonthly && $r->pivot->isActive) {
+                            $countMonthlyRate +=1;
+                        } else if ($r->pivot->isActive) {
+                            $countRegRate +=1;
+                        }
                     }
+                    //Disable room if more than 1 monthly rate
+                    if ($countRegRate == 0 || $countMonthlyRate != 1) {
+                        $room->isActive  = 0;
+                        $room->save();
+                        return response()->json('Must have 1 monthly rate and must have regular rate enabled.', 400, [], JSON_UNESCAPED_UNICODE);   
+                    }
+                    
+                    return response()->json($this->fetchAll(), 200, [], JSON_UNESCAPED_UNICODE);   
                 }
-                //Disable room if more than 1 monthly rate
-                if ($countRegRate == 0 || $countMonthlyRate != 1) {
-                    $room->isActive  = 0;
-                    $room->save();
-                    return response()->json('Must have 1 monthly rate and must have regular rate enabled.', 400, [], JSON_UNESCAPED_UNICODE);   
-                }
-                
-                return response()->json(\App\Room::lazyLoad()->get(), 200, [], JSON_UNESCAPED_UNICODE);   
-			}
+            }catch(\Exception $e) {
+                \Log::info('ERROR: '.$e->getMessage());
+                return response()->json('Oops! Error please report to administrator.', 400, [], JSON_UNESCAPED_UNICODE);   
+            }
 		}
         $validationStr = '';
         foreach ($validator->errors()->getMessages() as $k => $error) {
@@ -130,9 +142,13 @@ class RoomController extends Controller
     * @return \Illuminate\Http\Response
     */
     public function destroy($id)
-    {   
-        \App\Room::findOrFail($id)->delete();
-        return response()->json(\App\Room::lazyLoad()->get(), 200, [], JSON_UNESCAPED_UNICODE);   
+    {   try {
+            \App\Room::findOrFail($id)->delete();
+            return response()->json($this->fetchAll(), 200, [], JSON_UNESCAPED_UNICODE);   
+        } catch(\Exception $e) {
+            \Log::info('ERROR: '.$e->getMessage());
+            return response()->json('Oops! Error please report to administrator.', 400, [], JSON_UNESCAPED_UNICODE);   
+        }
 	}
 
     public function attachAminities(Request $request) {
@@ -169,7 +185,8 @@ class RoomController extends Controller
                 return response()->json(\App\Room::all()->toArray(), 200, [], JSON_UNESCAPED_UNICODE);
             }
         } catch(\Exception $e) {
-            return response()->json($e->getMessage(), 400, [], JSON_UNESCAPED_UNICODE);
+            \Log::info('ERROR: '.$e->getMessage());
+            return response()->json('Oops! Error please report to administrator.', 400, [], JSON_UNESCAPED_UNICODE);
         }
 
     }
@@ -189,6 +206,7 @@ class RoomController extends Controller
                 ->get()->toArray();
             return response()->json($types, 200, [], JSON_UNESCAPED_UNICODE);
         }catch(\Exception $e) {
+            \Log::info('ERROR: '.$e->getMessage());
             return response()->json($e->getMessage(), 400, [], JSON_UNESCAPED_UNICODE);
         }
         

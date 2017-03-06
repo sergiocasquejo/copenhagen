@@ -32,7 +32,8 @@ class AminitiesController extends Controller
                 return response()->json(\App\Aminities::all()->toArray(), 200, [], JSON_UNESCAPED_UNICODE);
             }
         } catch(\Exception $e) {
-            return response()->json($e->getMessage(), 200, [], JSON_UNESCAPED_UNICODE);
+            \Log::info('ERROR: '.$e->getMessage());
+            return response()->json('Oops! Error please report to administrator.', 400, [], JSON_UNESCAPED_UNICODE);
         }
     }
 
@@ -80,7 +81,12 @@ class AminitiesController extends Controller
     {
         $aminities = \App\Aminities::find($id);
         if ($aminities) {
-            $aminities->delete();
+            try {
+                $aminities->delete();
+            } catch(\Exception $e) {
+                \Log::info('ERROR: '.$e->getMessage());
+                return response()->json('Oops! Error please report to administrator.', 400, [], JSON_UNESCAPED_UNICODE);
+            }
             return response()->json(\App\Aminities::all()->toArray(), 200, [], JSON_UNESCAPED_UNICODE);
         }
 

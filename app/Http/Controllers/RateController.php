@@ -44,8 +44,13 @@ class RateController extends Controller
             $rate->description = $request->input('description');
             $rate->isMonthly = $request->input('isMonthly', 0);
             $rate->active = $request->input('active', 0);
-            if ($rate->save()) {
-                return response()->json($this->getAllRates(), 200, [], JSON_UNESCAPED_UNICODE);   
+            try {
+                if ($rate->save()) {
+                    return response()->json($this->getAllRates(), 200, [], JSON_UNESCAPED_UNICODE);   
+                }
+            } catch(\Exception $e) {
+                \Log::info('ERROR: '.$e->getMessage());
+                return response()->json('Oops! Error please report to administrator.', 400, [], JSON_UNESCAPED_UNICODE);
             }
 
         }
@@ -75,10 +80,14 @@ class RateController extends Controller
             $rate->description = $request->input('description');
             $rate->isMonthly = $request->input('isMonthly', 0);
             $rate->active = $request->input('active', 0);
-            if ($rate->save()) {
-                return response()->json($this->getAllRates(), 200, [], JSON_UNESCAPED_UNICODE);   
+            try {
+                if ($rate->save()) {
+                    return response()->json($this->getAllRates(), 200, [], JSON_UNESCAPED_UNICODE);   
+                }
+            } catch(\Exception $e) {
+                \Log::info('ERROR: '.$e->getMessage());
+                return response()->json('Oops! Error please report to administrator.', 400, [], JSON_UNESCAPED_UNICODE);
             }
-
         }
 
         return response()->json($validator->errors()->getMessages(), 400, [], JSON_UNESCAPED_UNICODE);
@@ -93,8 +102,13 @@ class RateController extends Controller
     public function destroy($id)
     {
         $rate = \App\Rate::findOrFail($id);
-        if ($rate->delete()) {
-            return response()->json($this->getAllRates(), 200, [], JSON_UNESCAPED_UNICODE);
+        try {
+            if ($rate->delete()) {
+                return response()->json($this->getAllRates(), 200, [], JSON_UNESCAPED_UNICODE);
+            }
+        } catch(\Exception $e) {
+            \Log::info('ERROR: '.$e->getMessage());
+            return response()->json('Oops! Error please report to administrator.', 400, [], JSON_UNESCAPED_UNICODE);
         }
         return response()->json('Failed', 400, [], JSON_UNESCAPED_UNICODE);
     }

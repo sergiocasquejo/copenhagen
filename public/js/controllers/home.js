@@ -299,6 +299,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                         noOfChild: sc.booking.child,
                         noOfRooms: sc.booking.noRooms,
                     }, 1).then(function(response) {
+
                         API.setBookingData({
                             checkIn: sc.booking.checkIn,
                             checkOut: sc.booking.checkOut,
@@ -396,6 +397,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
     .controller('paymentStatusCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', '$timeout',
         function($scope, $rootScope, $state, $stateParams, API, $timeout) {
             $scope.paymentStatus = $stateParams.status;
+            $scope.step = 4;
             $scope.load = function() {
                 document.getElementById("payForm").submit();
             };

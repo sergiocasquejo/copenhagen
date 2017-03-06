@@ -49,8 +49,13 @@ class CustomerController extends Controller
             $customer->zipcode = Request::input('zipcode');
             $customer->countryCode = Request::input('country');
             $customer->contact = Request::input('contact');
-            if ($customer->save()) {
-                return response()->json($customer, 200, [], JSON_UNESCAPED_UNICODE);
+            try {
+                if ($customer->save()) {
+                    return response()->json($customer, 200, [], JSON_UNESCAPED_UNICODE);
+                }
+            }catch(\Exception $e) {
+                \Log::info('ERROR: '.$e->getMessage());
+                return response()->json('Oops! Error please report to administrator.', 400, [], JSON_UNESCAPED_UNICODE);
             }
         } else {
             return response()->json($validator->errors()->getMessages(), 400, [], JSON_UNESCAPED_UNICODE);
@@ -84,8 +89,13 @@ class CustomerController extends Controller
                 $customer->zipcode = Request::input('zipcode');
                 $customer->countryCode = Request::input('country');
                 $customer->contact = Request::input('contact');
-                if ($customer->save()) {
-                    return response()->json($customer, 200, [], JSON_UNESCAPED_UNICODE);
+                try {
+                    if ($customer->save()) {
+                        return response()->json($customer, 200, [], JSON_UNESCAPED_UNICODE);
+                    }
+                }catch(\Exception $e) {
+                   \Log::info('ERROR: '.$e->getMessage());
+                    return response()->json('Oops! Error please report to administrator.', 400, [], JSON_UNESCAPED_UNICODE);
                 }
             } else {
                 return response()->json($validator->errors()->getMessages(), 400, [], JSON_UNESCAPED_UNICODE);

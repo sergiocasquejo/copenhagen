@@ -235,6 +235,22 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
             views: {
                 '': {
                     templateUrl: '/views/booking/process-payment.html',
+                },
+                'header@paymentStatus': {
+                    templateUrl: '/views/_partials/header.html',
+                    controller: 'headerCtrl'
+                },
+                'steps@paymentStatus': {
+                    templateUrl: '/views/booking/steps.html'
+                },
+                'bookingForm@paymentStatus': {
+                    templateUrl: '/views/booking/booking-form.html'
+                },
+                'bookingDetails@paymentStatus': {
+                    templateUrl: '/views/booking/booking-details.html'
+                },
+                'footer@paymentStatus': {
+                    templateUrl: '/views/_partials/footer.html'
                 }
 
             }

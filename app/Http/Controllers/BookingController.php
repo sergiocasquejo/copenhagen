@@ -64,10 +64,14 @@ class BookingController extends Controller
             $booking->specialInstructions = $request->input('specialInstructions');
             $booking->billingInstructions = $request->input('billingInstructions');
             $booking->status = $booking::BOOKING_SUCCESS;
-
-            if ($booking->save()) {
-                $result = $booking->setupPrimeSoftData($booking);
-                return response()->json($result, 200, [], JSON_UNESCAPED_UNICODE);
+            try {
+                if ($booking->save()) {
+                    $result = $booking->setupPrimeSoftData($booking);
+                    return response()->json($result, 200, [], JSON_UNESCAPED_UNICODE);
+                }
+            } catch (\Exception $e) {
+                \Log::info('ERROR: '.$e->getMessage());
+                return response()->json('Oops! Error please report to administrator.', 400, [], JSON_UNESCAPED_UNICODE);
             }
         } else {
             return response()->json($validator->errors()->getMessages(), 400, [], JSON_UNESCAPED_UNICODE);
@@ -241,9 +245,7 @@ class BookingController extends Controller
                             }
                         }
                     }catch(\Exception $e) {
-                        if (\App::environment('local')) {
-                            return response()->json($e->getMessage(), 400, [], JSON_UNESCAPED_UNICODE);
-                        }
+                        \Log::info('ERROR: '.$e->getMessage());
                         return response()->json('Oops!. Something went wrong with your booking. :(', 400, [], JSON_UNESCAPED_UNICODE);
                     }
                 }

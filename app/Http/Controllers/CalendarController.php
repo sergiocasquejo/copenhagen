@@ -55,7 +55,8 @@ class CalendarController extends Controller
                 }
                 return response()->json('success', 200, [], JSON_UNESCAPED_UNICODE);
             }catch(\Exception $e) {
-                return response()->json($e->getMessage(), 400, [], JSON_UNESCAPED_UNICODE);
+                \Log::info('ERROR: '.$e->getMessage());             
+                return response()->json('Oops! Error please report to administrator.', 400, [], JSON_UNESCAPED_UNICODE);
             }
         } 
 
