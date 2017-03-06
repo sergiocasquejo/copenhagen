@@ -35,6 +35,9 @@
                     &:before {
                         display: none;
                     }
+                    .counter {
+                        margin-left: 3px;
+                    }
                 }
             }
             &.section-rooms-available {
@@ -110,6 +113,33 @@
                             }
                             img {
                                 width: 100%;
+                            }
+                        }
+                    }
+                }
+            }
+            &.section-rooms-details {
+                .page-title {
+                    font-size: 30px;
+                    text-align: center;
+                }
+                .form-wrapper {
+                    form {
+                        button {
+                            margin-bottom: 15px;
+                        }
+                    }
+                }
+                .tab-content {
+                    .tab-pane {
+                        padding: 20px 0;
+                        mwl-calendar .cal-month-day,
+                        mwl-calendar .cal-month-box [class*=cal-cell],
+                        mwl-calendar .cal-year-box [class*=span] {
+                            height: 40px;
+                            min-height: 40px;
+                            .calendar-day-title {
+                                display: none;
                             }
                         }
                     }
