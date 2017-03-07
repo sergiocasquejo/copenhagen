@@ -16,16 +16,20 @@
                                 <h5>STARTING ROOM FROM</h5>
                                 <div class="best-deals-main">
                                     <div class="best-deals-inner">
-                                        <div class="price" ng-if="r.pivot.isActive==1 && r.isMonthly == 0" ng-repeat="r in result = (room.rates | filter: { pivot : {isActive:1}, isMonthly:0 })" ng-init="$index == 0 ? booking.rateSelected = r : ''">
-                                            <span class="breakfast"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ r.isMonthly ? 'Monthly' : 'Nightly' }} rates with {{ r.mealType=='N' ? 'out' : '' }} breakfast as low as</span>
-                                            <label class="item-price">‎<input name="rate_{{ r.id }}" type="radio" ng-model="booking.rateSelected" ng-if="result.length > 1" ng-value="r"/> {{ r.pivot.price | currency: '₱':0 }}</label>
+                                        <div class="price" ng-repeat="r in room.rates | filter: { pivot : {isActive:1}, isMonthly: 0}" ng-init="$index == 0 ? booking.rateSelected = r : ''">
+                                            <span class="breakfast"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Nightly rates with {{ r.mealType=='N' ? 'out' : '' }} breakfast as low as</span>
+                                            <label class="item-price">‎<input name="rate_{{ r.id }}" type="radio" ng-model="booking.rateSelected" ng-if="(room.rates | filter: { pivot : {isActive:1}, isMonthly: 0}).length > 1" ng-value="r"/> {{ r.pivot.price | currency: '₱':0 }}</label>
+                                        </div>
+                                        <div class="price monthly" ng-if="r.pivot.isActive==1" ng-repeat="r in result = (room.rates | filter: { pivot : {isActive:1}, isMonthly: 1})">
+                                            <span class="breakfast"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Monthly rates with {{ r.mealType=='N' ? 'out' : '' }} breakfast as low as</span>
+                                            <label class="item-price">‎{{ r.pivot.price | currency: '₱':0 }}</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div ng-if="room.isActive" class="booking-form">
                                 <form autocomplete="off" novalidate="" ng-submit="book(bookingForm.$valid)" name="bookingForm" class="text-center" ng-class="{'form-inline': isInlineForm}">
-                                    <button class="btn btn-success" ng-disabled="bookingForm.$invalid">Book Now</button>
+                                    <button class="btn btn-success" ng-disabled="bookingForm.$invalid">Book Now <span class="lnr lnr-cart pull-right"></span></button>
                                 </form>
                             </div>
                             <button ng-if="!room.isActive" class="btn btn-danger btn-block">Room is not available</button>
