@@ -1,10 +1,16 @@
-<div class="main" ng-controller="pageCtrl">
+<div class="main" ng-controller="galleryCtrl">
     <div ui-view="header"></div>
     <section class="section-page section">
         <div class="container">
             <div class="box">
                 <h1 class="text-center">Gallery</h1>
-
+                <div class="gallery">
+                    <div class="list-inline row">
+                        <div class="item col-md-3" ng-click="openLightboxModal($index)" ng-repeat="item in gallery">
+                            <div class="img-wrapper" style="min-height:200px;background:url('{{ item.url }}') no-repeat center center;background-size: cover;"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

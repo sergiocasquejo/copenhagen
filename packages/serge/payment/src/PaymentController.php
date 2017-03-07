@@ -5,17 +5,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Mail\Reservation;
 use Illuminate\Support\Facades\Mail;
+use Serge\PrimeSoft;
 
-
-class PaymentController extends Controller {
-
-
-    public function index($type) {
-        // dd($type);
-        dd($request->input('test'));
-    }
-
-    
+class PaymentController extends Controller {    
     public function pesopay(Request $request) {
         $orderRef = $request->session()->pull('orderRef', null);
         if ($orderRef) {
@@ -125,17 +117,17 @@ class PaymentController extends Controller {
                 $booking->checkIn, 
                 $booking->checkOut
             );
+
+            $payment->totalAmount = $amt;
+            $payment->method = 'pesopay';
+            $payment->referenceID = $payRef;
+            $payment->customData = serialize($request->input());
+            
+            $booking->payment()->save($payment);
+
+            $primeSoft = new PrimeSoft($booking);
+            $primeSoft->setupPrimeSoftData();
         }
-        
-
-
-        $payment->totalAmount = $amt;
-        $payment->method = 'pesopay';
-        $payment->referenceID = $payRef;
-        $payment->customData = serialize($request->input());
-        
-        $booking->payment()->save($payment);
-
         try {
             Mail::to(Config('mail.emails.reservation'))
             ->cc(Config('mail.emails.info'))

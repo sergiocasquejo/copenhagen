@@ -13,7 +13,14 @@ class PrimesoftServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->app->singleton('primesoft', function($app) {
+            return new PrimeSoft();
+        });
+
+        $this->publishes([
+            __DIR__.'/config/primesoft.php' => config_path('primesoft.php'),
+            // __DIR__.'/views' => base_path('resources/views/primesoft'),
+        ]);
     }
 
     /**
@@ -23,6 +30,16 @@ class PrimesoftServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->mergeConfigFrom( __DIR__.'/config/primesoft.php', 'primesoft');
+    }
+
+     /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return array('primesoft');
     }
 }

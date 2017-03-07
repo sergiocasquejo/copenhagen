@@ -256,6 +256,7 @@ export default class Directive implements ng.IDirective {
 					if (nextView < 0 || nextView > maxView) {
 						setValue($scope.view.moment, $scope, $ctrl, $attrs);
 						$scope.view.update();
+						if ($attrs['ngModel']) $ctrl.$commitViewValue();
 						if ($scope.autoclose) this.$timeout($scope.view.close);
 					} else if (nextView >= minView) $scope.view.selected = view;
 				}
@@ -310,11 +311,11 @@ export default class Directive implements ng.IDirective {
 				$scope.view.render();
 				if (angular.isFunction($scope.change)) {
 					let oldModelValue = valueToMoment(oldViewValue, $scope);
-					this.$timeout(() => $scope.change({ newValue: newModelValue, oldValue: oldModelValue }), 0, false);
+					$scope.$evalAsync(() => $scope.change({ newValue: newModelValue, oldValue: oldModelValue }));
 				}
 			});
 			$scope.$watch(() => $ctrl.$modelValue && $ctrl.$modelValue.valueOf(), () => {
-				let viewMoment = ($ctrl.$modelValue || moment().locale($scope.locale)).clone();
+				let viewMoment = (isValidMoment($ctrl.$modelValue) ? $ctrl.$modelValue : moment().locale($scope.locale)).clone();
 				if (!viewMoment.isSame($scope.view.moment)) {
 					$scope.view.moment = viewMoment;
 					$scope.view.update();

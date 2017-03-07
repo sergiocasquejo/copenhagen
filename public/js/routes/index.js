@@ -44,6 +44,27 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
             }
 
         })
+        .state('gallery', {
+            url: '/gallery',
+            views: {
+                '': {
+                    controller: 'galleryCtrl',
+                    templateUrl: '/views/page/gallery.html'
+                },
+                'header@gallery': {
+                    templateUrl: '/views/_partials/header.html',
+                    controller: 'headerCtrl',
+                },
+                'bookingForm@gallery': {
+                    templateUrl: '/views/booking/booking-form.html',
+                    controller: 'bookingFormCtrl'
+                },
+                'footer@gallery': {
+                    templateUrl: '/views/_partials/footer.html',
+                }
+            }
+
+        })
         .state('contact', {
             url: '/contact-location',
             views: {

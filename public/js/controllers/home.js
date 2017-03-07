@@ -460,6 +460,50 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
             }
         }
     ])
+    .controller('galleryCtrl', ['$scope', 'Lightbox',
+        function($scope, Lightbox) {
+            var sc = $scope;
+            sc.gallery = [{
+                caption: 'Gallery',
+                url: '/images/gallery/1.jpg',
+                buiding: 'main',
+            }, {
+                caption: 'Gallery',
+                url: '/images/gallery/2.jpg',
+                buiding: 'main',
+            }, {
+                caption: 'Gallery',
+                url: '/images/gallery/3.jpg',
+                buiding: 'main',
+            }, {
+                caption: 'Gallery',
+                url: '/images/gallery/4.jpg',
+                buiding: 'east',
+            }, {
+                caption: 'Gallery',
+                url: '/images/gallery/5.jpg',
+                buiding: 'east',
+            }, {
+                caption: 'Gallery',
+                url: '/images/gallery/6.jpg',
+                buiding: 'east',
+            }, {
+                caption: 'Gallery',
+                url: '/images/gallery/7.jpg',
+                buiding: 'east',
+            }, {
+                caption: 'Gallery',
+                url: '/images/gallery/8.jpg',
+                buiding: 'east',
+            }];
+
+
+            sc.openLightboxModal = function(index) {
+                Lightbox.openModal(sc.gallery, index);
+            }
+
+        }
+    ])
     .controller('headerCtrl', ['$scope', '$location',
         function($scope, $location) {
             $scope.isActive = function(viewLocation) {

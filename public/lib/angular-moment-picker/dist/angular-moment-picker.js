@@ -1,4 +1,4 @@
-/*! Angular Moment Picker - v0.9.5 - http://indrimuska.github.io/angular-moment-picker - (c) 2015 Indri Muska - MIT */
+/*! Angular Moment Picker - v0.9.7 - http://indrimuska.github.io/angular-moment-picker - (c) 2015 Indri Muska - MIT */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -391,6 +391,8 @@
 	                        if (nextView < 0 || nextView > maxView) {
 	                            utility_1.setValue($scope.view.moment, $scope, $ctrl, $attrs);
 	                            $scope.view.update();
+	                            if ($attrs['ngModel'])
+	                                $ctrl.$commitViewValue();
 	                            if ($scope.autoclose)
 	                                _this.$timeout($scope.view.close);
 	                        }
@@ -449,11 +451,11 @@
 	                    $scope.view.render();
 	                    if (angular.isFunction($scope.change)) {
 	                        var oldModelValue_1 = utility_1.valueToMoment(oldViewValue, $scope);
-	                        _this.$timeout(function () { return $scope.change({ newValue: newModelValue, oldValue: oldModelValue_1 }); }, 0, false);
+	                        $scope.$evalAsync(function () { return $scope.change({ newValue: newModelValue, oldValue: oldModelValue_1 }); });
 	                    }
 	                });
 	                $scope.$watch(function () { return $ctrl.$modelValue && $ctrl.$modelValue.valueOf(); }, function () {
-	                    var viewMoment = ($ctrl.$modelValue || moment().locale($scope.locale)).clone();
+	                    var viewMoment = (utility_1.isValidMoment($ctrl.$modelValue) ? $ctrl.$modelValue : moment().locale($scope.locale)).clone();
 	                    if (!viewMoment.isSame($scope.view.moment)) {
 	                        $scope.view.moment = viewMoment;
 	                        $scope.view.update();

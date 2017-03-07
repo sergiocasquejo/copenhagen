@@ -17,10 +17,15 @@
                         <ul class="nav navbar-nav">
                             <li ng-class="{ active: isActive('/')}"><a ui-sref="home">Home</a></li>
                             <li ng-class="{ active: isActive('/available-rooms-cebu-hotels')}"><a ui-sref="roomsAvailable">Book Now</a></li>
-                            <li ng-class="{ active: isActive('/available-rooms-cebu-hotels')}"><a ui-sref="roomsAvailable">Accommodations</a></li>
-                            <li ng-class="{ active: isActive('/dining')}"><a>Dining</a></li>
+                            <li ng-class="{ active: isActive('/accommodations')}"><a ui-sref="roomsAvailable">Accommodations <span class="lnr lnr-chevron-down"></span></a></li>
+                            <li ng-class="{ active: isActive('/dining')}" uib-dropdown is-open="status.isopen">
+                                <a uib-dropdown-toggle>Dining <span class="lnr lnr-chevron-down"></span></a>
+                                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                    <li role="menuitem"><a href="#">Chips Cafe</a></li>
+                                </ul>
+                            </li>
                             <li ng-class="{ active: isActive('/meetings')}"><a ui-sref="meetings">Mettings</a></li>
-                            <li ng-class="{ active: isActive('/gallery')}"><a>Gallery</a></li>
+                            <li ng-class="{ active: isActive('/gallery')}"><a ui-sref="gallery">Gallery</a></li>
                             <li ng-class="{ active: isActive('/contact-location')}"><a ui-sref="contact">Contact & Location</a></li>
                         </ul>
                     </div>
