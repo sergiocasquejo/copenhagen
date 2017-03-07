@@ -417,6 +417,28 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
             var sc = $scope;
             sc.contactButtonText = 'SEND';
 
+            sc.myInterval = 5000;
+            sc.noWrapSlides = false;
+            sc.active = 0;
+            var slides = sc.slides = [{
+                id: 0,
+                image: '/images/meetings/1.jpg'
+            }, {
+                id: 1,
+                image: '/images/meetings/2.jpg'
+            }, {
+                id: 2,
+                image: '/images/meetings/3.jpg'
+            }, {
+                id: 3,
+                image: '/images/meetings/4.jpg'
+            }, {
+                id: 4,
+                image: '/images/meetings/5.jpg'
+            }];
+            var currIndex = 0;
+
+
             sc.send = function(isValid) {
                 if (isValid) {
                     sc.contactButtonText = 'SENDING...';

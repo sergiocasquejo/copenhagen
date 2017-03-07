@@ -4,7 +4,12 @@
         <div class="container">
             <div class="box">
                 <h1 class="text-center">Meetings</h1>
-                <img class="img-responsive mb-30" src="images/meetings.jpg" />
+
+                <div class="carousel-fade mb-30" template-url="/uib/template/carousel/carousel.html" uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
+                    <div uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
+                        <img ng-src="{{slide.image}}" style="margin:auto;">
+                    </div>
+                </div>
                 <p>The event space on the 7th floor (elevator accessible) features a fantastic view of Cebu and the environs. The facilities can host up to 80 people with a special area for commemorative picture taking against the backdrop of the surrounding
                     mountains. Our kitchen can cater to all your culinary needs. Ideal for weddings, anniversaries and company events.</p>
                 <p>Note: Actual set-up may vary based on your requirements</p>
