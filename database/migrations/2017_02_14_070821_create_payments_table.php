@@ -21,7 +21,7 @@ class CreatePaymentsTable extends Migration
                 $table->string('method');
                 $table->string('status')->default('pending');
                 $table->string('referenceID')->nullable();
-                $table->string('customData')->nullable();
+                $table->text('customData')->nullable();
                 $table->timestamps();
                 $table->foreign('bookingID')->references('id')->on('bookings')
                 ->onDelete('cascade');

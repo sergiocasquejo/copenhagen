@@ -14,7 +14,7 @@ class PrimesoftServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->singleton('primesoft', function($app) {
-            return new PrimeSoft();
+            return new Primesoft();
         });
 
         $this->publishes([
@@ -30,6 +30,8 @@ class PrimesoftServiceProvider extends ServiceProvider
      */
     public function register()
     {
+
+        include __DIR__.'/routes/routes.php';
         $this->mergeConfigFrom( __DIR__.'/config/primesoft.php', 'primesoft');
     }
 

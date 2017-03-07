@@ -1,146 +1,207 @@
+@media (max-width:768px) {
+    .navbar {
+        &.navbar-inverse {
+            .navbar-brand {
+                width: 180px;
+                background-size: 100%;
+            }
+            .navbar-nav {
+                margin-left: 0;
+                li {
+                    font-size: 12px;
+                    a {
+                        padding-left: 10px;
+                        padding-right: 10px;
+                        padding-left: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+
 @media (max-width:425px) {
     .box {
         box-shadow: none;
     }
-    .main {
-        .booking-box {
-            form {
-                >div {
-                    padding: 0 2px;
-                    .form-group {
-                        margin-bottom: 5px;
-                    }
+    .booking-box {
+        form {
+            >div {
+                padding: 0 2px;
+                .form-group {
+                    margin-bottom: 5px;
                 }
             }
         }
-        .navbar-inverse {
-            .navbar-brand {
-                width: 200px;
-                margin: 5px 0 5px 0;
-                background-size: 100%;
+    }
+    .navbar-inverse {
+        .navbar-collapse {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        .navbar-nav {
+            &.pull-right {
+                float: none;
+                display: block;
+                width: 100%;
+                margin: 0;
+                padding: 0;
             }
-            .navbar-toggle {
-                margin-right: 0;
-                background-color: transparent;
-                border: none;
-                .icon-bar {
-                    background-color: #333;
+            li {
+                a {
+                    padding-right: 10px;
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    border-bottom: solid 1px #f5f5f5;
                 }
             }
         }
-        section {
-            &.section-step-indicator {
-                .step {
-                    &:after,
-                    &:before {
-                        display: none;
-                    }
-                    .counter {
-                        margin-left: 3px;
-                    }
+        .navbar-brand {
+            width: 200px;
+            margin: 5px 0 5px 0;
+            background-size: 100%;
+        }
+        .navbar-toggle {
+            margin-right: 0;
+            background-color: transparent;
+            border: none;
+            .icon-bar {
+                background-color: #333;
+            }
+        }
+    }
+    section {
+        &.section-step-indicator {
+            .step {
+                &:after,
+                &:before {
+                    display: none;
+                }
+                .counter {
+                    margin-left: 3px;
                 }
             }
-            &.section-rooms-available {
-                .item {
-                    .img-area {
-                        .img-inner {
-                            a {
-                                .lnr {
-                                    font-size: 40px;
-                                    line-height: 2;
-                                }
+        }
+        &.section-rooms-available {
+            .item {
+                .img-area {
+                    .img-inner {
+                        a {
+                            .lnr {
+                                font-size: 40px;
+                                line-height: 2;
                             }
-                            img {
-                                width: 100%;
+                        }
+                        img {
+                            width: 100%;
+                        }
+                    }
+                }
+                .item-flex-column {
+                    .item-name,
+                    .item-best-deals,
+                    .item-best-deals .price {
+                        border: none;
+                        min-height: auto;
+                    }
+                    .item-details {
+                        padding-left: 0;
+                        h3 {
+                            margin: 0 0 0 0;
+                            font-size: 18px;
+                        }
+                        li {
+                            padding: 2px 0;
+                            .lnr {
+                                font-size: 14px;
                             }
                         }
                     }
-                    .item-flex-column {
-                        .item-name,
-                        .item-best-deals,
-                        .item-best-deals .price {
-                            border: none;
+                    .item-best-deals {
+                        padding: 0;
+                        border-top: 1px solid #cdd0d2;
+                        margin-top: 10px;
+                        .best-deals-main {
                             min-height: auto;
-                        }
-                        .item-details {
-                            padding-left: 0;
-                            h3 {
-                                margin: 0 0 0 0;
-                                font-size: 18px;
-                            }
-                            li {
-                                padding: 2px 0;
-                                .lnr {
-                                    font-size: 14px;
-                                }
-                            }
-                        }
-                        .item-best-deals {
-                            padding: 0;
-                            border-top: 1px solid #cdd0d2;
+                            height: auto;
+                            width: 100%;
+                            display: block;
                             margin-top: 10px;
-                            .best-deals-main {
-                                min-height: auto;
-                                height: auto;
-                                width: 100%;
-                                display: block;
-                                margin-top: 10px;
-                            }
-                            .price {
-                                width: 100%;
-                                display: block;
-                            }
-                            .btn {
-                                width: 100%;
-                                display: block;
-                                font-size: 16px;
-                            }
-                            .item-price {
-                                font-size: 20px;
-                            }
+                        }
+                        .price {
+                            width: 100%;
+                            display: block;
+                        }
+                        .btn {
+                            width: 100%;
+                            display: block;
+                            font-size: 16px;
+                        }
+                        .item-price {
+                            font-size: 20px;
                         }
                     }
-                    .item-slide-layout {
-                        .photo-item {
-                            position: relative;
-                            margin-bottom: 10px;
-                            width: 85px;
-                            a .lnr {
-                                font-size: 30px;
-                                color: #fff;
-                                text-align: center;
-                                line-height: 2.5;
-                            }
-                            img {
-                                width: 100%;
-                            }
+                }
+                .item-slide-layout {
+                    .photo-item {
+                        position: relative;
+                        margin-bottom: 10px;
+                        width: 85px;
+                        a .lnr {
+                            font-size: 30px;
+                            color: #fff;
+                            text-align: center;
+                            line-height: 2.5;
+                        }
+                        img {
+                            width: 100%;
                         }
                     }
                 }
             }
-            &.section-rooms-details {
-                .page-title {
-                    font-size: 30px;
-                    text-align: center;
+        }
+        &.section-rooms-details {
+            .page-title {
+                font-size: 30px;
+                text-align: center;
+            }
+            .form-wrapper {
+                form {
+                    button {
+                        margin-bottom: 15px;
+                    }
                 }
-                .form-wrapper {
-                    form {
-                        button {
-                            margin-bottom: 15px;
+            }
+            .tab-content {
+                .tab-pane {
+                    padding: 20px 0;
+                    mwl-calendar .cal-month-day,
+                    mwl-calendar .cal-month-box [class*=cal-cell],
+                    mwl-calendar .cal-year-box [class*=span] {
+                        height: 40px;
+                        min-height: 40px;
+                        .calendar-day-title {
+                            display: none;
                         }
                     }
                 }
-                .tab-content {
-                    .tab-pane {
-                        padding: 20px 0;
-                        mwl-calendar .cal-month-day,
-                        mwl-calendar .cal-month-box [class*=cal-cell],
-                        mwl-calendar .cal-year-box [class*=span] {
-                            height: 40px;
-                            min-height: 40px;
-                            .calendar-day-title {
-                                display: none;
-                            }
+            }
+        }
+    }
+    footer {
+        .navbar-bottom {
+            ul {
+                li {
+                    display: block;
+                    a {
+                        padding-top: 5px;
+                        padding-bottom: 5px;
+                        border-bottom: solid 1px #273545;
+                        display: block;
+                    }
+                    &:last-child {
+                        a {
+                            border-bottom: none;
                         }
                     }
                 }

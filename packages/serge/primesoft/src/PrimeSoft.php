@@ -1,53 +1,57 @@
 <?php 
-namespace Serge\PrimeSoft;
+namespace Serge\Primesoft;
 
-class PrimeSoft {
+class Primesoft {
     private $apiSessionID = null;
     private $apiSelectedPort = null;
     private $apiUrl = null;
+    private $data = null;
 
     public function __construct(\App\Booking $booking) {
-        $this->apiSelectedPort = strtolower($booking->building) == 'main' ? config('primesoft.apiPort1') : config('primesoft.apiPort1');
+        $this->data = $booking;
+        $this->apiSelectedPort = strtolower($this->data->building) == 'main' ? config('primesoft.apiPort1') : config('primesoft.apiPort1');
         $this->apiUrl = config('primesoft.apiUrl').':'.$this->apiSelectedPort;
     }
 
     public function setupPrimeSoftData() {
         // Login to primesoft
-        $this->loginToPrimeSoft();
+        if (!$this->loginToPrimeSoft()) {
+            return false;
+        }
 
         $specialInstructions = 
         $this->specialInstructions.', '.
-        $booking->customer->salutation.', '.
-        $booking->customer->firstName.', '.
-        $booking->customer->lastName.', '.
-        $booking->customer->email.', '.
-        $booking->customer->address1.', '.
-        $booking->customer->address2.', '.
-        $booking->customer->city.', '.
-        $booking->customer->zipcode.', '.
-        $booking->customer->state.', '.
-        $booking->customer->country.', '.
-        $booking->customer->contact;
+        $this->data->customer->salutation.', '.
+        $this->data->customer->firstName.', '.
+        $this->data->customer->lastName.', '.
+        $this->data->customer->email.', '.
+        $this->data->customer->address1.', '.
+        $this->data->customer->address2.', '.
+        $this->data->customer->city.', '.
+        $this->data->customer->zipcode.', '.
+        $this->data->customer->state.', '.
+        $this->data->customer->country.', '.
+        $this->data->customer->contact;
         
 		$data = [
 				'SessionID' 			=> $this->apiSessionID,
 				'reservation_name'		=> config('primesoft.apiReservationName'),
 				'reservation_agent' 	=> config('primesoft.apiReservationAgent'),
-				'arrival_date'			=> $booking->checkIn,
-				'arrival_time' 			=> $booking->checkInTime,
-				'departure_date' 		=> $booking->checkOut,
-				'departure_time'	 	=> $booking->checkOutTime,
+				'arrival_date'			=> $this->data->checkIn,
+				'arrival_time' 			=> $this->data->checkInTime,
+				'departure_date' 		=> $this->data->checkOut,
+				'departure_time'	 	=> $this->data->checkOutTime,
 				'market_segment_code'	=> config('primesoft.apiMarketSegmentCode'),
 				'info_source_desc' 		=> config('primesoft.apiInfoSourceDesc'),
 				'payment_type' 			=> config('primesoft.apiPaymentType'),
 				'special_instructions' 	=> $specialInstructions,
-				'billing_instructions' 	=> $booking->billingInstructions,
-				'rate_code' 			=> $booking->rateCode,
-				'num_rooms' 			=> $booking->noOfRooms,
-				'num_adults' 			=> $booking->noOfAdults,
-				'num_children' 			=> $booking->noOfChild,
-				'meal_type' 			=> $booking->mealType,
-				'room_type_code' 		=> $booking->roomTypeCode,
+				'billing_instructions' 	=> $this->data->billingInstructions,
+				'rate_code' 			=> $this->data->rate()->rateCode,
+				'num_rooms' 			=> $this->data->noOfRooms,
+				'num_adults' 			=> $this->data->noOfAdults,
+				'num_children' 			=> $this->data->noOfChild,
+				'meal_type' 			=> $this->data->rate()->mealType,
+				'room_type_code' 		=> $this->data->rate()->roomCode,
 				'company_code' 			=> config('primesoft.apiCompanyCode'),
         ];
 
@@ -56,10 +60,11 @@ class PrimeSoft {
             $this->apiUrl.'/transactions/hotel/newReservation', 
             $data
         );
+        
 
         // Logoout to primesoft
         $this->logoutToPrimeSoft();
-
+        
         return $result;
     }
 
@@ -84,20 +89,21 @@ class PrimeSoft {
     private function loginToPrimeSoft() 
 	{
 		$data = [
-            'UserName' => $this->apiUsername, 
-            'Password' => $this->apiPassword, 
-            'ApplicationKey' => $this->apiKey
+            'UserName' => config('primesoft.apiUsername'), 
+            'Password' => config('primesoft.apiPassword'), 
+            'ApplicationKey' => config('primesoft.apiKey')
         ];
 		
-		
+	
 		$resultPost = json_decode(
             $this->postToPrimeSoftAPI(
                 $this->apiUrl.'/login', 
                 $data
             )
         );
+        
 
-		$this->apiSessionID = $resultPost->result->SessionID;
+		$this->apiSessionID = $resultPost ? $resultPost->result->SessionID : null;
 
 	}
 

@@ -17,6 +17,10 @@ class Rate extends Model
 		return $this->belongsToMany('App\Calendar', 'calendar_rates', 'calendarID', 'rateID');
 	}
 
+    public function booking() {
+		return $this->belongsTo('App\Booking', 'bookings', 'rateId', 'id');
+	}
+
 	public $rules = array(
         'name' => 'required|unique:rates,name',
         'rateCode' => 'required|unique:rates,rateCode',

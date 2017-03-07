@@ -50,8 +50,8 @@ class BookingController extends Controller
             $totalAmount = $roomRate * $noOfRooms * $totalNights;
 
             $booking->customerID = $request->input('customerID');
-            $booking->checkInTime = $booking::CHECK_IN_TIME;
-            $booking->checkOutTime = $booking::CHECK_OUT_TIME;
+            $booking->checkInTime = $booking->checkInTime;
+            $booking->checkOutTime = $booking->checkOutTime;
             $booking->roomID = $request->input('roomID');
             $booking->checkIn = $request->input('checkIn');
             $booking->checkOut = $request->input('checkOut');
@@ -63,7 +63,7 @@ class BookingController extends Controller
             $booking->totalAmount = $totalAmount;
             $booking->specialInstructions = $request->input('specialInstructions');
             $booking->billingInstructions = $request->input('billingInstructions');
-            $booking->status = $booking::BOOKING_SUCCESS;
+            $booking->status = $booking->bookingStatusSuccess;
             try {
                 if ($booking->save()) {
                     $result = $booking->setupPrimeSoftData($booking);
@@ -199,15 +199,12 @@ class BookingController extends Controller
                 $noOfChild = $request->session()->get('booking.child', 0);
                 $noOfRooms = $request->session()->get('booking.noOfRooms', 0);
                 $totalAmount = $request->session()->get('booking.totalAmount', 0);
-                $booking->checkInTime = $booking::CHECK_IN_TIME;
-                $booking->checkOutTime = $booking::CHECK_OUT_TIME;
+                $booking->checkInTime = $booking->bookingCheckInTime;
+                $booking->checkOutTime = $booking->bookingCheckOutTime;
                 $booking->roomID = $request->session()->get('booking.roomId');
                 $booking->checkIn = $request->session()->get('booking.checkIn');
                 $booking->checkOut = $request->session()->get('booking.checkOut');
-                $booking->rateCode = $request->session()->get('booking.roomId');
-                $booking->mealType = $request->session()->get('booking.roomId');
-                $booking->roomTypeCode = $request->session()->get('booking.roomId');
-                $booking->companyCode = $request->session()->get('booking.roomId');
+                $booking->rateId = $request->session()->get('booking.rateId');
                 $booking->noOfRooms = $request->session()->get('booking.noOfRooms');
                 $booking->noOfNights = $request->session()->get('booking.noOfNights');
                 $booking->noOfAdults = $request->session()->get('booking.noOfAdults');
@@ -216,7 +213,7 @@ class BookingController extends Controller
                 $booking->totalAmount = $request->session()->get('booking.totalAmount');
                 $booking->specialInstructions = $request->session()->get('booking.specialInstructions');
                 $booking->billingInstructions = $request->session()->get('booking.billingInstructions');
-                $booking->status = $booking::BOOKING_PENDING;
+                $booking->status = $booking->bookingStatusPending;
 
                 $input = $request->session()->get('booking');
                 $input['customerID'] = $customer->id;

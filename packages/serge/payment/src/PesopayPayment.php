@@ -2,6 +2,7 @@
 namespace Serge\Payment;
 
 abstract class Payment {
+    
     public function __constructor() {
 
     }
@@ -103,9 +104,9 @@ class PesopayPayment extends Payment {
 			
           	echo '<form action="' . $url . '" method="post" id="paydollar_payment_form">
             	' . implode('', $paypeso_args_array) . '           	
-            	<script type="text/javascript">
+            	<!--<script type="text/javascript">
     				jQuery("#paydollar_payment_form").submit();    					
-    			</script>
+    			</script>-->
             </form>';
     }
 		

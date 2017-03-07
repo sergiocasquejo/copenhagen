@@ -333,8 +333,12 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
     }
 ])
 
-.controller('customerDetail', ['$scope', '$rootScope', '$state', '$stateParams', 'API',
-    function($scope, $rootScope, $state, $stateParams, API) {
+.controller('customerDetailCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh',
+    function($scope, $rootScope, $state, $stateParams, API, sh) {
+        var data = $rootScope.booking;
+        if (data == undefined || data.room == undefined) {
+            $state.go('roomsAvailable');
+        }
         //Hide Top Booking Form
         $scope.bookingFormTopHide = true;
         //Current Step

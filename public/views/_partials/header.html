@@ -6,27 +6,34 @@
                 <div class="col-md-12">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" ng-init="isCollapsed=true" ng-click="isCollapsed = !isCollapsed">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
                         <a class="navbar-brand" ui-sref="home"></a>
+
+                        <ul class="list-unstyled pull-right booking-bag visible-xs">
+                            <li title="View your bookings" ng-class="{ active: isActive('/booking/submit-your-details')}"><a ui-sref="customerDetail"><span class="lnr lnr-cart pull-right"></span></a></li>
+                        </ul>
                     </div>
                     <div id="navbar" class="collapse navbar-collapse" uib-collapse="isCollapsed">
                         <ul class="nav navbar-nav">
                             <li ng-class="{ active: isActive('/')}"><a ui-sref="home">Home</a></li>
-                            <li ng-class="{ active: isActive('/available-rooms-cebu-hotels')}"><a ui-sref="roomsAvailable">Book Now</a></li>
-                            <li ng-class="{ active: isActive('/accommodations')}"><a ui-sref="roomsAvailable">Accommodations <span class="lnr lnr-chevron-down"></span></a></li>
-                            <li ng-class="{ active: isActive('/dining')}" uib-dropdown is-open="status.isopen">
+                            <li ng-class="{ active: isActive('/available-rooms-cebu-hotels')}"><a ui-sref="roomsAvailable">Rooms Available</a></li>
+                            <!--<li ng-class="{ active: isActive('/accommodations')}"><a ui-sref="roomsAvailable">Accommodations <span class="lnr lnr-chevron-down"></span></a></li>-->
+                            <!--<li ng-class="{ active: isActive('/dining')}" uib-dropdown is-open="status.isopen">
                                 <a uib-dropdown-toggle>Dining <span class="lnr lnr-chevron-down"></span></a>
                                 <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
                                     <li role="menuitem"><a href="#">Chips Cafe</a></li>
                                 </ul>
-                            </li>
+                            </li>-->
                             <li ng-class="{ active: isActive('/meetings')}"><a ui-sref="meetings">Mettings</a></li>
                             <li ng-class="{ active: isActive('/gallery')}"><a ui-sref="gallery">Gallery</a></li>
                             <li ng-class="{ active: isActive('/contact-location')}"><a ui-sref="contact">Contact & Location</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav pull-right hidden-xs booking-bag">
+                            <li title="View your bookings" ng-class="{ active: isActive('/booking/submit-your-details')}"><a ui-sref="customerDetail"><span class="lnr lnr-cart pull-right"></span></a></li>
                         </ul>
                     </div>
                     <!--/.nav-collapse -->

@@ -7,21 +7,20 @@ use Illuminate\Support\Facades\Validator;
 
 class Booking extends Model
 {   
-    const BOOKING_SUCCESS = 'success';
-    const BOOKING_PENDING = 'pending';
-    const BOOKING_CANCEL = 'cancel';
-
+    public $bookingStatusSuccess = 'success';
+    public $bookingStatusPending = 'pending';
+    public $bookingStatusCancel = 'cancel';
+    public $bookingCheckInTime = '2:00:00 pm';
+    public $bookingCheckOutTime = '2:00:00 pm';
     
-    
-
     protected $table = 'bookings';
-    protected $appends = array(
+    protected $appends = [
         'title', 
         'arrival', 
         'departure', 
         'totalAmountFormatted', 
         'roomRateFormatted',
-        'lastPayment');
+        'lastPayment'];
     public function customer()
     {
         return $this->belongsTo('App\Customer', 'customerID');
@@ -36,8 +35,12 @@ class Booking extends Model
         return $this->hasMany('App\Payment', 'bookingID', 'id');
     }
 
+    public function rate() {
+        return $this->hasOne('App\Rate', 'id', 'rateId');
+    }
+
     public static function lazyLoad() {
-         return self::with('customer', 'room');
+         return self::with('customer', 'room', 'rate');
      }
 
     public $rules = [

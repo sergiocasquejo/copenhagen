@@ -29,10 +29,7 @@ class CreateBookingsTable extends Migration
                 $table->integer('noOfChild')->default(0)->nullable();
                 $table->double('roomRate')->default(0);
                 $table->double('totalAmount')->default(0);
-                $table->string('rateCode')->nullable();
-                $table->string('mealType')->nullable();
-                $table->string('roomTypeCode')->nullable();
-                $table->string('companyCode')->nullable();
+                $table->integer('rateId')->unsigned();
                 $table->string('specialInstructions')->nullable();
                 $table->string('billingInstructions')->nullable();
                 $table->string('status')->default('pending');
@@ -40,6 +37,8 @@ class CreateBookingsTable extends Migration
                 $table->foreign('roomID')->references('id')->on('rooms')
                 ->onDelete('cascade');
                 $table->foreign('customerID')->references('id')->on('customers')
+                ->onDelete('cascade');
+                $table->foreign('rateId')->references('id')->on('rates')
                 ->onDelete('cascade');
             });
         }

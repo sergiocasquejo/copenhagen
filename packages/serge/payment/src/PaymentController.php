@@ -5,7 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Mail\Reservation;
 use Illuminate\Support\Facades\Mail;
-use Serge\PrimeSoft;
+use Serge\Primesoft;
 
 class PaymentController extends Controller {    
     public function pesopay(Request $request) {
@@ -52,6 +52,26 @@ class PaymentController extends Controller {
 
         return response()->json('OrderRef no found!', 400, [], JSON_UNESCAPED_UNICODE);
     }
+    /*
+    public function status(Request $request, $status) {
+        $ref 			= $request->input('Ref');
+        $booking = \App\Booking::where(['refId' => $ref])->firstOrFail();
+        
+        if ($booking) {
+            $payment = new \App\Payment;
+            $payment->method = 'pesopay';
+            $payment->referenceID = $ref;
+            $payment->customData = [];
+
+            switch($status) {
+                case 'fail':
+                    $payment->status = $status;
+            }
+            
+            
+            $booking->payment()->save($payment);
+        }
+    }*/
 
     public function datafeed(Request $request) {
         // Print out 'OK' to notify pesopay you have received the payment result 
@@ -66,7 +86,7 @@ class PaymentController extends Controller {
         $payRef 		= $request->input('PayRef');
         $amt 			= $request->input('Amt');
         $cur 			= $request->input('Cur');
-        $remark 		= $request->input('remark');
+        $remark 		= $request->input('remark', '');
         $authId 		= $request->input('AuthId');
         $eci 			= $request->input('eci');
         $payerAuth 		= $request->input('payerAuth');
@@ -74,9 +94,11 @@ class PaymentController extends Controller {
         $ipCountry 		= $request->input('ipCountry');
         $secureHash 	= $request->input('secureHash');
 
+        $pesopay = new PesopayPayment;
+
         $default = config('payment.default');
 
-        $verified = $verifyPaymentDatafeed(
+        $verified = $pesopay->verifyPaymentDatafeed(
                 $src, 
                 $prc, 
                 $successCode, 
@@ -87,8 +109,8 @@ class PaymentController extends Controller {
                 $payerAuth, 
                 config('payment.'.$default . '.secureHashSecret'), 
                 $secureHash);
-        $booking = App\Booking::where(['refId' => $ref])->firstOrFail();
-        $payment = new Payment;
+        $booking = \App\Booking::where(['refId' => $ref])->firstOrFail();
+        $payment = new \App\Payment;
 
         if ($successCode == 0 && $verified) {
             // Transaction Accepted
@@ -97,7 +119,7 @@ class PaymentController extends Controller {
             // *** accepted otherwise rejected the transaction.
             // Update your database for Transaction Accepted and send email or notify your
             // customer.
-            $payment->status = 'paid';
+            $payment->status = $payment->paymentStatusPaid;
            
 
             // In case if your database or your system got problem, you can send a void
@@ -105,10 +127,11 @@ class PaymentController extends Controller {
         } else {
             // Transaction Rejected
             // Update your database for Transaction Rejected
-            $payment->status = 'rejected';
+            $payment->status = $payment->paymentStatusRejected;
         }
+        
 
-        $booking->status = 'completed';
+        $booking->status = $booking->bookingStatusSuccess;
         if ($booking->save()) {
             //Update room availability
             \App\Calendar::updateAvailability(
@@ -124,14 +147,16 @@ class PaymentController extends Controller {
             $payment->customData = serialize($request->input());
             
             $booking->payment()->save($payment);
-
-            $primeSoft = new PrimeSoft($booking);
-            $primeSoft->setupPrimeSoftData();
+            // if ($payment->status == $payment->paymentStatusPaid) {
+                $primeSoft = new Primesoft\Primesoft($booking);
+                $primeSoft->setupPrimeSoftData();
+            // }
+            
         }
         try {
-            Mail::to(Config('mail.emails.reservation'))
-            ->cc(Config('mail.emails.info'))
-            ->send(new Reservation($booking));
+            // Mail::to(Config('mail.emails.reservation'))
+            // ->cc(Config('mail.emails.info'))
+            // ->send(new Reservation($booking));
         } catch (\Swift_TransportException  $e) {
             return response()->json('Failed to send your message. Please try later or contact the administrator by another method.', 400, [], JSON_UNESCAPED_UNICODE);
         }

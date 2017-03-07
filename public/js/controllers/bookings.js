@@ -15,12 +15,12 @@ copenhagenApp.controller('bookingsCtrl', ['$scope', '$compile', '$timeout', 'API
                     '<div class="booking-info-main">' +
                     '<h4>Booking Information</h4>' +
                     '<div class="row">' +
-                    '<div class="col-md-6"><strong>Check In:</strong> ' + data.info.checkIn + '</div>' +
-                    '<div class="col-md-6"><strong>Check Out:</strong> ' + data.info.checkOut + '</div>' +
+                    '<div class="col-md-6"><strong>Check In:</strong> ' + moment(data.info.checkIn).format('dddd MMMM DD, YYYY') + '</div>' +
+                    '<div class="col-md-6"><strong>Check Out:</strong> ' + moment(data.info.checkOut).format('dddd MMMM DD, YYYY') + '</div>' +
                     '</div>' +
                     '<div class="row">' +
                     '<div class="col-md-6"><strong>Adults:</strong> ' + data.info.noOfAdults + '</div>' +
-                    '<div class="col-md-6"><strong>Child: </strong>' + data.info.noOfChild + '</div>' +
+                    '<div class="col-md-6"><strong>Child: </strong>' + (data.info.noOfChild || 0) + '</div>' +
                     '</div>' +
                     '<div class="row">' +
                     '<div class="col-md-6"><strong>Special Instruction:</strong> <i>' + data.info.specialInstructions + '</i></div>' +
@@ -28,19 +28,18 @@ copenhagenApp.controller('bookingsCtrl', ['$scope', '$compile', '$timeout', 'API
                     '</div>' +
                     '<div class="row">' +
                     '<div class="col-md-6"><strong>Room Price:</strong> ' + data.info.roomRateFormatted + '</div>' +
-                    '<div class="col-md-6"><strong>Rate Code:</strong> ' + data.info.rateCode + '</div>' +
+                    '<div class="col-md-6"><strong>Rate Code:</strong> ' + data.info.rate.rateCode + '</div>' +
                     '</div>' +
                     '<div class="row">' +
                     '<div class="col-md-6"><strong>Rooms:</strong> x ' + data.info.noOfRooms + '</div>' +
-                    '<div class="col-md-6"><strong>Meal Type:</strong> ' + data.info.mealType + '</div>' +
+                    '<div class="col-md-6"><strong>Meal Type:</strong> ' + data.info.rate.mealType + '</div>' +
                     '</div>' +
                     '<div class="row">' +
                     '<div class="col-md-6"><strong>Nights:</strong> x ' + data.info.noOfNights + '</div>' +
-                    '<div class="col-md-6"><strong>Room Type Code:</strong> ' + data.info.roomTypeCode + '</div>' +
+                    '<div class="col-md-6"><strong>Room Type Code:</strong> ' + data.info.rate.roomCode + '</div>' +
                     '</div>' +
                     '<div class="row">' +
                     '<div class="col-md-6"><strong>Total Amount:</strong> ' + data.info.totalAmountFormatted + '</div>' +
-                    '<div class="col-md-6"><strong>Company Code:</strong> ' + data.info.companyCode + '</div>' +
                     '</div>' +
                     '<div class="row">' +
                     '<div class="col-md-6"><strong>Payment Status:</strong><span class="badge">' + data.info.lastPayment.status + '</span></div>' +
@@ -53,7 +52,6 @@ copenhagenApp.controller('bookingsCtrl', ['$scope', '$compile', '$timeout', 'API
                     '<div class="row">' +
                     '<div class="col-md-12"><strong>Address:</strong> ' + data.info.customer.address1 + ', ' + data.info.customer.city + ', ' + data.info.customer.zipcode + ', ' + data.info.customer.state + ', ' + data.info.customer.countryCode + '</div>' +
                     '</div>' +
-
                     '</div>', sh);
 
             }

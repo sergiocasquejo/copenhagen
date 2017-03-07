@@ -64,7 +64,7 @@ class Calendar extends Model
         if ($this->rates()) {
             foreach ($this->rates()->get() as $r) {
                 if ($r->pivot->active) {
-                    $title .= 'PHP ' . $r->pivot->price . ' - <i>' . $r->name . '</i><br />';
+                    $title .= 'PHP ' . $r->pivot->price . ' - <i class="hidden-xs">' . $r->name . '</i><br />';
                 }
             }
         }
@@ -93,7 +93,8 @@ class Calendar extends Model
         $date = $checkIn;
         while(strtotime($date) <= strtotime($checkOut)) {
             $date = date('Y-m-d', strtotime($date));
-            $calendar = \App\Calendar::find(array('selectedDate' => $date, 'roomID' => $roomID));
+            $calendar = \App\Calendar::where(array('selectedDate' => $date, 'roomID' => $roomID))->first();
+            
             if ($calendar) {
                 $availability = $calendar->availability - $noOfRooms;
                 $calendar->availability = $availability;
