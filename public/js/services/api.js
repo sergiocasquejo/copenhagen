@@ -1,4 +1,4 @@
-copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$window', function($http, $rootScope, $state, $window) {
+copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$cookies', function($http, $rootScope, $state, $cookies) {
         var urlBase = '';
         var api = {};
         api.login = function(auth) {
@@ -6,21 +6,25 @@ copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$window', functi
         };
 
         api.logout = function() {
-            $window.sessionStorage.removeItem('currentUser');
+            $cookies.remove('currentUser');
             return $http.get(urlBase + '/logout');
         }
 
         api.isAuthenticated = function() {
-            return JSON.parse($window.sessionStorage.getItem('currentUser')) !== null;
+            if ($cookies.get('currentUser') == undefined) return false;
+            return $cookies.get('currentUser');
         };
 
         api.setCurrentUser = function(user) {
-            $window.sessionStorage.setItem('currentUser', JSON.stringify(user));
+            $cookies.put('currentUser', JSON.stringify(user[0]));
         }
 
         api.getCurrentUser = function() {
-            var _user = JSON.parse($window.sessionStorage.getItem("currentUser"));
-            return _user != null && _user.length > 0 ? _user[0] : _user;
+
+            var _user = $cookies.get('currentUser');
+            if (_user == null) return;
+            console.log(_user);
+            return JSON.parse(_user);
         }
 
         /*============================================================================================
@@ -108,12 +112,12 @@ copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$window', functi
         }
         api.setBookingData = function(data) {
             $rootScope.booking = data;
-            $window.sessionStorage.setItem('Booking', JSON.stringify(data));
+            $cookies.put('Booking', JSON.stringify(data));
         }
         api.getBookingData = function() {
-            var _b = JSON.parse($window.sessionStorage.getItem("Booking"));
-
-            return _b != null && _b.length > 0 ? _b[0] : _b;
+            var _b = $cookies.get("Booking");
+            if (_b == null) return;
+            return JSON.parse(_b);
         }
 
         api.book = function(data) {

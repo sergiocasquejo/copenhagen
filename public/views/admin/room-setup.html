@@ -22,7 +22,7 @@
                             <div class="hidden-xs col-md-2">Photos {{room.photos.length}}</div>
                             <div class="hidden-xs col-md-2">Persons {{room.totalPerson}}</div>
                             <div class="col-xs-4 col-md-2">
-                                <span class="badge">{{room.isActive ? 'active' : 'inactive'}}</span>
+                                <span class="badge" ng-class="{'active' : room.isActive, 'inactive' : !room.isActive }">{{room.isActive ? 'active' : 'inactive'}}</span>
                             </div>
                         </div>
                     </uib-accordion-heading>

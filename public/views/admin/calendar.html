@@ -73,30 +73,30 @@
                     <h3>Availability</h3>
                     <hr>
                     <div class="form-group row">
-                        <label for="" class="col-md-6">{{calendar.roomType.name}}</label>
-                        <div class="col-md-3">
+                        <label for="" class="col-xs-12 col-md-6">{{calendar.roomType.name}}</label>
+                        <div class="col-xs-8 col-md-3">
                             <input type="number" name="qty" ng-model="calendar.availability" min="0" ng-min="0" class="form-control">
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-xs-4 col-md-3">
                             <toggle ng-model="calendar.isActive" onstyle="btn-success" size="btn-sm"></toggle>
                         </div>
                     </div>
                     <h3>Rate Plan</h3>
                     <hr>
                     <div class="form-group row" ng-if="r.pivot.isActive == 1 && r.isMonthly == 0" ng-repeat="r in calendar.roomType.rates | filter:pivot.isActive:1">
-                        <label class="control-label col-sm-4">{{ r.name }}</label>
-                        <div class="col-sm-4">
+                        <label class="control-label col-xs-12 col-sm-4">{{ r.name }}</label>
+                        <div class="col-xs-8 col-sm-4">
                             <input type="number" ng-model="calendar.calendarRates[r.id].price" min="0" ng-min="0" class="form-control" ng-disabled="!calendar.calendarRates[r.id].active">
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-xs-4 col-sm-4">
                             <toggle ng-model="calendar.calendarRates[r.id].active" on="Yes" off="No" onstyle="btn-success" size="btn-sm"></toggle>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-xs-6 col-md-6">
                             <button type="submit" ng-disabled="calendarForm.$invalid" class="btn-block btn btn-success">Save</button>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-xs-6 col-md-6">
                             <button type="reset" class="btn-block btn btn-default">Cancel</button>
                         </div>
                     </div>

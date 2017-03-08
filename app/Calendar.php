@@ -97,7 +97,7 @@ class Calendar extends Model
             
             if ($calendar) {
                 $availability = $calendar->availability - $noOfRooms;
-                $calendar->availability = $availability;
+                $calendar->availability = $availability  <= 0 ? 0 : $availability;
                 $calendar->isActive = $availability  <= 0 ? 0 : 1;
                 $calendar->save();
             }

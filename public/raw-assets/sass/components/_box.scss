@@ -4,3 +4,16 @@
     margin: 10px auto;
     padding: 20px 20px;
 }
+
+.panel-default {
+    >.panel-heading {
+        .badge {
+            &.active {
+                background-color: #5cb85c;
+            }
+            &.inactive {
+                background-color: #F44336;
+            }
+        }
+    }
+}

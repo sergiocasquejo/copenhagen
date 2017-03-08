@@ -49,6 +49,7 @@
     <script src="/lib/angular-animate/angular-animate.min.js"></script>
     <script src="/lib/angularjs-slider/dist/rzslider.min.js"></script>
     <script src="/lib/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.min.js"></script>
+    <script src="/lib/angular-cookies/angular-cookies.min.js"></script>
     
     <script src="/js/app.js" type="text/javascript"></script>
     <script src="/js/routes/index.js" type="text/javascript"></script>

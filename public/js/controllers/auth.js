@@ -20,7 +20,7 @@ copenhagenApp.controller('loginCtrl', ['$scope', '$rootScope', '$state', 'API',
     .controller('logoutCtrl', ['$scope', '$rootScope', '$state', 'API',
         function($scope, $rootScope, $state, API) {
             API.logout().then(function() {
-                $state.go('home');
+                $state.go('login');
             }, function(error) {
                 console.log(error);
             });

@@ -22,7 +22,7 @@ function showPopup(title, message, sh, showButton) {
 }
 
 
-var copenhagenApp = angular.module('copenhagenApp', ['ngAnimate', 'ui.router', 'ui.bootstrap', 'mwl.calendar', 'angularFileUpload', 'ui.toggle', 'moment-picker', 'countrySelect', 'rzModule', 'bootstrapLightbox'])
+var copenhagenApp = angular.module('copenhagenApp', ['ngAnimate', 'ui.router', 'ui.bootstrap', 'mwl.calendar', 'angularFileUpload', 'ui.toggle', 'moment-picker', 'countrySelect', 'rzModule', 'bootstrapLightbox', 'ngCookies'])
     .constant('CSRF_TOKEN', csrftoken)
     .constant('BEDDING', ['single bed', 'single bed with pull-out', 'twin bed', 'double deck/bunk bed', 'queen bed', 'king bed'])
     .config(['$httpProvider', '$qProvider', 'CSRF_TOKEN',
