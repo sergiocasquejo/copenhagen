@@ -155,10 +155,10 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
         })
         .state('roomsAvailable', {
             url: '/available-rooms-cebu-hotels',
+            controller: 'roomAvailableCtrl',
             views: {
                 '': {
-                    templateUrl: '/views/rooms/listing.html',
-                    controller: 'roomAvailableCtrl'
+                    templateUrl: '/views/rooms/listing.html'
                 },
                 'header@roomsAvailable': {
                     templateUrl: '/views/_partials/header.html',

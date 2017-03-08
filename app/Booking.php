@@ -61,8 +61,8 @@ class Booking extends Model
         'rateId' => 'required',
         'checkIn' => 'required',
         'checkOut' => 'required',
-        'noOfRooms' => 'required|numeric',
-        'noOfAdults' => 'required|numeric',
+        'noOfRooms' => 'required|numeric|min:1',
+        'noOfAdults' => 'required|numeric|min:1',
         'noOfChild' => 'numeric',
         'noOfNights' => 'required|numeric|max:30'
     ];
@@ -93,7 +93,8 @@ class Booking extends Model
             'unique' => ':attribute must be unique',
             'required'  => ':attribute is required',
             'numeric'  => ':attribute must be numeric',
-            'max' => ':attribute must not exists :max days'
+            'max' => ':attribute must not exists :max days',
+            'min' => ':attribute minimum of :min'
         ];
     }
 
