@@ -66,7 +66,7 @@
                     <div class="col-md-9" ng-if="roomLists.length > 0">
                         <span id="js_hotel_count" class="available-number hidden-xs"><strong class="result_count">{{ result.length }}</strong> out of {{ roomLists.length }} rooms</span>
                         <ul class="list-unstyled">
-                            <li class="item" ng-repeat="room in result = (roomLists | filter: { name: filter.search, building: filter.building } | filter: lessThanEqualTo(filter.pricing.value) | filter: hasThisBedTypes(filter.roomType))">
+                            <li class="item" ng-repeat="room in result = (roomLists | filter: { name: filter.search, building: filter.building } | filter: lessThanEqualTo('totalPerson', booking.adult)  | filter: lessThanEqualToRates(filter.pricing.value) | filter: hasThisBedTypes(filter.roomType))">
                                 <div class="panel panel-default panel-customer-details">
                                     <div class="panel-heading">
                                         <h3 class="panel-title">{{ room.name }}</h3>

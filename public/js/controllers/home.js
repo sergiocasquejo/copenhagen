@@ -174,7 +174,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
             };
         }
-        sc.lessThanEqualTo = function(val) {
+        sc.lessThanEqualToRates = function(val) {
 
             return function(item) {
                 for (var i = 0; i < item['rates'].length; i++) {
@@ -182,6 +182,13 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                         return item['rates'][i].pivot.price <= val;
                     }
                 }
+            }
+        }
+
+        sc.lessThanEqualTo = function(key, val) {
+
+            return function(item) {
+                return item[key] >= val;
             }
         }
 
