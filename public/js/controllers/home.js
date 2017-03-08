@@ -231,6 +231,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
         //Hide Top Booking Form
         //sc.bookingFormTopHide = true;
         //Current Step
+        sc.buttonText = 'Book Now';
         sc.step = 1;
         sc.room = [];
         $rootScope.booking != null ? $rootScope.booking : {};
@@ -290,6 +291,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
 
         sc.book = function(isValid) {
+            sc.buttonText = 'Processing...';
             if (isValid) {
                 API.checkRoomAvailability({
                     roomID: sc.room.id,
@@ -324,9 +326,12 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                                 price: sc.room.minimumRate
                             }
                         });
+
                         $state.go('customerDetail');
                     }, function(error) {
                         showPopup('Error', error.data, sh);
+                    }).finally(function() {
+                        sc.buttonText = 'Book Now';
                     });
 
                 }, function(error) {
@@ -463,9 +468,10 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                     }).then(function(response) {
                         sc.contact = null;
                         showPopup('Sent', response.data, sh);
-                        sc.contactButtonText = 'SEND';
                     }, function(error) {
                         showPopup('Error', error.data, sh);
+
+                    }).finally(function() {
                         sc.contactButtonText = 'SEND';
                     });
                 }
