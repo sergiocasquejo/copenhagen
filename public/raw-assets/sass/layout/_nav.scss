@@ -1,3 +1,11 @@
+.main {
+    .navbar {
+        .navbar-nav {
+            margin-left: 4.5em;
+        }
+    }
+}
+
 .navbar {
     border: none;
     margin-bottom: 0;
@@ -38,7 +46,6 @@
             background-color: #f5f5f5;
         }
         .navbar-nav {
-            margin-left: 4.5em;
             >li {
                 >a {
                     color: #7B7B7B;

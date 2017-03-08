@@ -142,10 +142,9 @@
                 }
             }
             .item {
-                margin-bottom: 10px;
-                background-color: #FFF;
-                box-shadow: 1px 2px 2px #ccc;
-                @include clearfix();
+                .panel-body {
+                    padding: 0;
+                }
                 .img-area {
                     padding: 8px 6px 8px 8px;
                     .img-inner {
@@ -188,6 +187,9 @@
                     }
                     .item-details {
                         padding-left: 0;
+                        h4 {
+                            margin: 0 0 10px 0;
+                        }
                         h3 {
                             margin: 0 0 10px 0;
                             font-family: Arial, Helvetica, Sans, Sans-Serif, Sans Serif;

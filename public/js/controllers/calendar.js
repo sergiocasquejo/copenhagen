@@ -85,6 +85,12 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
             sc.hasSelectedDate = true;
         };
 
+        sc.resetSelected = function() {
+            sc.calendar.from = null;
+            sc.calendar.to = null;
+            sc.hasSelectedDate = false;
+        }
+
         sc.getCalStartAndEndDate = function(date) {
             var startDate = moment(date).subtract(moment(date).day() - 0, "days").format('YYYY-MM-DD');
             var endDate = moment(date).endOf('month').add(6 - moment(date).endOf('month').day(), "days").format('YYYY-MM-DD');

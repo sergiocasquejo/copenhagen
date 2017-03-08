@@ -144,11 +144,11 @@ class Booking extends Model
     }
 
     public function getArrivalAttribute() {
-        return strtotime($this->checkIn);
+        return strtotime($this->checkIn . ' '. $this->checkInTime);
     }
 
     public function getDepartureAttribute() {
-        return strtotime($this->checkOut);
+        return strtotime($this->checkOut . ' '. $this->checkOutTime);
     }
 
     

@@ -331,7 +331,26 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
         })
 
     // Admin Routes
-    .state('adminCalendar', {
+    .state('admin', {
+            url: '/admin',
+            controller: 'calendarCtrl',
+            views: {
+                '': {
+                    templateUrl: '/views/admin/calendar.html',
+                    resolve: { authenticate: authenticate }
+                },
+                'header@admin': {
+                    templateUrl: '/views/_partials/admin-header.html'
+                },
+                'calendarControls@admin': {
+                    templateUrl: '/views/admin/partials/calendarControls.html'
+                },
+                'footer@admin': {
+                    templateUrl: '/views/_partials/admin-footer.html',
+                }
+            }
+        })
+        .state('adminCalendar', {
             url: '/admin/calendar',
             controller: 'calendarCtrl',
             views: {
@@ -396,6 +415,23 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                     templateUrl: '/views/_partials/admin-header.html',
                 },
                 'footer@bookings': {
+                    templateUrl: '/views/_partials/admin-footer.html',
+                }
+            }
+
+        })
+        .state('profile', {
+            url: '/admin/profile',
+            controller: 'profileCtrl',
+            views: {
+                '': {
+                    templateUrl: '/views/admin/profile.html',
+                    resolve: { authenticate: authenticate }
+                },
+                'header@profile': {
+                    templateUrl: '/views/_partials/admin-header.html',
+                },
+                'footer@profile': {
                     templateUrl: '/views/_partials/admin-footer.html',
                 }
             }

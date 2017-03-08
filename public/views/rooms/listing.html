@@ -67,56 +67,61 @@
                         <span id="js_hotel_count" class="available-number hidden-xs"><strong class="result_count">{{ result.length }}</strong> out of {{ roomLists.length }} rooms</span>
                         <ul class="list-unstyled">
                             <li class="item" ng-repeat="room in result = (roomLists | filter: { name: filter.search, building: filter.building } | filter: lessThanEqualTo(filter.pricing.value) | filter: hasThisBedTypes(filter.roomType))">
-                                <article>
-                                    <div class="img-area col-md-3 col-xs-4">
-                                        <div class="img-inner">
-                                            <a ng-click="togglePictures($index)"><span class="lnr lnr-picture"></span></a>
-                                            <img ng-src="{{ room.photos[0].file.thumbs }}">
-                                        </div>
+                                <div class="panel panel-default panel-customer-details">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">{{ room.name }}</h3>
                                     </div>
-                                    <div class="item-flex-column col-md-9 col-xs-8">
-                                        <div class="item-details col-md-4">
-                                            <div itemprop="name" class="item-name">
-                                                <h3 class="name-text">{{ room.name }}</h3>
-                                                <ul class="list-unstyled overview">
-                                                    <li ng-repeat="bed in room.beds"><span class="lnr lnr-layers"></span> {{ bed.qty }} {{ bed.type }}</li>
-                                                    <li><span class="lnr lnr-apartment"></span> Building: {{ room.building }}</li>
-                                                    <li><span class="lnr lnr-map"></span> Location: {{ room.location }}</li>
-                                                    <li><a ui-sref="accomodation" target="_blank"><span class="lnr lnr-lock"></span> Policy</a></li>
+                                    <div class="panel-body">
+                                        <div class="img-area col-md-3 col-xs-4">
+                                            <div class="img-inner">
+                                                <a ng-click="togglePictures($index)"><span class="lnr lnr-picture"></span></a>
+                                                <img ng-src="{{ room.photos[0].file.thumbs }}">
+                                            </div>
+                                        </div>
+                                        <div class="item-flex-column col-md-9 col-xs-8">
+                                            <div class="item-details col-md-4">
+                                                <div itemprop="name" class="item-name">
+                                                    <h4>Overview</h4>
+                                                    <ul class="list-unstyled overview">
+                                                        <li ng-repeat="bed in room.beds"><span class="lnr lnr-layers"></span> {{ bed.qty }} {{ bed.type }}</li>
+                                                        <li><span class="lnr lnr-apartment"></span> Building: {{ room.building }}</li>
+                                                        <li><span class="lnr lnr-map"></span> Location: {{ room.location }}</li>
+                                                        <li><a ui-sref="accomodation" target="_blank"><span class="lnr lnr-lock"></span> Policy</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="item-aminities col-md-4 hidden-xs">
+                                                <h4>Aminities</h4>
+                                                <ul class="list-unstyled aminities">
+                                                    <li ng-repeat="a in room.aminities | limitTo:8"><span class="lnr lnr-checkmark-circle"></span> {{ a.name }}</li>
+                                                </ul>
+                                            </div>
+                                            <div class="item-best-deals col-md-4">
+                                                <div class="best-deals-main text-center">
+                                                    <div class="best-deals-inner">
+                                                        <div class="price" ng-class="{'monthly': r.isMonthly, 'nightly': !r.isMonthly}" ng-if="r.pivot.isActive==1" ng-repeat="r in room.rates">
+                                                            <span class="breakfast"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ r.isMonthly ? 'Monthly' : 'Nightly' }} rates with {{ r.mealType=='N' ? 'out' : '' }} breakfast as low as</span>
+                                                            <strong class="item-price">‎{{ r.pivot.price | currency: '₱':0 }}</strong>
+                                                        </div>
+                                                    </div>
+                                                    <a ui-sref="roomDetail({slug: room.slug})" class="btn btn-success btn-block">View Deal <span class="lnr lnr-chevron-right pull-right"></span></a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="item-slide-layout" ng-class="{'active': room.showPictures == 1}">
+                                            <div class="photo-wrap">
+                                                <a class="pull-right" ng-click="togglePictures($index)"><span class="lnr lnr-cross"></span></a>
+                                                <ul class="list-inline">
+                                                    <li class="photo-item" ng-click="openLightboxModal(room.photos, $index, room.name)" ng-repeat="photo in room.photos track by $index">
+                                                        <a><span class="lnr lnr-picture"></span></a>
+                                                        <img ng-src="{{ photo.file.thumbs }}">
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
-                                        <div class="item-aminities col-md-4 hidden-xs">
-                                            <h4>Aminities</h4>
-                                            <ul class="list-unstyled aminities">
-                                                <li ng-repeat="a in room.aminities | limitTo:8"><span class="lnr lnr-checkmark-circle"></span> {{ a.name }}</li>
-                                            </ul>
-                                        </div>
-                                        <div class="item-best-deals col-md-4">
-                                            <div class="best-deals-main text-center">
-                                                <div class="best-deals-inner">
-                                                    <div class="price" ng-class="{'monthly': r.isMonthly, 'nightly': !r.isMonthly}" ng-if="r.pivot.isActive==1" ng-repeat="r in room.rates">
-                                                        <span class="breakfast"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ r.isMonthly ? 'Monthly' : 'Nightly' }} rates with {{ r.mealType=='N' ? 'out' : '' }} breakfast as low as</span>
-                                                        <strong class="item-price">‎{{ r.pivot.price | currency: '₱':0 }}</strong>
-                                                    </div>
-                                                </div>
-                                                <a ui-sref="roomDetail({slug: room.slug})" class="btn btn-success btn-block">View Deal <span class="lnr lnr-chevron-right pull-right"></span></a>
-                                            </div>
-
-                                        </div>
                                     </div>
-                                    <div class="item-slide-layout" ng-class="{'active': room.showPictures == 1}">
-                                        <div class="photo-wrap">
-                                            <a class="pull-right" ng-click="togglePictures($index)"><span class="lnr lnr-cross"></span></a>
-                                            <ul class="list-inline">
-                                                <li class="photo-item" ng-click="openLightboxModal(room.photos, $index, room.name)" ng-repeat="photo in room.photos track by $index">
-                                                    <a><span class="lnr lnr-picture"></span></a>
-                                                    <img ng-src="{{ photo.file.thumbs }}">
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </article>
+                                </div>
                             </li>
                         </ul>
                     </div>

@@ -36,6 +36,8 @@ Route::get('/contact', function ($any = null) {
 
 
 
+Route::put('profile/{id}', 'UserController@profile');
+
 /*
 |--------------------------------------------------------------------------
 | Rates Routes

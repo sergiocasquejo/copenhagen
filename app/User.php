@@ -34,4 +34,31 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Customer');
     }
+
+    public $rules = [
+        'username' => 'required|min:5|unique:users,username',
+        'password2' => 'same:password',
+        'email' => 'required|unique:users,email',
+        'password' => 'required|min:8',
+    ];
+
+    public $messages = [
+        'required' => ':attribute is required',
+        'unique' => ':attribute must be unique',
+        'required'  => ':attribute is required',
+        'numeric'  => ':attribute must be numeric',
+        'min' => ':attribute minimum of :min character',
+        'same'    => 'The :attribute and :other must match.',
+    ];
+
+    public function validate($data, $rules = false)
+    {
+        if (!$rules) {
+            $rules = $this->rules;
+        }
+        // make a new validator object
+        $v = \Validator::make($data, $rules, $this->messages);
+        // return the result
+        return $v;
+    }
 }

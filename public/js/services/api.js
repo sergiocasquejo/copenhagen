@@ -23,8 +23,11 @@ copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$cookies', funct
 
             var _user = $cookies.get('currentUser');
             if (_user == null) return;
-            console.log(_user);
             return JSON.parse(_user);
+        }
+
+        api.updateProfile = function(id, user) {
+            return $http.put(urlBase + '/profile/' + id, user);
         }
 
         /*============================================================================================
