@@ -49,6 +49,13 @@ var copenhagenApp = angular.module('copenhagenApp', ['ngAnimate', 'ui.router', '
                     $window.open(toState.url, '_self');
                 }
             });
+
+        $rootScope.$on('$stateChangeSuccess',
+            function(event, toState, toParams, fromState, fromParams) {
+                $rootScope.title = toState.title || 'Long Term Stay Apartments | Cebu Serviced Apartments';
+                $rootScope.description = toState.description || 'Copenhagen, a long term stay apartments with hotel accommodation. It&#039;s Cebu serviced apartments &amp; corporate housing for long term stay serviced apartments.';
+                $rootScope.keywords = toState.keywords || 'copenhagen,bookings,rooms';
+            });
     }])
     .filter('range', function() {
         return function(input, min, max) {

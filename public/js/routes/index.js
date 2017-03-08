@@ -24,6 +24,8 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
         })
         .state('meetings', {
             url: '/meetings',
+            title: 'Meetings - Copenhagen',
+            description: 'The event space on the 7th floor (elevator accessible) features a fantastic view of Cebu and the environs. The facilities can host up to 80 people with a special area for commemorative picture taking against the backdrop of the surrounding mountains. Our kitchen can cater to all your culinary needs. Ideal for weddings, anniversaries and &hellip;',
             views: {
                 '': {
                     controller: 'pageCtrl',
@@ -67,6 +69,8 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
         })
         .state('contact', {
             url: '/contact-location',
+            title: 'Contact &amp; Location - Copenhagen',
+            description: '',
             views: {
                 '': {
                     controller: 'pageCtrl',
@@ -155,6 +159,8 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
         })
         .state('roomsAvailable', {
             url: '/available-rooms-cebu-hotels',
+            title: 'Cebu Hotels | Cebu Accomodation | Available Rooms',
+            description: 'Cebu hotels available rooms for cebu accomodation.',
             controller: 'roomAvailableCtrl',
             views: {
                 '': {

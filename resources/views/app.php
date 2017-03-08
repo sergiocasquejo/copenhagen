@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="{{ config('app.locale') }}" ng-app="copenhagenApp">
+<html lang="<?php echo config('app.locale') ?>" ng-app="copenhagenApp">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="{{keywords}}"/>
+    <meta name="description" content="{{description}}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="<?php echo  csrf_token(); ?>">
     <meta name="fragment" content="!">
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title ng-bind="title"><?php echo config('app.name', 'Laravel') ?></title>
     <base href="/">
 
     <!-- Styles -->
@@ -22,9 +24,9 @@
 
     <!-- Scripts -->
     <script>
-        window.Laravel = {!! json_encode([
+        window.Laravel = <?php echo json_encode([
             'csrfToken' => csrf_token(),
-        ]) !!};
+        ]) ?>;
     </script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -35,7 +37,7 @@
 </head>
 
 <body>
-    <ui-view>@yield('content')</ui-view>
+    <ui-view></ui-view>
 
     <script src="/lib/angular/angular.min.js" type="text/javascript"></script>
     <script src="/lib/angular-ui-router/release/angular-ui-router.min.js" type="text/javascript"></script>
