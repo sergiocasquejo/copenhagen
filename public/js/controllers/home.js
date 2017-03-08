@@ -289,6 +289,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                     checkIn: sc.booking.checkIn,
                     checkOut: sc.booking.checkOut,
                     noOfRooms: sc.booking.noRooms,
+                    noOfAdults: sc.booking.adult,
                 }).then(function(response) {
                     API.bookingStep({
                         roomId: sc.room.id,

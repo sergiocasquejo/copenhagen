@@ -127,15 +127,26 @@ class CalendarController extends Controller
                 ->orWhere('isActive', 0);
         })->get();
 
-        if ($hasNoRoomAvailable->count() == 0) {
+        $room = \App\Room::find($request->input('roomID'));
+        
+        
+        if ($hasNoRoomAvailable->count() == 0 && $room->totalPerson  >= $request->input('noOfAdults')) {
             return response()->json('available', 200, [], JSON_UNESCAPED_UNICODE);
         }
-
-        $str = '<table class="table table-striped">'. '<tr><td>Date</td><td>Quantity</td><td>Status</td></tr>';
-        foreach ($hasNoRoomAvailable as $d) {
-            $str .= '<tr><td>'. date('D F d Y', strtotime($d->selectedDate)) . '</td><td>' . $d->availability . '</td><td>' . (!$d->isActive ? 'not' : '' ) . ' available' . '</td></tr>';
+        $errStr = '';
+        if ($hasNoRoomAvailable->count()!= 0) { 
+            $errStr .= '<p>Selected date has no enough room available.</p>';
+            $errStr .= '<table class="table table-striped">'. '<tr><td>Date</td><td>Quantity</td><td>Status</td></tr>';
+            foreach ($hasNoRoomAvailable as $d) {
+                $errStr .= '<tr><td>'. date('D F d Y', strtotime($d->selectedDate)) . '</td><td>' . $d->availability . '</td><td>' . (!$d->isActive ? 'not' : '' ) . ' available' . '</td></tr>';
+            }
+            $errStr .= '</table>';
         }
-        $str .= '</table>';
-        return response()->json('<p>Selected date has no enough room available.</p>' . $str, 400, [], JSON_UNESCAPED_UNICODE);
+
+        if ($room->totalPerson  < $request->input('noOfAdults')) {
+            $errStr .= '<p>Number of adults must not greater than '. $room->totalPerson .'.</p>';
+        }
+
+        return response()->json($errStr, 400, [], JSON_UNESCAPED_UNICODE);
     }
 }

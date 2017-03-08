@@ -43,8 +43,8 @@ class Calendar extends Model
     }
 
 
-    public function rooms() {
-         return $this->hasMany('App\Room', 'roomID', 'id');
+    public function room() {
+         return $this->belongsTo('App\Room', 'id', 'roomID');
     }
 
     public function rates() {
@@ -54,6 +54,14 @@ class Calendar extends Model
     public static function lazyLoad() {
         return self::with('rates');
     }
+
+    // public static function withRooms($totaPersons, $roomID)
+    // {
+    //   return static::leftJoin(
+    //     'rooms',
+    //     'rooms.id', '=', 'calendar.roomID'
+    //   )->where('totalPerson', '<=', 1$;
+    // }
     public function getStartsAtAttribute() {
         return strtotime($this->selectedDate);
     }
