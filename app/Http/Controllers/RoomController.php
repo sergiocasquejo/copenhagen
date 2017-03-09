@@ -215,14 +215,15 @@ class RoomController extends Controller
     }
 
     public function showBySlug(Request $request, $slug) {
-         $room = \App\Room::lazyLoad()->where(['slug' => $slug, 'isActive' => 1])->first();
+        //, 'isActive' => 1
+         $room = \App\Room::lazyLoad()->where(['slug' => $slug])->first();
          
          return response()->json($room->toArray(), 200, [], JSON_UNESCAPED_UNICODE);
     }
 
     public function showAvailable()
-    {
-		return response()->json(\App\Room::lazyLoad()->where('isActive', 1)->orderBy('created_at', 'DESC')->get(), 200);
+    {//->where('isActive', 1)
+		return response()->json(\App\Room::lazyLoad()->orderBy('created_at', 'DESC')->get(), 200);
 	}
 
     

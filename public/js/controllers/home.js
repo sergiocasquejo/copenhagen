@@ -249,6 +249,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
         var currentDate = moment(sc.viewDate).format('MMMM DD, YYYY');
         sc.events = [];
 
+        console.log(moment(currentDate).endOf('month').format('YYYY-MM-DD'));
         var popupModal = null;
 
         sc.showLoader = function() {
@@ -257,7 +258,12 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
 
         var fetchCalendar = function() {
-            API.fetchUnavailableCalendarByRoomId(sc.room.id).then(function(response) {
+            sc.events = [];
+            API.fetchUnavailableCalendarByRoomId(
+                sc.room.id,
+                moment(sc.viewDate).startOf('month').format('YYYY-MM-DD'),
+                moment(sc.viewDate).endOf('month').format('YYYY-MM-DD')
+            ).then(function(response) {
 
                 angular.forEach(response.data, function(data) {
                     var event = {
@@ -286,6 +292,12 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
             showPopup('Error', error.data, sh);
             $state.go('home');
         });
+
+        sc.changeCalendarViewMonth = function(viewDate) {
+            sc.showLoader();
+            fetchCalendar();
+
+        };
 
 
 

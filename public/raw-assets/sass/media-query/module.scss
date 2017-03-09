@@ -186,17 +186,17 @@
                         }
                     }
                 }
-                .tab-content {
-                    .tab-pane {
-                        padding: 20px 0;
-                        mwl-calendar .cal-month-day,
-                        mwl-calendar .cal-month-box [class*=cal-cell],
-                        mwl-calendar .cal-year-box [class*=span] {
-                            height: 40px;
-                            min-height: 40px;
-                            .calendar-day-title {
-                                display: none;
-                            }
+                .details-inner {
+                    .details-side {
+                        width: 100%;
+                    }
+                    mwl-calendar .cal-month-day,
+                    mwl-calendar .cal-month-box [class*=cal-cell],
+                    mwl-calendar .cal-year-box [class*=span] {
+                        height: 40px;
+                        min-height: 40px;
+                        .calendar-day-title {
+                            display: none;
                         }
                     }
                 }

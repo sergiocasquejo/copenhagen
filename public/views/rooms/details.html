@@ -3,109 +3,125 @@
     <div ui-view="steps"></div>
     <section class="section-rooms-details section">
         <div class="container">
-            <div class="box">
+            <div class="room-details-inner">
                 <div class="row">
-                    <div class="col-md-12">
-                        <h1 class="page-title">{{ room.name }}</h1>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3 col-md-push-9">
-                        <div class="form-wrapper">
-                            <div class="room-detail_total text-center">
-                                <h5>STARTING ROOM FROM</h5>
-                                <div class="best-deals-main">
-                                    <div class="best-deals-inner">
-                                        <div class="price" ng-repeat="r in room.rates | filter: { pivot : {isActive:1}, isMonthly: 0}" ng-init="$index == 0 ? booking.rateSelected = r : ''">
-                                            <span class="breakfast"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Nightly rates with {{ r.mealType=='N' ? 'out' : '' }} breakfast as low as</span>
-                                            <label class="item-price">‎<input name="rate_{{ r.id }}" type="radio" ng-model="booking.rateSelected" ng-if="(room.rates | filter: { pivot : {isActive:1}, isMonthly: 0}).length > 1" ng-value="r"/> {{ r.pivot.price | currency: '₱':0 }}</label>
+                    <div class="details-inner">
+                        <div class="col-md-4 col-md-push-8 details-sidebar no-padding room-sidebar-overview">
+                            <div class="form-wrapper">
+                                <div class="room-detail_total">
+                                    <h1 class="page-title text-center">{{ room.name }}</h1>
+                                    <div class="best-deals-main">
+                                        <div class="best-deals-inner text-center">
+                                            <div class="price" ng-repeat="r in room.rates | filter: { pivot : {isActive:1}, isMonthly: 0}" ng-init="$index == 0 ? booking.rateSelected = r : ''">
+                                                <span class="breakfast"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Nightly rates with {{ r.mealType=='N' ? 'out' : '' }} breakfast as low as</span>
+                                                <label class="item-price">‎<input name="rate_{{ r.id }}" type="radio" ng-model="booking.rateSelected" ng-if="(room.rates | filter: { pivot : {isActive:1}, isMonthly: 0}).length > 1" ng-value="r"/> {{ r.pivot.price | currency: '₱':0 }}</label>
+                                            </div>
+                                            <div class="price monthly" ng-if="r.pivot.isActive==1" ng-repeat="r in result = (room.rates | filter: { pivot : {isActive:1}, isMonthly: 1})">
+                                                <span class="breakfast"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Monthly rates with {{ r.mealType=='N' ? 'out' : '' }} breakfast as low as</span>
+                                                <label class="item-price">‎{{ r.pivot.price | currency: '₱':0 }}</label>
+                                            </div>
                                         </div>
-                                        <div class="price monthly" ng-if="r.pivot.isActive==1" ng-repeat="r in result = (room.rates | filter: { pivot : {isActive:1}, isMonthly: 1})">
-                                            <span class="breakfast"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Monthly rates with {{ r.mealType=='N' ? 'out' : '' }} breakfast as low as</span>
-                                            <label class="item-price">‎{{ r.pivot.price | currency: '₱':0 }}</label>
+                                        <div class="overview">
+                                            <ul class="list-unstyled overview">
+                                                <li class="item col-xs-6 col-md-6">
+                                                    <span class="lnr lnr-apartment"></span>
+                                                    <span class="lbl">Building<span class="text">{{ room.building }}</span></span>
+                                                </li>
+                                                <li class="item col-xs-6 col-md-6">
+                                                    <span class="lnr lnr-home"></span>
+                                                    <span class="lbl">Available<span class="text">{{ room.totalRooms }}</span></span>
+                                                </li>
+                                                <li class="item col-xs-6 col-md-6">
+                                                    <span class="lnr lnr-user"></span>
+                                                    <span class="lbl">Persons<span class="text">{{ room.totalPerson }}</span></span>
+                                                </li>
+                                                <li class="item col-xs-6 col-md-6" ng-repeat="i in room.beds">
+                                                    <span class="lnr lnr-user"></span>
+                                                    <span class="lbl">Bed<span class="text">{{ i.qty }} {{ i.type }}</span></span>
+                                                </li>
+                                                <li class="item col-xs-6 col-md-6">
+                                                    <span class="lnr lnr-users"></span>
+                                                    <span class="lbl">Extra Bed<span class="text">{{ room.extraBed }}</span></span>
+                                                </li>
+                                                <li class="item col-xs-6 col-md-6">
+                                                    <span class="lnr lnr-crop"></span>
+                                                    <span class="lbl">Room Size<span class="text">{{ room.roomSize }} (sq.m)</span></span>
+                                                </li>
+                                                <li class="item col-xs-6 col-md-6">
+                                                    <span class="lnr lnr-users"></span>
+                                                    <span class="lbl">Bathroom<span class="text">{{ room.bathrooms }}</span>
+                                                </li>
+
+                                                <li class="item col-xs-6 col-md-6">
+                                                    <span class="lnr lnr-map"></span>
+                                                    <span class="lbl">Location<span class="text">{{ room.location }}</span></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="room.isActive" class="booking-form">
+                                    <form autocomplete="off" novalidate="" ng-submit="book(bookingForm.$valid)" name="bookingForm" class="text-center" ng-class="{'form-inline': isInlineForm}">
+                                        <button class="btn btn-success" ng-disabled="bookingForm.$invalid">{{ buttonText }} <span class="lnr lnr-cart pull-right"></span></button>
+                                    </form>
+                                </div>
+                                <button ng-if="!room.isActive" class="btn btn-danger btn-block">Room is not available</button>
+                            </div>
+
+
+
+                        </div>
+                        <!--/.col-md-3-->
+                        <div class="col-md-8 col-md-pull-4 details-main no-padding bg-white">
+                            <div class="room-inner">
+                                <div class="room-image">
+                                    <div class="carousel-fade" template-url="/uib/template/carousel/carousel.html" uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
+                                        <div uib-slide ng-repeat="photo in room.photos" index="$index">
+                                            <img ng-src="{{ photo.file.orig }}" style="margin:auto;">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div ng-if="room.isActive" class="booking-form">
-                                <form autocomplete="off" novalidate="" ng-submit="book(bookingForm.$valid)" name="bookingForm" class="text-center" ng-class="{'form-inline': isInlineForm}">
-                                    <button class="btn btn-success" ng-disabled="bookingForm.$invalid">{{ buttonText }} <span class="lnr lnr-cart pull-right"></span></button>
-                                </form>
-                            </div>
-                            <button ng-if="!room.isActive" class="btn btn-danger btn-block">Room is not available</button>
                         </div>
-
-
-
+                        <!--/.col-md-9-->
                     </div>
-                    <!--/.col-md-3-->
-                    <div class="col-md-9 col-md-pull-3">
-                        <div class="room-inner">
-                            <div class="room-image">
-                                <div class="carousel-fade" template-url="/uib/template/carousel/carousel.html" uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
-                                    <div uib-slide ng-repeat="photo in room.photos" index="$index">
-                                        <img ng-src="{{ photo.file.orig }}" style="margin:auto;">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--/.col-md-9-->
                 </div>
                 <!--/.row-->
                 <div class="row">
-                    <div class="col-md-9">
-                        <uib-tabset>
-                            <uib-tab index="0" heading="What’s around">
-                                <ul class="list-unstyled overview">
-                                    <li><strong><span class="lnr lnr-home"></span> Available Room</strong>: {{ room.totalRooms }}</li>
-                                    <li><strong><span class="lnr lnr-user"></span> Persons Allowed</strong>: {{ room.totalPerson }}</li>
-                                    <li ng-repeat="i in room.beds"><strong><span class="lnr lnr-user"></span> Bed</strong>: {{ i.qty }} {{ i.type }} </li>
-                                    <li><strong><span class="lnr lnr-users"></span> Extra Bed</strong>: {{ room.extraBed }}</li>
-                                    <li><strong><span class="lnr lnr-crop"></span> Room Size</strong>: {{ room.roomSize }} (sq.m)</li>
-                                    <li><strong><span class="lnr lnr-users"></span> Bath Room</strong>: {{ room.bathrooms }}</li>
-                                    <li><strong><span class="lnr lnr-apartment"></span> Building</strong>: {{ room.building }}</li>
-                                    <li><strong><span class="lnr lnr-map"></span> Location</strong>: {{ room.location }}</li>
-                                </ul>
-                            </uib-tab>
-                            <uib-tab index="1" heading="Main Aminities">
+                    <div class="details-inner">
+                        <div class="details-side col-md-4 col-md-push-8 no-padding room-sidebar-aminities">
+                            <div class="room-sidebar-inner">
+                                <h3>Aminities</h3>
                                 <ul class="list-unstyled aminities">
                                     <li ng-repeat="a in room.aminities"><span class="lnr lnr-checkmark-circle"></span> {{ a.name }}</li>
                                 </ul>
-                            </uib-tab>
-                            <uib-tab index="2" heading="Calendar">
-                                <div class="row">
-                                    <div class="col-md-6 text-center">
-                                        <h3 class="page-title">{{ viewDate | date: 'MMMM yyyy' }}</h3>
-                                    </div>
-                                    <div class="col-md-6 text-right">
-                                        <div class="btn-group">
-                                            <button class="btn btn-primary" mwl-date-modifier date="viewDate" decrement="calendarView">Previous</button>
-                                            <button class="btn btn-default" mwl-date-modifier date="viewDate" set-to-today>Today</button>
-                                            <button class="btn btn-primary" mwl-date-modifier date="viewDate" increment="calendarView">Next</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <mwl-calendar cell-modifier="cellModifier(calendarCell)" events="events" view="calendarView" view-title="calendarTitle" view-date="viewDate" on-event-click="eventClicked(calendarEvent)" on-event-times-changed="eventTimesChanged(calendarEvent); calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
-                                        cell-is-open="cellIsOpen" day-view-start="06:00" day-view-end="22:59" day-view-split="30" cell-modifier="modifyCell(calendarCell)" cell-auto-open-disabled="true" on-timespan-click="timespanClicked(calendarDate, calendarCell)"
-                                        custom-template-urls="{calendarMonthCell: 'customMonthCell.html'}">
-                                    </mwl-calendar>
-                                </div>
-
-                            </uib-tab>
-
-                        </uib-tabset>
+                            </div>
+                        </div>
+                        <div class="details-main col-md-8 col-md-pull-4 no-padding bg-white text-center">
+                            <h3 class="page-title text-center">{{ viewDate | date: 'MMMM yyyy' }}</h3>
+                            <div class="btn-group btn-group-calendar text-center">
+                                <button class="btn btn-primary" ng-click="changeCalendarViewMonth(viewDate)" mwl-date-modifier date="viewDate" decrement="calendarView">Previous</button>
+                                <button class="btn btn-default" ng-click="changeCalendarViewMonth(viewDate)" mwl-date-modifier date="viewDate" set-to-today>Today</button>
+                                <button class="btn btn-primary" ng-click="changeCalendarViewMonth(viewDate)" mwl-date-modifier date="viewDate" increment="calendarView">Next</button>
+                            </div>
+                            <mwl-calendar cell-modifier="cellModifier(calendarCell)" events="events" view="calendarView" view-title="calendarTitle" view-date="viewDate" on-event-click="eventClicked(calendarEvent)" on-event-times-changed="eventTimesChanged(calendarEvent); calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
+                                cell-is-open="cellIsOpen" day-view-start="06:00" day-view-end="22:59" day-view-split="30" cell-modifier="modifyCell(calendarCell)" cell-auto-open-disabled="true" on-timespan-click="timespanClicked(calendarDate, calendarCell)"
+                                custom-template-urls="{calendarMonthCell: 'customMonthCell.html'}">
+                            </mwl-calendar>
+                        </div>
+                        <!--/.col-md-4-->
                     </div>
                 </div>
+                <!--/.row-->
             </div>
         </div>
-    </section>
-    <div ui-view="footer"></div>
+</div>
+</section>
+<div ui-view="footer"></div>
 
-    <script id="customMonthCell.html" type="text/ng-template">
-        <div mwl-droppable on-drop="vm.handleEventDrop(dropData.event, day.date, dropData.draggedFromDate)" mwl-drag-select="!!vm.onDateRangeSelect" on-drag-select-start="vm.onDragSelectStart(day)" on-drag-select-move="vm.onDragSelectMove(day)" on-drag-select-end="vm.onDragSelectEnd(day)"
-            class="cal-month-day {{ day.cssClass }}" ng-class="{
+<script id="customMonthCell.html" type="text/ng-template">
+    <div mwl-droppable on-drop="vm.handleEventDrop(dropData.event, day.date, dropData.draggedFromDate)" mwl-drag-select="!!vm.onDateRangeSelect" on-drag-select-start="vm.onDragSelectStart(day)" on-drag-select-move="vm.onDragSelectMove(day)" on-drag-select-end="vm.onDragSelectEnd(day)"
+        class="cal-month-day {{ day.cssClass }}" ng-class="{
                 'cal-day-notavailable': day.events.length > 0,
                 'cal-day-outmonth': !day.inMonth,
                 'cal-day-inmonth': day.inMonth,
@@ -115,9 +131,9 @@
                 'cal-day-future': day.isFuture,
                 'cal-day-selected': vm.dateRangeSelect && vm.dateRangeSelect.startDate <= day.date && day.date <= vm.dateRangeSelect.endDate,'cal-day-open': dayIndex === vm.openDayIndex}">
 
-            <!-- data-cal-date  ng-click="vm.calendarCtrl.dateClicked(day.date)"-->
-            <span class="pull-right day-label" ng-bind="day.label"></span>
-            <small style="position: absolute; bottom: 10px; left: 5px" class="calendar-day-title" ng-if="day.events.length > 0">not available</small>
-        </div>
-    </script>
+        <!-- data-cal-date  ng-click="vm.calendarCtrl.dateClicked(day.date)"-->
+        <span class="pull-right day-label" ng-bind="day.label"></span>
+        <small style="position: absolute; bottom: 10px; left: 5px" class="calendar-day-title" ng-if="day.events.length > 0">not available</small>
+    </div>
+</script>
 </div>

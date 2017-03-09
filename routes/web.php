@@ -105,7 +105,7 @@ Route::group(['prefix' => 'booking'], function() {
 */
 
 Route::group(['prefix' => 'rooms'], function() {
-    Route::get('{roomId}/calendar/unavailable', 'CalendarController@notAvailableDateByRoomId');
+    Route::get('{roomId}/calendar/unavailable/{start}/{end}', 'CalendarController@notAvailableDateByRoomId');
     Route::post('availability', 'CalendarController@availability');
 });
     

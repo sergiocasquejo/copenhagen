@@ -105,14 +105,15 @@ class CalendarController extends Controller
         //
     }
 
-    public function notAvailableDateByRoomId($roomId) {
+    public function notAvailableDateByRoomId($roomId, $start, $end) {
         $calendar = \App\Calendar::lazyload()->where([
-            'roomID' => $roomId
+            'roomID' => $roomId,
+            ['selectedDate', '>=', date('Y-m-d', strtotime($start))],
+            ['selectedDate', '<=', date('Y-m-d', strtotime($end))]
         ])->where(function($q){
             $q->where('availability', 0)
                 ->orWhere('isActive', 0);
         })->get();
-
         return response()->json($calendar, 200, [], JSON_UNESCAPED_UNICODE);
     }
 

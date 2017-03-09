@@ -136,8 +136,8 @@ copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$cookies', funct
             return $http.post(urlBase + '/rooms/availability', params);
         }
 
-        api.fetchUnavailableCalendarByRoomId = function(roomID) {
-            return $http.get(urlBase + '/rooms/' + roomID + '/calendar/unavailable');
+        api.fetchUnavailableCalendarByRoomId = function(roomID, start, end) {
+            return $http.get(urlBase + '/rooms/' + roomID + '/calendar/unavailable/' + start + '/' + end);
         }
         api.bookingStep = function(params, step) {
             return $http.post(urlBase + '/booking/step/' + step, params);

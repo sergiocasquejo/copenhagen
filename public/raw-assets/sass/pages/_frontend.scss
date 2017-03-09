@@ -199,7 +199,7 @@
                         li {
                             padding: 7px 0;
                             .lnr {
-                                font-size: 20px;
+                                font-size: 14px;
                                 vertical-align: middle;
                             }
                         }
@@ -310,6 +310,74 @@
             }
         }
         &.section-rooms-details {
+            .room-details-inner {
+                padding: 0 15px;
+            }
+            .details-inner {
+                display: -webkit-box;
+                display: -webkit-flex;
+                display: -ms-flexbox;
+                display: flex;
+                flex-wrap: wrap;
+                .details-main,
+                .details-side {
+                    display: flex;
+                    flex-direction: column;
+                    position: relative;
+                }
+                .btn-group-calendar {
+                    margin: 0 auto;
+                }
+                mwl-calendar {
+                    .cal-day-notavailable {
+                        color: $white;
+                        background-color: $dark_blue;
+                    }
+                    .day-label {
+                        font-size: 16px;
+                        margin-right: 10px;
+                        margin-top: 10px;
+                    }
+                }
+                ul.list-unstyled.aminities li {
+                    font-size: 16px;
+                    padding: 5px 0;
+                }
+            }
+            .room-sidebar-aminities {
+                background-color: #337ab7;
+                color: $white;
+                .room-sidebar-inner {
+                    padding: 0 15px;
+                }
+            }
+            .room-sidebar-overview {
+                background-color: $dark_blue;
+                color: $white;
+                .page-title {
+                    color: $white;
+                }
+                .overview {
+                    li {
+                        &.item {
+                            padding: 10px 15px;
+                        }
+                        >span {
+                            display: inline-block;
+                            vertical-align: top;
+                            margin-right: 10px;
+                            &.lnr {
+                                font-size: 25px;
+                                color: #03a9f4;
+                            }
+                            .text {
+                                display: block;
+                                font-size: 18px;
+                            }
+                        }
+                    }
+                }
+            }
             .room-detail_total {
                 h5 {
                     font-size: 20px;
@@ -317,8 +385,6 @@
                 }
             }
             .form-wrapper {
-                background-color: $white;
-                padding: 0 10px;
                 .best-deals-main {
                     .price {
                         .item-price {
@@ -345,17 +411,28 @@
                         }
                     }
                 }
-                form {
-                    button {
-                        display: block;
-                        width: 100%;
-                        margin-top: 15px;
-                        padding: 15px;
-                        text-transform: uppercase;
-                        font-size: 18px;
-                        .lnr-cart {
-                            font-size: 23px;
-                        }
+                button {
+                    display: block;
+                    width: 100%;
+                    margin-top: 15px;
+                    padding: 15px;
+                    text-transform: uppercase;
+                    font-size: 18px;
+                    @include border-radius(0);
+                    background-color: #293644;
+                    border-color: #293644;
+                    position: absolute;
+                    bottom: 0;
+                    .lnr-cart {
+                        font-size: 23px;
+                    }
+                    &:hover {
+                        background-color: #0d141d;
+                        border-color: #0d141d;
+                    }
+                    &.btn-danger {
+                        background-color: #eb3d33;
+                        border-color: #eb3d33;
                     }
                 }
             }
@@ -370,37 +447,6 @@
             }
             .nav-tabs {
                 margin-top: 20px;
-            }
-            .tab-content {
-                background-color: $white;
-                .tab-pane {
-                    padding: 20px;
-                    mwl-calendar {
-                        .cal-day-notavailable {
-                            color: $white;
-                            background-color: #020202;
-                        }
-                        .day-label {
-                            font-size: 16px;
-                            margin-right: 10px;
-                            margin-top: 10px;
-                        }
-                    }
-                    .aminities {
-                        li {
-                            padding: 5px;
-                        }
-                    }
-                    .overview {
-                        li {
-                            padding: 10px;
-                            strong {
-                                width: 150px;
-                                display: inline-block;
-                            }
-                        }
-                    }
-                }
             }
         }
         &.section-page {
