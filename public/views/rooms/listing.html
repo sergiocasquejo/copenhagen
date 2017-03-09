@@ -66,7 +66,7 @@
                     <div class="col-md-9" ng-if="roomLists.length > 0">
                         <span id="js_hotel_count" class="available-number hidden-xs"><strong class="result_count">{{ result.length }}</strong> out of {{ roomLists.length }} rooms</span>
                         <ul class="list-unstyled">
-                            <li class="item" ng-repeat="room in result = (roomLists | filter: { name: filter.search, building: filter.building } | filter: lessThanEqualTo('totalPerson', booking.adult)  | filter: lessThanEqualToRates(filter.pricing.value) | filter: hasThisBedTypes(filter.roomType) | orderBy: '-isAvailable')">
+                            <li class="item" ng-repeat="room in result = (roomLists | filter: { name: filter.search, building: filter.building } | filter: lessThanEqualTo('totalPerson', booking.adult)  | filter: lessThanEqualToRates(filter.pricing.value) | filter: hasThisBedTypes(filter.roomType) | orderBy: '-isAvailable')  track by $index">
                                 <div class="panel panel-customer-details" ng-class="{'panel-danger': !room.isAvailable, 'panel-default': room.isAvailable, }">
                                     <div class="panel-heading">
                                         <h3 class="panel-title">{{ room.name }} {{ !room.isAvailable ? '- not available' : '' }}
@@ -75,7 +75,7 @@
                                     <div class="panel-body">
                                         <div class="img-area col-md-3 col-xs-4">
                                             <div class="img-inner">
-                                                <a ng-click="togglePictures($index)"><span class="lnr lnr-picture"></span></a>
+                                                <a ng-click="togglePictures(room)"><span class="lnr lnr-picture"></span></a>
                                                 <img ng-src="{{ room.photos[0].file.thumbs }}">
                                             </div>
                                         </div>
@@ -113,9 +113,9 @@
                                         </div>
                                         <div class="item-slide-layout" ng-class="{'active': room.showPictures == 1}">
                                             <div class="photo-wrap">
-                                                <a class="pull-right" ng-click="togglePictures($index)"><span class="lnr lnr-cross"></span></a>
+                                                <a class="pull-right" ng-click="togglePictures(room)"><span class="lnr lnr-cross"></span></a>
                                                 <ul class="list-inline">
-                                                    <li class="photo-item" ng-click="openLightboxModal(room.photos, $index, room.name)" ng-repeat="photo in room.photos track by $index">
+                                                    <li class="photo-item" ng-repeat="photo in room.photos track by $index" ng-click="openLightboxModal(room.photos, $index, room.name)">
                                                         <a><span class="lnr lnr-picture"></span></a>
                                                         <img ng-src="{{ photo.file.thumbs }}">
                                                     </li>

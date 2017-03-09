@@ -147,8 +147,8 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
             sc.filter.pricing.value = sc.filter.pricing.options.ceil = sc.maxPrice;
 
         }
-        sc.togglePictures = function(index) {
-            sc.roomLists[index].showPictures = sc.roomLists[index].showPictures == 1 ? 0 : 1;
+        sc.togglePictures = function(item) {
+            item.showPictures = !item.showPictures;
         }
         sc.resetFilter = function() {
             sc.filter = {
