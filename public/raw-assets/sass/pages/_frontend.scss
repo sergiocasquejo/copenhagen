@@ -46,7 +46,7 @@
                     position: absolute;
                     right: -5px;
                     top: -5px;
-                    border-left: solid 30px #f5f5f5;
+                    border-left: solid 30px $light_gray;
                     z-index: 1;
                 }
                 &:before {
@@ -75,7 +75,7 @@
                         display: none;
                     }
                 }
-                background-color: #17212c;
+                background-color: $dark_blue;
                 color: $white;
                 padding: 5px 15px;
                 text-transform: uppercase;
@@ -94,7 +94,7 @@
                 }
                 &.active .counter {
                     background-color: #50a950;
-                    color: #fff;
+                    color: $white;
                     border-color: #3e8f3e;
                 }
             }
@@ -114,7 +114,7 @@
         &.section-rooms-available {
             margin: 20px 0;
             .room-filter {
-                background-color: #FFF;
+                background-color: $white;
                 box-shadow: 1px 2px 2px #ccc;
                 .filter {
                     padding: 10px 20px;
@@ -165,7 +165,7 @@
                             text-align: center;
                             .lnr {
                                 font-size: 50px;
-                                color: #FFF;
+                                color: $white;
                                 text-align: center;
                                 line-height: 4;
                             }
@@ -279,7 +279,7 @@
                     .photo-item {
                         position: relative;
                         margin-bottom: 10px;
-                        border: solid 1px #f5f5f5;
+                        border: solid 1px $light_gray;
                         padding: 0;
                         margin: 2px;
                         a {
@@ -295,7 +295,7 @@
                             text-decoration: none;
                             .lnr {
                                 font-size: 50px;
-                                color: #FFF;
+                                color: $white;
                                 text-align: center;
                                 line-height: 4;
                             }
@@ -317,7 +317,7 @@
                 }
             }
             .form-wrapper {
-                background-color: #FFF;
+                background-color: $white;
                 padding: 0 10px;
                 .best-deals-main {
                     .price {
@@ -372,12 +372,12 @@
                 margin-top: 20px;
             }
             .tab-content {
-                background-color: #FFF;
+                background-color: $white;
                 .tab-pane {
                     padding: 20px;
                     mwl-calendar {
                         .cal-day-notavailable {
-                            color: #FFF;
+                            color: $white;
                             background-color: #020202;
                         }
                         .day-label {

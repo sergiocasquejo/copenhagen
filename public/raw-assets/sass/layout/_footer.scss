@@ -1,5 +1,5 @@
 footer {
-    background: #17212c;
+    background: $dark_blue;
     .cc-logos {
         padding: 10px 0 20px 0;
         img {
@@ -22,7 +22,6 @@ footer {
         }
     }
     .l-footer-secondary {
-        background: #17212c;
         padding: 0 0 1em;
         color: $white;
         .footer-brand {

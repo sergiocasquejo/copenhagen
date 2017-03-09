@@ -1,5 +1,5 @@
 .auth-form-inner {
-    background-color: #FFF;
+    background-color: $white;
     @include border-radius(4px);
     margin-top: 10%;
     @include padding(20px);
@@ -42,5 +42,5 @@ form[name=beddingForm] {
 }
 
 select.form-control {
-    background: #FFF url(../images/checkron.png) no-repeat right center;
+    background: $white url(../images/checkron.png) no-repeat right center;
 }
