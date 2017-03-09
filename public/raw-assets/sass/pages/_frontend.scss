@@ -115,7 +115,7 @@
             margin: 20px 0;
             .room-filter {
                 background-color: $white;
-                box-shadow: 1px 2px 2px #ccc;
+                @include border-radius(3px);
                 .filter {
                     padding: 10px 20px;
                     border-bottom: 1px solid #cdd0d2;
@@ -142,8 +142,14 @@
                 }
             }
             .item {
-                .panel-body {
-                    padding: 0;
+                .panel-default {
+                    border-color: $white;
+                    .panel-heading {
+                        background-color: $white;
+                    }
+                    .panel-body {
+                        padding: 0;
+                    }
                 }
                 .img-area {
                     padding: 8px 6px 8px 8px;
