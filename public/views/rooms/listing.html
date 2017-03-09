@@ -63,9 +63,8 @@
                             <!--/.filter-->
                         </div>
                     </div>
-                    <div class="col-md-9" ng-if="roomLists.length > 0">
-                        <span id="js_hotel_count" class="available-number hidden-xs"><strong class="result_count">{{ result.length }}</strong> out of {{ roomLists.length }} rooms</span>
-                        <ul class="list-unstyled">
+                    <div class="col-md-9">
+                        <ul class="list-unstyled room-lists" ng-if="roomLists.length > 0">
                             <li class="item" ng-repeat="room in result = (roomLists | filter: { name: filter.search, building: filter.building } | filter: lessThanEqualTo('totalPerson', booking.adult)  | filter: lessThanEqualToRates(filter.pricing.value) | filter: hasThisBedTypes(filter.roomType) | orderBy: '-isAvailable')  track by $index">
                                 <div class="panel panel-customer-details" ng-class="{'panel-danger': !room.isAvailable, 'panel-default': room.isAvailable, }">
                                     <div class="panel-heading">
@@ -126,6 +125,7 @@
                                 </div>
                             </li>
                         </ul>
+                        <p ng-if="!result.length" class="text-center">Oops! no results found. (:</p>
                     </div>
             </form>
             </div>
