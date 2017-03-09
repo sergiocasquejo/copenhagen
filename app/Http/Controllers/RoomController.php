@@ -182,7 +182,7 @@ class RoomController extends Controller
                     $room->beds()->save($bed);
                 }
 
-                return response()->json(\App\Room::all()->toArray(), 200, [], JSON_UNESCAPED_UNICODE);
+                return response()->json($room->beds()->get()->toArray(), 200, [], JSON_UNESCAPED_UNICODE);
             }
         } catch(\Exception $e) {
             \Log::info('ERROR: '.$e->getMessage());
@@ -192,7 +192,9 @@ class RoomController extends Controller
     }
 
     public function detachBed(Request $request, $roomID, $bedID) {
-         \App\Bed::find($bedID)->delete();
+         $bed = \App\Bed::find($bedID);
+         if ($bed) 
+            $bed->delete();
     }
 
     public function types(Request $request) {

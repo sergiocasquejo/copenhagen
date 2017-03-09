@@ -31,9 +31,7 @@ copenhagenApp
 
             sc.deletePhoto = function(index, roomID, photoID) {
                 API.deletePhoto(roomID, photoID).then(function(response) {
-                    console.log(index);
                     if (sc.roomLists[index]) {
-
                         sc.roomLists[index].photos = response.data;
                     }
                 }, function(error) {
@@ -203,6 +201,7 @@ copenhagenApp
                     }
                 });
                 beddingModalInstance.result.then(function(data) {
+                    console.log(data);
                     sc.roomLists[data.index].beds = data.data;
                 }, function() {
                     $log.info('Modal dismissed at: ' + new Date());
@@ -302,7 +301,6 @@ copenhagenApp
                 'roomID': room.id,
                 'type': 'queen size'
             });
-            console.log(sc.beds);
 
         }
 
@@ -318,7 +316,7 @@ copenhagenApp
 
         sc.ok = function() {
             API.saveRoomBed(room.id, { beds: sc.beds }).then(function(response) {
-                $uibModalInstance.close('ok');
+                $uibModalInstance.close({ index: index, data: response.data });
             }, function(error) {
                 showPopup('Error', error.data, sh);
             });
