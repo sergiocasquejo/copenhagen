@@ -137,7 +137,7 @@ class CalendarController extends Controller
         $errStr = '';
         if ($hasNoRoomAvailable->count()!= 0) { 
             $errStr .= '<p>Selected date has no enough room available.</p>';
-            $errStr .= '<table class="table table-striped">'. '<tr><td>Date</td><td>Quantity</td><td>Status</td></tr>';
+            $errStr .= '<table class="table table-striped">'. '<tr><td>Date</td><td>Rooms</td><td>Status</td></tr>';
             foreach ($hasNoRoomAvailable as $d) {
                 $errStr .= '<tr><td>'. date('D F d Y', strtotime($d->selectedDate)) . '</td><td>' . $d->availability . '</td><td>' . (!$d->isActive ? 'not' : '' ) . ' available' . '</td></tr>';
             }

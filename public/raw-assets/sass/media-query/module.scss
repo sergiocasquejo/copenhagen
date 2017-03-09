@@ -31,6 +31,30 @@
             }
         }
     }
+    .main {
+        section {
+            &.section-rooms-details {
+                .details-inner {
+                    .details-main,
+                    .details-side {
+                        width: 100%;
+                    }
+                }
+                .room-sidebar-overview {
+                    .overview {
+                        li {
+                            >span {
+                                margin-right: 0;
+                                .text {
+                                    font-size: 14px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 @media (max-width:425px) {
@@ -178,13 +202,6 @@
                 .page-title {
                     font-size: 30px;
                     text-align: center;
-                }
-                .form-wrapper {
-                    form {
-                        button {
-                            margin-bottom: 15px;
-                        }
-                    }
                 }
                 .details-inner {
                     .details-side {
