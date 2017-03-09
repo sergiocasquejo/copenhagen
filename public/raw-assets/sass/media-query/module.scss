@@ -17,6 +17,19 @@
                 }
             }
         }
+        .booking-box {
+            form {
+                div[class*=col-] {
+                    border-top: solid 1px #273545;
+                    .form-group {
+                        margin-bottom: 0;
+                        .btn {
+                            padding: 9px 5px;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

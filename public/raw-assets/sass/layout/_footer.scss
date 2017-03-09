@@ -1,25 +1,21 @@
 footer {
     background: #17212c;
-    .navbar-bottom {
-        padding: 5px 0 0 0;
-        border-bottom: 1px solid #273545;
-        ul {
-            margin-bottom: 5px;
-            li {
-                a {
-                    color: #747a81;
-                    padding: 0 10px;
-                    text-decoration: none;
-                    &:hover {
-                        color: $hoverColor;
-                    }
-                }
+    .cc-logos {
+        padding: 10px 0 20px 0;
+        img {
+            -webkit-filter: grayscale(100%);
+            /* Safari 6.0 - 9.0 */
+            filter: grayscale(100%);
+            &:hover {
+                -webkit-filter: grayscale(0);
+                /* Safari 6.0 - 9.0 */
+                filter: grayscale(0);
             }
         }
     }
     .footer-address {
         .address {
-            padding: 5px 0;
+            padding: 10px 0 0 0;
             a {
                 color: #747a81;
             }
@@ -27,7 +23,7 @@ footer {
     }
     .l-footer-secondary {
         background: #17212c;
-        padding: 1em 0 1em;
+        padding: 0 0 1em;
         color: $white;
         .footer-brand {
             margin: 1em auto;
