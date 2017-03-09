@@ -60,12 +60,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div ng-if="room.isActive" class="booking-form">
+                                <div ng-if="room.isAvailable" class="booking-form">
                                     <form autocomplete="off" novalidate="" ng-submit="book(bookingForm.$valid)" name="bookingForm" class="text-center" ng-class="{'form-inline': isInlineForm}">
                                         <button class="btn btn-success" ng-disabled="bookingForm.$invalid">{{ buttonText }} <span class="lnr lnr-cart pull-right"></span></button>
                                     </form>
                                 </div>
-                                <button ng-if="!room.isActive" class="btn btn-danger btn-block">Room is not available</button>
+                                <button ng-if="!room.isAvailable" class="btn btn-danger btn-block">Room is not available</button>
                             </div>
 
 

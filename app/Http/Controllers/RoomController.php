@@ -47,6 +47,7 @@ class RoomController extends Controller
         $room->bathrooms = $request->input('bathrooms', 0);
         $room->building = $request->input('building', 0);
         $room->isActive = $request->input('isActive', 0);
+        $room->isAvailable = $request->input('isAvailable', 1);
         $room->sort = $request->input('sort', 0);
         try {
             if ($room->save()) {
@@ -86,6 +87,7 @@ class RoomController extends Controller
 			$room->bathrooms = $request->input('bathrooms', 0);
 			$room->building = $request->input('building', 0);
 			$room->isActive = $request->input('isActive', 0);
+            $room->isAvailable = $request->input('isAvailable', 1);
 			$room->sort = $request->input('sort', 0);
 			try {
                 if ($room->save()) {
@@ -215,15 +217,15 @@ class RoomController extends Controller
     }
 
     public function showBySlug(Request $request, $slug) {
-        //, 'isActive' => 1
-         $room = \App\Room::lazyLoad()->where(['slug' => $slug])->first();
+        
+         $room = \App\Room::lazyLoad()->where(['slug' => $slug, 'isActive' => 1])->first();
          
          return response()->json($room->toArray(), 200, [], JSON_UNESCAPED_UNICODE);
     }
 
     public function showAvailable()
-    {//->where('isActive', 1)
-		return response()->json(\App\Room::lazyLoad()->orderBy('created_at', 'DESC')->get(), 200);
+    {
+		return response()->json(\App\Room::lazyLoad()->orderBy('created_at', 'DESC')->where('isActive', 1)->get(), 200);
 	}
 
     

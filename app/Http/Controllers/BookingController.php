@@ -102,6 +102,11 @@ class BookingController extends Controller
             array_add($request->input(), 'noOfNights', $totalNights), 
             $booking->step1Rules
         );
+        // Check if room is available
+        $room = \App\Room::find($request->input('roomId'));
+        if (!$room || !$room->isActive || !$room->isAvailable) {
+            return response()->json('Selected room is not available', 400, [], JSON_UNESCAPED_UNICODE);
+        }
 
         
 		if ($validator->passes()) {
