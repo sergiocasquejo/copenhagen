@@ -83,6 +83,12 @@ copenhagenApp
                 uploader.queue = [];
             }
 
+            uploader.onErrorItem = function(item, response, status, headers) {
+                popupModal.dismiss('cancel');
+                // console.log(item, response, status, headers);
+                showPopup('Error', response, sh);
+            }
+
             uploader.onProgressAll = function(progress) {
                 sc.showLoader();
             };

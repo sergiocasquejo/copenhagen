@@ -3,11 +3,32 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
 
 class Photo extends Model
 {
     protected $table = 'rooms_photos';
     public $timestamps = false;
+
+    public $rules = [
+        'photo' => 'dimensions:min_width=300,min_height=300|max:2000',
+    ];
+
+    public $messages = [
+        'dimensions' => ':attribute dimension minimum of 300x300',
+        'max' => ':attribute size must not exceed to 2MB',
+    ];
+
+    public function validate($data, $rules = false)
+    {
+        if (!$rules) {
+            $rules = $this->rules;
+        }
+        // make a new validator object
+        $v = Validator::make($data, $rules, $this->messages);
+        // return the result
+        return $v;
+    }
 
     public static function boot()
     {

@@ -14,6 +14,20 @@ class PhotoController extends Controller
      */
     public function store(Request $request, $id)
     {
+
+        $photo = new \App\Photo;
+        $validator = $photo->validate($request->file());
+        if ($validator->fails()) {
+            $validationStr = '';
+            foreach ($validator->errors()->getMessages() as $k => $error) {
+                foreach ($error as $err) {
+                    $validationStr .= $err .'<br/>';
+                }
+                
+            }
+            return response()->json($validationStr, 400, [], JSON_UNESCAPED_UNICODE);
+        }
+        $roomPhoto = new \App\Photo;
         $photo = $request->file('photo');
         $roomID  = $request->input('roomID');
         $filename = $photo->getClientOriginalName();
@@ -42,13 +56,13 @@ class PhotoController extends Controller
                 $img->save($dir.$_n);
             }
 
-            $photo = new \App\Photo;
-            $photo->file = $images;
-            $photo->default = 0;
+            
+            $roomPhoto->file = $images;
+            $roomPhoto->default = 0;
             
             $room = \App\Room::findOrFail($id);
             try {
-                $room->photos()->save($photo);
+                $room->photos()->save($roomPhoto);
             } catch(\Exception $e) {
                 \Log::info('ERROR: '.$e->getMessage());
                 return response()->json('Oops! Error please report to administrator.', 400, [], JSON_UNESCAPED_UNICODE);
