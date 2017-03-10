@@ -95,6 +95,12 @@
                                 <ul class="list-unstyled aminities">
                                     <li ng-repeat="a in room.aminities"><span class="lnr lnr-checkmark-circle"></span> {{ a.name }}</li>
                                 </ul>
+                                <ul class="list-inline photo-lightbox">
+                                    <li class="photo-item" ng-repeat="photo in room.photos track by $index" ng-click="openLightboxModal(room.photos, $index, room.name)">
+                                        <a><span class="lnr lnr-picture"></span></a>
+                                        <img width="100" ng-src="{{ photo.file.thumbs }}">
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                         <div class="details-main col-md-8 col-md-pull-4 no-padding bg-white text-center">

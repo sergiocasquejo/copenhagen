@@ -11,7 +11,7 @@
                         </div>
                         <div class="panel-body">
                             <form name="paymentForm" ng-submit="pay(paymentForm.$valid)" novalidate>
-                                <div class="radio" ng-class="{'has-error':  paymentForm.paymentType.$touched && paymentForm.paymentType.$invalid}">
+                                <div class="radio" ng-if="paymentMethod.pesopay==true" ng-class="{'has-error':  paymentForm.paymentType.$touched && paymentForm.paymentType.$invalid}">
                                     <label class="control-label" for="paymentType">
                                         <input type="radio" name="paymentType" ng-model="booking.paymentType" ng-init="booking.paymentType='pesopay'" value="pesopay" ng-required="true" required checked> Credit Card(pesopay)
                                     </label>

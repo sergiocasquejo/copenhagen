@@ -189,7 +189,12 @@ class BookingController extends Controller
     private function step3(Request $request) {
         
         $booking = new \App\Booking;
-        $validator = $booking->validate($request->input(), $booking->step3Rules);
+        $rules = $booking->step3Rules;
+        if (config('pesopay.enable') == false) {
+            $rules = array_except($rules, ['paymentMethod']);
+        }
+
+        $validator = $booking->validate($request->input(), $rules);
         if ($validator->passes()) {
             $customer = \App\Customer::firstOrNew(['email' => $request->session()->get('booking.email')]);
             $rules = $customer->rules;

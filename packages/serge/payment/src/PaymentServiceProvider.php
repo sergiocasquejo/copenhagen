@@ -19,6 +19,7 @@ class PaymentServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/config/payment.php' => config_path('payment.php'),
+            __DIR__.'/config/pesopay.php' => config_path('pesopay.php'),
             __DIR__.'/views' => base_path('resources/views/payment'),
         ]);
 
@@ -35,6 +36,7 @@ class PaymentServiceProvider extends ServiceProvider
         include __DIR__.'/routes/routes.php';
         $this->app->make('Serge\Payment\PaymentController');
         $this->mergeConfigFrom( __DIR__.'/config/payment.php', 'payment');
+        $this->mergeConfigFrom( __DIR__.'/config/pesopay.php', 'pesopay');
     }
 
      /**

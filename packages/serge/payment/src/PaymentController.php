@@ -109,7 +109,9 @@ class PaymentController extends Controller {
                 $payerAuth, 
                 config('payment.'.$default . '.secureHashSecret'), 
                 $secureHash);
+                
         $booking = \App\Booking::where(['refId' => $ref])->firstOrFail();
+        
         $payment = new \App\Payment;
 
         if ($successCode == 0 && $verified) {

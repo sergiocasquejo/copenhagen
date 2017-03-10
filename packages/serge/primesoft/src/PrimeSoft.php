@@ -56,10 +56,10 @@ class Primesoft {
         ];
 
         // Post booking to primesoft
-        $result = $this->postToPrimeSoftAPI(
+        $result = null; /*$this->postToPrimeSoftAPI(
             $this->apiUrl.'/transactions/hotel/newReservation', 
             $data
-        );
+        );*/
         
 
         // Logoout to primesoft
@@ -72,15 +72,16 @@ class Primesoft {
 	{
 		$dataString = json_encode($data);
 
-		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			
+		$ch = curl_init();
+		// curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
 		//curl_setopt($ch, CURLOPT_CAINFO, "/path/to/CA.crt");
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");  
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		// curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+		// curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");  
 		curl_setopt($ch, CURLOPT_POSTFIELDS,$dataString);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		// curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); 
 		$result = curl_exec($ch);
 		curl_close($ch); 
 		return $result;
@@ -104,7 +105,6 @@ class Primesoft {
         
 
 		$this->apiSessionID = $resultPost ? $resultPost->result->SessionID : null;
-
 	}
 
     private function logoutToPrimeSoft()

@@ -82,7 +82,7 @@
                         border-left: 3px solid #FF5722;
                     }
                     &.checkout-form-group {
-                        border-left: 3px solid #03A9F4;
+                        border-left: 3px solid #FFEB3B;
                     }
                     .input-group-addon {
                         background-color: $dark_blue;
@@ -107,7 +107,7 @@
             }
             .guest-selection-panel-dd {
                 position: relative;
-                border-left: 3px solid #5cb85c;
+                border-left: 3px solid #03A9F4;
                 .form-control {
                     width: 100%;
                     @include border-radius(0);

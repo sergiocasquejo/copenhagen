@@ -17,3 +17,35 @@
         }
     }
 }
+
+.photo-lightbox {
+    margin: 0 auto;
+    li {
+        position: relative;
+        margin-bottom: 10px;
+        border: solid 1px #f5f5f5;
+        padding: 0;
+        margin: 2px;
+        a {
+            display: none;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, .43);
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            .lnr {
+                font-size: 30px;
+                color: #fff;
+                text-align: center;
+                line-height: 4;
+            }
+        }
+        &:hover a {
+            display: block;
+        }
+    }
+}

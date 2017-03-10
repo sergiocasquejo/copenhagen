@@ -24,8 +24,10 @@
 
     <!-- Scripts -->
     <script>
-        window.Laravel = {!! json_encode([
+        window.CopenhagenAppConfig = {!! json_encode([
             'csrfToken' => csrf_token(),
+            'paymentMethod' => ['pesopay' => config('pesopay.enable')],
+            'bedding' => config('copenhagen.bedding'),
         ]) !!};
     </script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->

@@ -65,7 +65,7 @@
                     </div>
                     <div class="col-md-9">
                         <ul class="list-unstyled room-lists" ng-if="roomLists.length > 0">
-                            <li class="item" ng-repeat="room in result = (roomLists | filter: { name: filter.search, building: filter.building } | filter: lessThanEqualTo('totalPerson', booking.adult)  | filter: lessThanEqualToRates(filter.pricing.value) | filter: hasThisBedTypes(filter.roomType) | orderBy: '-isAvailable')  track by $index">
+                            <li class="item" ng-repeat="room in resultFilter = (roomLists | filter: { name: filter.search, building: filter.building } | filter: lessThanEqualTo('totalPerson', booking.adult)  | filter: lessThanEqualToRates(filter.pricing.value) | filter: hasThisBedTypes(filter.roomType) | orderBy: '-isAvailable')  track by $index">
                                 <div class="panel panel-customer-details" ng-class="{'panel-danger': !room.isAvailable, 'panel-default': room.isAvailable, }">
                                     <div class="panel-heading">
                                         <h3 class="panel-title">{{ room.name }} {{ !room.isAvailable ? '- not available' : '' }}
@@ -125,7 +125,7 @@
                                 </div>
                             </li>
                         </ul>
-                        <p ng-if="!result.length && roomLists.length" class="text-center">Oops! no results found. (:</p>
+                        <!-- <p ng-if="!resultFilter.length" class="text-center">Oops! no results found. (:</p>-->
                     </div>
             </form>
             </div>

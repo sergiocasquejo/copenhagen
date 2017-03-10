@@ -1,18 +1,4 @@
 'use strict';
-var csrftoken = (function() {
-    // not need Jquery for doing that
-    var metas = window.document.getElementsByTagName('meta');
-
-    // finding one has csrf token 
-    for (var i = 0; i < metas.length; i++) {
-
-        if (metas[i].name === "csrf-token") {
-
-            return metas[i].content;
-        }
-    }
-
-})();
 
 function showPopup(title, message, sh, showButton) {
     var popupModal = sh.openModal('globalPopup.html', title, message, showButton);
@@ -23,17 +9,15 @@ function showPopup(title, message, sh, showButton) {
 
 
 var copenhagenApp = angular.module('copenhagenApp', ['ngAnimate', 'ui.router', 'ui.bootstrap', 'mwl.calendar', 'angularFileUpload', 'ui.toggle', 'moment-picker', 'countrySelect', 'rzModule', 'bootstrapLightbox', 'ngCookies'])
-    .constant('CSRF_TOKEN', csrftoken)
-    .constant('BEDDING', ['single bed', 'single bed with pull-out', 'twin bed', 'double deck/bunk bed', 'queen bed', 'king bed'])
-    .config(['$httpProvider', '$qProvider', 'CSRF_TOKEN',
+    .config(['$httpProvider', '$qProvider',
 
-        function($httpProvider, $qProvider, CSRF_TOKEN) {
+        function($httpProvider, $qProvider) {
             $httpProvider.defaults.stripTrailingSlashes = false;
 
             /**
              * adds CSRF token to header
              */
-            $httpProvider.defaults.headers.common['X-CSRF-TOKEN'] = CSRF_TOKEN;
+            $httpProvider.defaults.headers.common['X-CSRF-TOKEN'] = CopenhagenAppConfig.csrfToken;
             $qProvider.errorOnUnhandledRejections(false);
             $httpProvider.interceptors.push('authHttpResponseInterceptor');
         }

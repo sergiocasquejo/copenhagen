@@ -1,13 +1,13 @@
 'use strict';
 copenhagenApp
-    .controller('roomCtrl', ['$scope', '$rootScope', '$state', 'API', 'FileUploader', 'CSRF_TOKEN', '$uibModal', '$log', 'sh', 'BEDDING',
-        function($scope, $rootScope, $state, API, FileUploader, CSRF_TOKEN, $uibModal, $log, sh, BEDDING) {
+    .controller('roomCtrl', ['$scope', '$rootScope', '$state', 'API', 'FileUploader', 'CSRF_TOKEN', '$uibModal', '$log', 'sh',
+        function($scope, $rootScope, $state, API, FileUploader, CSRF_TOKEN, $uibModal, $log, sh) {
             var sc = $scope;
             sc.loaded = false;
             sc.roomLists = {};
             sc.rateLists = null;
             sc.selectedRoom = null;
-            sc.beddingLists = BEDDING;
+            sc.beddingLists = CopenhagenAppConfig.bedding;
             var roomListIndex = null;
             var popupModal = null;
             API.getRooms().then(function(response) {
@@ -274,7 +274,7 @@ copenhagenApp
             $uibModalInstance.dismiss('cancel');
         };
     })
-    .controller('ModalBeddingInstanceCtrl', function($scope, $uibModalInstance, index, room, API, BEDDING, sh) {
+    .controller('ModalBeddingInstanceCtrl', function($scope, $uibModalInstance, index, room, API, sh) {
         var sc = $scope;
         var defaultBed = {
             'id': '_static_' + new Date().getTime(),
@@ -292,7 +292,7 @@ copenhagenApp
 
 
 
-        sc.bedTypeLists = BEDDING;
+        sc.bedTypeLists = CopenhagenAppConfig.bedding;
 
         sc.addBed = function() {
             sc.beds.push({

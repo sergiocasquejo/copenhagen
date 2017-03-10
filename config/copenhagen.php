@@ -4,6 +4,7 @@ $uploadFolderPath = '/uploads';
 $uploadPath = public_path() . $uploadFolderPath;
 
 return array(
+    'bedding' => ['single bed', 'single bed with pull-out', 'twin bed', 'double deck/bunk bed', 'queen bed', 'king bed'],
     'uploadPath' => $uploadPath,
     'rooms' => array(
         'path' => $uploadPath. '/rooms',

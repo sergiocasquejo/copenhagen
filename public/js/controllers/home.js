@@ -81,15 +81,16 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
     }
 ])
 
-.controller('roomAvailableCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh', 'Lightbox', 'BEDDING',
-    function($scope, $rootScope, $state, $stateParams, API, sh, Lightbox, BEDDING) {
+.controller('roomAvailableCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh', 'Lightbox',
+    function($scope, $rootScope, $state, $stateParams, API, sh, Lightbox) {
 
         var sc = $scope;
         sc.minPrice = 0;
         sc.maxPrice = 0;
         sc.result = 0;
-        sc.roomTypeLists = BEDDING;
+        sc.roomTypeLists = CopenhagenAppConfig.bedding;
         sc.roomLists = [];
+
         sc.loaded = false;
         var filterDefault = {
             building: '',
@@ -224,8 +225,8 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
     }
 ])
 
-.controller('roomDetailsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh',
-    function($scope, $rootScope, $state, $stateParams, API, sh) {
+.controller('roomDetailsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh', 'Lightbox',
+    function($scope, $rootScope, $state, $stateParams, API, sh, Lightbox) {
         var sc = $scope;
         sc.today = new Date();
         //Hide Top Booking Form
@@ -249,7 +250,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
         var currentDate = moment(sc.viewDate).format('MMMM DD, YYYY');
         sc.events = [];
 
-        console.log(moment(currentDate).endOf('month').format('YYYY-MM-DD'));
+
         var popupModal = null;
 
         sc.showLoader = function() {
@@ -353,6 +354,17 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
             }
         }
+
+        sc.openLightboxModal = function(photos, index, caption) {
+            var images = [];
+            for (var i = 0; i < photos.length; i++) {
+                images.push({
+                    url: photos[i].file.orig,
+                    caption: caption
+                });
+            }
+            Lightbox.openModal(images, index);
+        }
         sc.showLoader();
 
     }
@@ -392,8 +404,6 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                 }, function(error) {
                     showPopup('Error', error.data, sh);
                 });
-
-
             }
         }
     }
@@ -403,6 +413,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
         function($scope, $rootScope, $state, $stateParams, API, sh) {
             //Hide Top Booking Form
             $scope.bookingFormTopHide = true;
+            $scope.paymentMethod = CopenhagenAppConfig.paymentMethod;
             //Current Step
             $scope.step = 3;
             $scope.pay = function(isValid) {
@@ -412,8 +423,10 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                         agree: data.accept,
                         paymentMethod: data.paymentType
                     }, 3).then(function(response) {
-                        if (response.data == 'success') {
+                        if (response.data == 'success' && $scope.paymentMethod.pesopay == true) {
                             $state.go('paymentPesopay');
+                        } else {
+                            $state.go('bookingComplete');
                         }
                     }, function(error) {
                         showPopup('Error', error.data, sh);
@@ -540,4 +553,8 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                 return viewLocation === $location.path();
             };
         }
-    ]);
+    ])
+    .controller('bookingCompleteCtrl', ['$scope', '$location', function($scope, $location) {
+        var sc = $scope;
+        sc.step = 4;
+    }]);
