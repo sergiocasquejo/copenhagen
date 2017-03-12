@@ -1,7 +1,7 @@
 'use strict';
 copenhagenApp
-    .controller('roomCtrl', ['$scope', '$rootScope', '$state', 'API', 'FileUploader', 'CSRF_TOKEN', '$uibModal', '$log', 'sh',
-        function($scope, $rootScope, $state, API, FileUploader, CSRF_TOKEN, $uibModal, $log, sh) {
+    .controller('roomCtrl', ['$scope', '$rootScope', '$state', 'API', 'FileUploader', '$uibModal', '$log', 'sh',
+        function($scope, $rootScope, $state, API, FileUploader, $uibModal, $log, sh) {
             var sc = $scope;
             sc.loaded = false;
             sc.roomLists = {};
@@ -67,7 +67,7 @@ copenhagenApp
 
             // Photos Upoader
             var uploader = sc.uploader = new FileUploader({
-                formData: [{ '_token': CSRF_TOKEN }],
+                formData: [{ '_token': CopenhagenAppConfig.csrfToken }],
                 alias: 'photo',
                 autoUpload: true
             });

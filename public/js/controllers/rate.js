@@ -1,12 +1,12 @@
 copenhagenApp
-    .controller('rateCtrl', ['$scope', '$rootScope', '$state', 'API', 'CSRF_TOKEN', 'sh',
-        function($scope, $rootScope, $state, API, CSRF_TOKEN, sh) {
+    .controller('rateCtrl', ['$scope', '$rootScope', '$state', 'API', 'sh',
+        function($scope, $rootScope, $state, API, sh) {
             $scope.rates = null;
             $scope.rate = null;
             API.getRates().then(function(response) {
                 $scope.rates = response.data;
             }, function(err) {
-                console.log(err);
+                showPopup('Error', error.data, sh);
             });
 
             $scope.save = function(isValid) {
@@ -15,7 +15,7 @@ copenhagenApp
                         $scope.rates = response.data;
                         $scope.rate = null;
                     }, function(err) {
-                        console.log(err);
+                        showPopup('Error', error.data, sh);
                     });
                 }
             }
@@ -33,7 +33,7 @@ copenhagenApp
                             $scope.rates = response.data;
                             $scope.rate = null;
                         }, function(err) {
-                            console.log(err);
+                            showPopup('Error', error.data, sh);
                         });
                     }
                 });

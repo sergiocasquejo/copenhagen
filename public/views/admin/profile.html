@@ -10,32 +10,32 @@
                     <div class="form-group row" ng-class="{ 'has-error': userForm.username.$touched && userForm.username.$invalid }">
                         <label for="" class="control-label col-md-6">Username</label>
                         <div class="col-md-6">
-                            <input type="text" name="username" data-min="5" ng-model="user.username" class="form-control" ng-requred="true" required>
+                            <input type="text" name="username" data-min="5" ng-model="user.username" class="form-control" ng-requred="true" ng-readonly="isReadOnly" required>
                         </div>
                     </div>
                     <div class="form-group row" ng-class="{ 'has-error': userForm.email.$touched && userForm.email.$invalid }">
                         <label for="" class="control-label col-md-6">Email</label>
                         <div class="col-md-6">
-                            <input type="text" name="email" ng-model="user.email" class="form-control" ng-requred="true" required>
+                            <input type="text" name="email" ng-model="user.email" class="form-control" ng-requred="true" ng-readonly="isReadOnly" required>
                         </div>
                     </div>
                     <div class="form-group row" ng-class="{ 'has-error': userForm.password.$touched && userForm.password.$invalid }">
                         <label for="" class="control-label col-md-6">Password</label>
                         <div class="col-md-6">
-                            <input type="password" name="password" ng-model="user.password" class="form-control" ng-requred="true" required>
+                            <input type="password" name="password" ng-model="user.password" class="form-control" ng-requred="true" ng-readonly="isReadOnly" required>
                         </div>
                     </div>
                     <div class="form-group row" ng-class="{ 'has-error': userForm.password2.$touched && userForm.password2.$invalid }">
                         <label for="" class="control-label col-md-6">Confirm Password</label>
                         <div class="col-md-6">
-                            <input type="password" name="password2" ng-model="user.password2" class="form-control" ng-requred="true" ng-match="user.password" required>
+                            <input type="password" name="password2" ng-model="user.password2" class="form-control" ng-requred="true" ng-match="user.password" ng-readonly="isReadOnly" required>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <div class="pull-right">
                             <button type="submit" ng-disabled="userForm.$invalid" class="btn btn-success">Save</button>
-                            <button type="reset" class="btn btn-default">Cancel</button>
+                            <a ng-click="isReadOnly=!isReadOnly" class="btn btn-default">{{ isReadOnly ? 'Edit' : 'Done' }}</a>
                         </div>
                     </div>
                 </form>

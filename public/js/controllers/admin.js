@@ -2,6 +2,7 @@ copenhagenApp.controller('profileCtrl', ['$scope', '$rootScope', '$state', 'API'
     function($scope, $rootScope, $state, API, sh) {
         var sc = $scope;
         sc.user = API.getCurrentUser();
+        sc.isReadOnly = true;
         sc.update = function(isValid) {
             if (isValid) {
                 API.updateProfile(sc.user.id, {
