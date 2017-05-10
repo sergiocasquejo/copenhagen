@@ -5,3 +5,8 @@
 .bg-white {
     background-color: $white;
 }
+
+.no-animate {
+    -webkit-transition: none !important;
+    transition: none !important;
+}
