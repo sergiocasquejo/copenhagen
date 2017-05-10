@@ -225,8 +225,9 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
     }
 ])
 
-.controller('roomDetailsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh', 'Lightbox',
-    function($scope, $rootScope, $state, $stateParams, API, sh, Lightbox) {
+.controller('roomDetailsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh', 'Lightbox', '$location',
+
+    function($scope, $rootScope, $state, $stateParams, API, sh, Lightbox, $location) {
         var sc = $scope;
         sc.today = new Date();
         //Hide Top Booking Form
@@ -288,6 +289,13 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                 $state.go('home');
             }
             sc.room = response.data;
+
+            $rootScope.title = sc.room.seo.metaTitle;
+            $rootScope.description = sc.room.seo.metaDescription;
+            $rootScope.keywords = sc.room.seo.metaKeywords;
+            $rootScope.canonical = sc.room.seo.canonicalLinks || $location.absUrl();
+
+
             fetchCalendar();
         }, function(error) {
             showPopup('Error', error.data, sh);

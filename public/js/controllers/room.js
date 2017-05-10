@@ -10,6 +10,7 @@ copenhagenApp
             sc.beddingLists = CopenhagenAppConfig.bedding;
             var roomListIndex = null;
             var popupModal = null;
+
             API.getRooms().then(function(response) {
                 sc.roomLists = response.data;
                 sc.loaded = true;
@@ -23,6 +24,15 @@ copenhagenApp
             }, function(error) {
                 showPopup('Error', error.data, sh);
             });
+
+            sc.redirectToMetaContent = function(isDirty, roomID) {
+                if (isDirty) {
+                    isDirty = !confirm('You have unsaved changes, continue?')
+                }
+                if (!isDirty) {
+                    $state.go('adminRoomSetupMetaContent', { type: 'room', id: roomID });
+                }
+            }
 
             sc.openCorfirmPopup = function(index) {
                 roomListIndex = index;
@@ -84,7 +94,7 @@ copenhagenApp
             uploader.onErrorItem = function(item, response, status, headers) {
                 popupModal.dismiss('cancel');
                 // console.log(item, response, status, headers);
-                showPopup('Error', response, sh);
+                showPopup('Error', response.data, sh);
             }
 
             uploader.onProgressAll = function(progress) {

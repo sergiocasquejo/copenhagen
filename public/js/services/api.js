@@ -8,7 +8,7 @@ copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$cookies', funct
         api.logout = function() {
             $cookies.remove('currentUser');
             return $http.get(urlBase + '/logout');
-        }
+        };
 
         api.isAuthenticated = function() {
             if ($cookies.get('currentUser') == undefined) return false;
@@ -17,26 +17,34 @@ copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$cookies', funct
 
         api.setCurrentUser = function(user) {
             $cookies.put('currentUser', JSON.stringify(user[0]));
-        }
+        };
 
         api.getCurrentUser = function() {
 
             var _user = $cookies.get('currentUser');
             if (_user == null) return;
             return JSON.parse(_user);
-        }
+        };
 
         api.updateProfile = function(id, user) {
             return $http.put(urlBase + '/profile/' + id, user);
-        }
-
+        };
+        /*============================================================================================
+         * Seo Factory
+         *============================================================================================*/
+        api.seoMeta = function(type, id) {
+            return $http.get(urlBase + '/seo/' + type + '/' + id);
+        };
+        api.saveSeoMeta = function(seo) {
+            return $http.put(urlBase + '/seo/' + seo.id, seo);
+        };
         /*============================================================================================
          * Rate Factory
          *============================================================================================*/
 
         api.getRates = function() {
             return $http.get(urlBase + '/rates');
-        }
+        };
         api.saveRate = function(rate, id) {
             if (id) {
                 return $http.put(urlBase + '/rates/' + id, rate);

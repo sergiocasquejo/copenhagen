@@ -1,6 +1,8 @@
 copenhagenApp.controller('loginCtrl', ['$scope', '$rootScope', '$state', 'API',
         function($scope, $rootScope, $state, API) {
-
+            if (API.isAuthenticated()) {
+                $state.go($state.go('adminRoomSetup'));
+            }
             $scope.auth = {};
             $scope.login = function(isValid) {
                 if (isValid) {

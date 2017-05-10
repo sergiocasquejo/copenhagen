@@ -108,8 +108,12 @@ Route::group(['prefix' => 'rooms'], function() {
     Route::get('{roomId}/calendar/unavailable/{start}/{end}', 'CalendarController@notAvailableDateByRoomId');
     Route::post('availability', 'CalendarController@availability');
 });
+
     
 Route::group(['middleware' => 'auth'], function() {
+    Route::get('seo/{seoableType}/{seoableId}', 'SeoController@meta');
+    Route::put('seo/{id}', 'SeoController@update');
+
     Route::resource('rates', 'RateController', ['only' => [
         'index', 'store', 'update', 'destroy'
     ]]);
@@ -138,6 +142,9 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('calendar', 'CalendarController', ['only' => [
             'index', 'store', 'update', 'destroy'
         ]]);
+
+
+    
 });
 
 Route::get('rooms/available', 'RoomController@showAvailable');

@@ -409,6 +409,23 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
             }
 
         })
+        .state('adminRoomSetupMetaContent', {
+            url: '/admin/seo/:type/:id',
+            controller: 'roomCtrl',
+            views: {
+                '': {
+                    templateUrl: '/views/admin/meta-content.html',
+                    resolve: { authenticate: authenticate }
+                },
+                'header@adminRoomSetupMetaContent': {
+                    templateUrl: '/views/_partials/admin-header.html',
+                },
+                'footer@adminRoomSetupMetaContent': {
+                    templateUrl: '/views/_partials/admin-footer.html',
+                }
+            }
+
+        })
         .state('bookings', {
             url: '/admin/bookings',
             controller: 'bookingsCtrl',

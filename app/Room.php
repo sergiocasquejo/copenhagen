@@ -54,7 +54,7 @@ class Room extends Model
 
         static::creating(function($model)
         {
-            
+            $model->slug = str_slug($model->slug);
         });
 
         static::updating(function($model)
@@ -64,6 +64,7 @@ class Room extends Model
 
         static::deleting(function($model)
         {
+            $model->seo()->delete();
             $photos = $model->photos()->get();
             foreach ($photos as $i => $photo) {
                 if ($photo->file) {
@@ -97,7 +98,7 @@ class Room extends Model
      }
 
      public static function lazyLoad() {
-         return self::with('photos', 'aminities', 'rates', 'beds');
+         return self::with('photos', 'aminities', 'rates', 'beds', 'seo');
      }
      
 
@@ -124,6 +125,12 @@ class Room extends Model
         // });
 
         return $roomRates;
+    }
+
+    public function seo()
+    {
+        return $this->hasOne('App\Seo', 'seoableId','id')
+                    ->where('seoableType', 'room');
     }
     
 }

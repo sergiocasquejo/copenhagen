@@ -51,6 +51,9 @@ class RoomController extends Controller
         $room->sort = $request->input('sort', 0);
         try {
             if ($room->save()) {
+                $seo = new \App\Seo(['metaTitle' => $room->name, 'slug' => $room->slug, 'h1Tag' => $room->name]);
+                $room->seo()->save($seo);
+
                 return response()->json($this->fetchAll(), 200, [], JSON_UNESCAPED_UNICODE);   
             }
         } catch(\Exception $e) {

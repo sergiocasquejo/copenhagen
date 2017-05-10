@@ -1,0 +1,121 @@
+<div class="admin-main" ng-controller="metaContentCtrl">
+    <div ui-view="header"></div>
+    <section class="section-metacontent section">
+        <div class="col-md-12">
+            <form name="seoForm" class="form-horizontal" ng-submit="save(seoForm.$valid)" novalidate>
+                <uib-accordion close-others="oneAtATime">
+                    <div uib-accordion-group class="panel-default" heading="Page Optimisation" is-open="true">
+                        <uib-accordion-heading>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-12">Page Optimisation
+                                </div>
+                            </div>
+                        </uib-accordion-heading>
+
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="form-group" ng-class="{ 'has-error': seoForm.metaTitle.$touched && seoForm.metaTitle.$invalid }">
+                                    <label class="control-label col-md-2" for="metaTitle">Meta Title <span class="req">*</span></label>
+                                    <div class="col-md-10">
+                                        <input type="text" name="metaTitle" ng-model="seo.metaTitle" class="form-control" ng-max-length="70" ng-required="true" required>
+                                        <small>Try to keep your page under 70 characters.</small>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{ 'has-error': seoForm.pageUrl.$touched && seoForm.pageUrl.$invalid }">
+                                    <label class="control-label col-md-2" for="pageUrl">Page URL <span class="req ">*</span></label>
+                                    <div class="col-md-10">
+                                        <input type="text" name="pageUrl" ng-model="seo.slug" class="form-control" ng-keypress="slugit()" ng-required="true" required>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{ 'has-error': seoForm.metaKeywords.$touched && seoForm.metaKeywords.$invalid }">
+                                    <label class="control-label col-md-2" for="metaKeywords">Meta Keywords</label>
+                                    <div class="col-md-10">
+                                        <textarea name="metaKeywords" ng-model="seo.metaKeywords" class="form-control"></textarea>
+                                        <small>Input keywords, separated by comma (,). Ensure the keywords inputed are reflected in the page content.</small>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{ 'has-error': seoForm.metaDescription.$touched && seoForm.metaDescription.$invalid }">
+                                    <label class="control-label col-md-2" for="metaDescription">Meta Description</label>
+                                    <div class="col-md-10">
+                                        <textarea name="metaDescription" ng-model="seo.metaDescription" class="form-control"></textarea>
+                                        <small>Best practices:<br/>
+                                        - Please provide a concise description of what the content of this page is about, in 155 characters or less.<br/>
+                                        - Include your main targeted keyword.<br/>
+                                        - Ensure descriptions are unique.<br/>
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{ 'has-error': seoForm.h1Tag.$touched && seoForm.h1Tag.$invalid }">
+                                    <label class="control-label col-md-2" for="h1Tag">H1 Tag <span class="req ">*</span></label>
+                                    <div class="col-md-10">
+                                        <input type="text" name="h1Tag" ng-model="seo.h1Tag" class="form-control " ng-required="true " required>
+                                        <small>Ensure Page Heading Tag is unique.</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div uib-accordion-group class="panel-default" heading="Redirects">
+                        <uib-accordion-heading>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-12">Redirects</div>
+                            </div>
+                        </uib-accordion-heading>
+
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="form-group" ng-class="{ 'has-error': seoForm.redirect301.$touched && seoForm.metaTitle.$invalid }">
+                                    <label class="control-label col-md-2" for="redirect301">301 Redirect from <span class="req">*</span></label>
+                                    <div class="col-md-10">
+                                        <input type="text" name="redirect301" ng-model="seo.redirect301" class="form-control">
+                                        <small>Input the url for this page previously available on your old website (if applicable); otherwise, leave blank.</small>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{ 'has-error': seoForm.canonicalLinks.$touched && seoForm.canonicalLinks.$invalid }">
+                                    <label class="control-label col-md-2" for="canonicalLinks">Canonical Links <span class="req ">*</span></label>
+                                    <div class="col-md-10">
+                                        <input type="text" name="canonicalLinks" ng-model="seo.canonicalLinks" class="form-control">
+                                        <small>Input the duplicate urls (links that displays the same page) separated by comma (,).<br/>Example: http://myurl.com.au/index, http://www.myurl.com.au/index.html/</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div uib-accordion-group class="panel-default" heading="Meta Robots">
+                        <uib-accordion-heading>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-12">Meta Robots</div>
+                            </div>
+                        </uib-accordion-heading>
+
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="form-group" ng-class="{ 'has-error': seoForm.metaRobotTag.$touched && seoForm.metaRobotTag.$invalid }">
+                                    <label class="control-label col-md-2" for="metaRobotTag">Meta Robots Tag <span class="req">*</span></label>
+                                    <div class="col-md-10">
+                                        <div class="checkbox"><label><input type="radio" name="metaRobotTag" ng-model="seo.metaRobotTag" ng-value="1"> Index (Default)</label></div>
+                                        <div class="checkbox"><label><input type="radio" name="metaRobotTag" ng-model="seo.metaRobotTag" ng-value="0" checked> No Index</label></div>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-class="{ 'has-error': seoForm.metaRobotFollow.$touched && seoForm.metaRobotTag.$invalid }">
+                                    <label class="control-label col-md-2" for="metaRobotFollow">Meta Robots Follow <span class="req">*</span></label>
+                                    <div class="col-md-10">
+                                        <div class="checkbox"><label><input type="radio" name="metaRobotFollow" ng-model="seo.metaRobotFollow" ng-value="1"> Follow (Default)</label></div>
+                                        <div class="checkbox"><label><input type="radio" name="metaRobotFollow" ng-model="seo.metaRobotFollow" ng-value="0" checked> No Follow</label></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </uib-accordion>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a onclick="history.back()" class="btn btn-primary">Back</a>
+                        <button type="submit" class="btn btn-success pull-right">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div ui-view="footer"></div>
+    </section>
+</div>

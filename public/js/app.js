@@ -1,6 +1,7 @@
 'use strict';
 
 function showPopup(title, message, sh, showButton) {
+    if (message.status == 401) return;
     var popupModal = sh.openModal('globalPopup.html', title, message, showButton);
     return popupModal.result.then(function(result) {
         return result;
@@ -22,7 +23,7 @@ var copenhagenApp = angular.module('copenhagenApp', ['ngAnimate', 'ui.router', '
             $httpProvider.interceptors.push('authHttpResponseInterceptor');
         }
     ])
-    .run(['$rootScope', '$window', 'API', function($rootScope, $window, API) {
+    .run(['$rootScope', '$window', 'API', '$location', function($rootScope, $window, API, $location) {
         $rootScope.currentUser = API.getCurrentUser();
         $rootScope.booking = API.getBookingData();
 
@@ -39,6 +40,7 @@ var copenhagenApp = angular.module('copenhagenApp', ['ngAnimate', 'ui.router', '
                 $rootScope.title = toState.title || 'Long Term Stay Apartments | Cebu Serviced Apartments';
                 $rootScope.description = toState.description || 'Copenhagen, a long term stay apartments with hotel accommodation. It&#039;s Cebu serviced apartments &amp; corporate housing for long term stay serviced apartments.';
                 $rootScope.keywords = toState.keywords || 'copenhagen,bookings,rooms';
+                $rootScope.canonical = $location.absUrl();
             });
     }])
     .filter('range', function() {

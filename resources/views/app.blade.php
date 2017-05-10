@@ -10,6 +10,7 @@
     <meta name="fragment" content="!">
     <title ng-bind="title">{{ config('app.name', 'Copenhagen') }}</title>
     <base href="/">
+    <link rel="canonical" href="@{{ canonical }}"/>
     <link rel="icon" type="image/png" href="favicon.ico" />
     <!-- Styles -->
     <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" type="text/css">
