@@ -67,8 +67,23 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
         }
 
         sc.search = function(isValid) {
+            var checkIn = moment($rootScope.booking.checkIn).format('YYYY-MM-DD');
+            var checkOut = moment($rootScope.booking.checkOut).format('YYYY-MM-DD');
+            if (window.CopenhagenAppConfig.disabledDates.indexOf(checkIn) > -1) {
+                isValid = false;
+                sh.openModal('globalPopup.html', 'Oops: ' + checkIn, 'Selected check in was disabled by admin');
+            }
+            if (window.CopenhagenAppConfig.disabledDates.indexOf(checkOut) > -1) {
+                isValid = false;
+                sh.openModal('globalPopup.html', 'Oops: ' + checkOut, 'Selected check out was disabled by admin');
+            }
+
             if (isValid) {
-                // sh.openModal('globalPopup.html', 'error', 'error');
+
+
+
+
+
 
                 API.setBookingData({
                     checkIn: $rootScope.booking.checkIn,
