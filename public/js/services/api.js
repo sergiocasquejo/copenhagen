@@ -155,6 +155,17 @@ copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$cookies', funct
             return $http.post(urlBase + '/contact', params);
         }
 
+        api.getDisabledDates = function() {
+            return $http.get(urlBase + '/disable-date');
+        }
+        api.saveDisableDate = function(params) {
+            return $http.post(urlBase + '/disable-date', params);
+        }
+
+        api.deleteDisabledDate = function(id) {
+            return $http.delete(urlBase + '/disable-date/' + id);
+        }
+
         return api;
     }])
     .factory('authHttpResponseInterceptor', ['$q', '$location', function($q, $location) {

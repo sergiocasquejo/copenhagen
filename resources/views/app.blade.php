@@ -29,6 +29,7 @@
             'csrfToken' => csrf_token(),
             'paymentMethod' => ['pesopay' => config('pesopay.enable')],
             'bedding' => config('copenhagen.bedding'),
+            'disabledDates' => json_encode(\App\DisableDate::getFutureDisabledDates())
         ]) !!};
     </script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -41,7 +42,6 @@
 
 <body>
     <ui-view>@yield('content')</ui-view>
-
     <script src="/lib/angular/angular.min.js" type="text/javascript"></script>
     <script src="/lib/angular-ui-router/release/angular-ui-router.min.js" type="text/javascript"></script>
     <script src="/lib/angular-file-upload/dist/angular-file-upload.min.js" type="text/javascript"></script>

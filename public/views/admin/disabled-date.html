@@ -1,0 +1,49 @@
+<div class="admin-main" ng-controller="disableDateCtrl">
+    <div ui-view="header"></div>
+    <section class="section-rate section">
+        <!--/.col-md-8-->
+        <div class="col-md-4">
+            <div class="rate-form-main">
+                <form ng-submit="save(disabledDate.$valid)" novalidate="" name="disabledDate">
+                    <h3>Disable Date</h3>
+                    <hr>
+                    <div class="form-group row" ng-class="{ 'has-error': disabledDate.name.$touched && disabledDate.name.$invalid }">
+                        <label for="" class="control-label col-md-6">Date</label>
+                        <div class="col-md-6">
+                            <input type="text" moment-picker="data.selectedDate" data-min-date="today" autocomplete="off " class="form-control " name="selectedDate " ng-model="data.selectedDate" ng-model-options="{ updateOn: 'blur' }" format="YYYY-MM-DD" ng-required="true" required
+                                readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="pull-right">
+                            <button type="submit" ng-disabled="disabledDate.$invalid" class="btn btn-success">Save</button>
+                            <button type="reset" class="btn btn-default">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--/.col-md-4-->
+        <div class="col-md-8">
+            <table class="table table-stripe">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="date in dates">
+                        <td>{{ date.id }}</td>
+                        <td>{{ date.selected_date | date : format : 'MMM dd, yyyy' }}</td>
+                        <td>
+                            <a ng-click="delete(date.id)"><span class="lnr lnr-trash"></span></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div ui-view="footer"></div>
+    </section>
+</div>

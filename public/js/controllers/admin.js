@@ -18,6 +18,65 @@ copenhagenApp.controller('profileCtrl', ['$scope', '$rootScope', '$state', 'API'
                     });
                 }
             }
+
+            sc.status = {
+                isopen: false
+            };
+
+            sc.toggled = function(open) {
+                $log.log('Dropdown is now: ', open);
+            };
+
+            sc.toggleDropdown = function($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+                sc.status.isopen = !sc.status.isopen;
+            };
+
+        }
+    ])
+    .controller('disableDateCtrl', ['$scope', '$rootScope', '$state', 'API', 'sh',
+        function($scope, $rootScope, $state, API, sh) {
+            var sc = $scope;
+            sc.data = {
+                "selectedDate": ""
+            };
+
+            sc.dates = [];
+
+            API.getDisabledDates().then(function(response) {
+                sc.dates = response.data;
+                console.log(sc.dates);
+            }, function(err) {
+                showPopup('Error', error.data, sh);
+            });
+
+            sc.save = function(isValid) {
+                if (isValid) {
+                    API.saveDisableDate({
+                        selected_date: moment(sc.data.selectedDate).format('YYYY-MM-DD')
+                    }).then(function(response) {
+                        sc.dates = response.data;
+                        sc.data.selected_date = "";
+                        showPopup('Success', 'Successfully saved.', sh);
+                    }, function(error) {
+                        showPopup('Error', error.data, sh);
+                    });
+                }
+            }
+
+            sc.delete = function(id) {
+                popupModal = sh.openModal('globalPopup.html', 'Confirm', 'Are you sure?', 'ModalInstanceCtrl');
+                popupModal.result.then(function(result) {
+                    if (result == 'ok') {
+                        API.deleteDisabledDate(id).then(function(response) {
+                            sc.dates = response.data;
+                        }, function(err) {
+                            showPopup('Error', error.data, sh);
+                        });
+                    }
+                });
+            }
         }
     ])
     .controller('metaContentCtrl', ['$scope', '$rootScope', '$state', 'API', 'sh', '$stateParams',

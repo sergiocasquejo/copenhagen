@@ -23,8 +23,8 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
 }])
 
-.controller('bookingFormCtrl', ['$scope', '$rootScope', '$state', 'API',
-    function($scope, $rootScope, $state, API) {
+.controller('bookingFormCtrl', ['$scope', '$rootScope', '$state', 'API', 'sh',
+    function($scope, $rootScope, $state, API, sh) {
         var sc = $scope;
         sc.buttonText = 'Search';
         sc.isInlineForm = true;
@@ -68,6 +68,8 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
         sc.search = function(isValid) {
             if (isValid) {
+                // sh.openModal('globalPopup.html', 'error', 'error');
+
                 API.setBookingData({
                     checkIn: $rootScope.booking.checkIn,
                     checkOut: $rootScope.booking.checkOut,
@@ -78,6 +80,10 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                 $state.go('roomsAvailable');
             }
         }
+        sc.dateDisable = function(date, type) {
+            return type != 'day' || window.CopenhagenAppConfig.disabledDates.indexOf(date.format('YYYY-MM-DD')) == -1;
+        };
+
     }
 ])
 

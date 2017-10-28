@@ -20,7 +20,15 @@
                             <li><a ui-sref="bookings">Bookings</a></li>
                         </ul>
                         <ul class="nav navbar-nav pull-right">
-                            <li><a ui-sref="profile"><span class="lnr lnr-user"></span> Welcome {{ currentUser.username }}</a></li>
+                            <li uib-dropdown is-open="status.isopen">
+                                <a uib-dropdown-toggle><span class="lnr lnr-user"></span> Welcome {{ currentUser.username }}</a>
+                                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                    <li role="menuitem"><a ui-sref="profile">Profile</a></li>
+                                    <li class="divider"></li>
+                                    <li role="menuitem"><a ui-sref="disable-date">Disable Date Settings</a></li>
+
+                                </ul>
+                            </li>
                             <li class="active"><a ui-sref="logout"><span class="lnr lnr-exit"></span> Logout</a></li>
                         </ul>
                     </div>

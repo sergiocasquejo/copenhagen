@@ -143,6 +143,10 @@ Route::group(['middleware' => 'auth'], function() {
             'index', 'store', 'update', 'destroy'
         ]]);
 
+    Route::resource('disable-date', 'DisableDateController', ['only' => [
+            'index', 'store', 'update', 'destroy'
+        ]]);
+
 
     
 });

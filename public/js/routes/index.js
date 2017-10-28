@@ -459,6 +459,23 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                 }
             }
 
+        })
+        .state('disable-date', {
+            url: '/admin/disable-dates',
+            controller: 'disableDateCtrl',
+            views: {
+                '': {
+                    templateUrl: '/views/admin/disabled-date.html',
+                    resolve: { authenticate: authenticate }
+                },
+                'header@disable-date': {
+                    templateUrl: '/views/_partials/admin-header.html',
+                },
+                'footer@disable-date': {
+                    templateUrl: '/views/_partials/admin-footer.html',
+                }
+            }
+
         });
 
     $urlRouterProvider.otherwise('/');
