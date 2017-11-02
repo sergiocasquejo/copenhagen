@@ -20,6 +20,10 @@ class RoomController extends Controller
     public function fetchAll() {
         return \App\Room::lazyLoad()->orderBy('created_at', 'DESC')->get();
     }
+
+    public function lists() {
+        return \App\Room::orderBy('created_at', 'DESC')->pluck('name', 'id');
+    }
  	
 	
 	/**

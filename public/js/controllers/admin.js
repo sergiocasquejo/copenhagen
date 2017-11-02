@@ -39,14 +39,21 @@ copenhagenApp.controller('profileCtrl', ['$scope', '$rootScope', '$state', 'API'
         function($scope, $rootScope, $state, API, sh) {
             var sc = $scope;
             sc.data = {
-                "selectedDate": ""
+                "selectedDate": "",
+                "room": "",
             };
 
             sc.dates = [];
+            sc.rooms = [];
 
             API.getDisabledDates().then(function(response) {
                 sc.dates = response.data;
-                console.log(sc.dates);
+            }, function(err) {
+                showPopup('Error', error.data, sh);
+            });
+
+            API.getRoomsLists().then(function(response) {
+                sc.rooms = response.data;
             }, function(err) {
                 showPopup('Error', error.data, sh);
             });
@@ -54,6 +61,7 @@ copenhagenApp.controller('profileCtrl', ['$scope', '$rootScope', '$state', 'API'
             sc.save = function(isValid) {
                 if (isValid) {
                     API.saveDisableDate({
+                        room: sc.data.room,
                         selected_date: moment(sc.data.selectedDate).format('YYYY-MM-DD')
                     }).then(function(response) {
                         sc.dates = response.data;

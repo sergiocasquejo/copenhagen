@@ -37,15 +37,23 @@ class DisableDateController extends Controller
         $date = new \App\DisableDate;
         $validator = $date->validate($request->input(), $date->rules);
         if ($validator->passes()) {
-            $date->selected_date = date('Y-m-d', strtotime($request->input('selected_date')));
-            $date->created_at = date('Y-m-d H:i:s');
-            try {
-                if ($date->save()) {
-                    return response()->json($this->getAllDisabledDates(), 200, [], JSON_UNESCAPED_UNICODE);   
+            $selected_date = date('Y-m-d', strtotime($request->input('selected_date')));
+            $room_id = $request->input('room');
+            $count = \App\DisableDate::where(array('room_id' => $room_id, 'selected_date' => $selected_date))->count();
+            if (!$count) {
+                $date->room_id = $room_id;
+                $date->selected_date = $selected_date;
+                $date->created_at = date('Y-m-d H:i:s');
+                try {
+                    if ($date->save()) {
+                        return response()->json($this->getAllDisabledDates(), 200, [], JSON_UNESCAPED_UNICODE);   
+                    }
+                } catch(\Exception $e) {
+                    \Log::info('ERROR: '.$e->getMessage());
+                    return response()->json('Oops! Error please report to administrator.', 400, [], JSON_UNESCAPED_UNICODE);
                 }
-            } catch(\Exception $e) {
-                \Log::info('ERROR: '.$e->getMessage());
-                return response()->json('Oops! Error please report to administrator.', 400, [], JSON_UNESCAPED_UNICODE);
+            } else {
+                return response()->json('Oops! already exists.', 400, [], JSON_UNESCAPED_UNICODE);
             }
 
         }

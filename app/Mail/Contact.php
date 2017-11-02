@@ -34,7 +34,7 @@ class Contact extends Mailable
             'lastname' => $this->contact['lastname'],
             'email' => $this->contact['email'],
             'phone' => $this->contact['phone'],
-            'message' => $this->contact['message'],
+            'body' => $this->contact['message'],
         ]);
     }
 }

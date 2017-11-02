@@ -93,6 +93,10 @@ class Room extends Model
          return $this->hasMany('App\Bed', 'roomID', 'id');
      }
 
+     public function disabledates() {
+        return $this->hasMany('App\DisableDate');
+     }
+
      public function calendar() {
          return $this->hasMany('App\Calendar', 'roomID', 'id');
      }

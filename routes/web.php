@@ -26,11 +26,11 @@ Route::get('/test', function ($any = null) {
 
 Route::get('/contact', function ($any = null) {
     return view('emails.contact')->with([
-            'firstname' => 'John',
-            'lastname' => 'Doe',
-            'email' => 'john.doe@gmail.com',
-            'phone' => '111-111-1111',
-            'message' => 'Lorem ipsum dolor',
+            'firstname' => Request::input('firstname'),
+            'lastname' => Request::input('lastname'),
+            'email' => Request::input('email'),
+            'phone' => Request::input('phone'),
+            'message' => Request::input('message'),
         ]);
 });
 
@@ -135,6 +135,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('{roomId}/beds', 'RoomController@attachBeds');
         Route::delete('{roomId}/beds/{bedId}', 'RoomController@detachBed');
     });
+
+    Route::get('rooms/lists', 'RoomController@lists');
     Route::resource('rooms', 'RoomController', ['only' => [
             'index', 'store', 'update', 'destroy'
         ]]);
@@ -161,5 +163,3 @@ return view('app');
 // Auth::routes();
 
 // Route::get('/home', 'HomeController@index');
-
-
