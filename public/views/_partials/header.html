@@ -21,7 +21,7 @@
                         <ul class="nav navbar-nav">
                             <li ng-class="{ active: isActive('/')}"><a ui-sref="home">Home</a></li>
                             <li ng-class="{ active: isActive('/available-rooms-cebu-hotels')}"><a ui-sref="roomsAvailable">Rooms &amp; Suites</a></li>
-                            <li ng-class="{ active: isActive('/about-ironwood')}"><a ui-sref="about">About Us</a></li>
+                            <li ng-class="{ active: isActive('/about-ironwood')}"><a ui-sref="pageDetail({slug: 'about-ironwood' })">About Us</a></li>
                             <!--<li ng-class="{ active: isActive('/accommodations')}"><a ui-sref="roomsAvailable">Accommodations <span class="lnr lnr-chevron-down"></span></a></li>-->
                             <!--<li ng-class="{ active: isActive('/dining')}" uib-dropdown is-open="status.isopen">
                                 <a uib-dropdown-toggle>Dining <span class="lnr lnr-chevron-down"></span></a>
@@ -29,13 +29,15 @@
                                     <li role="menuitem"><a href="#">Chips Cafe</a></li>
                                 </ul>
                             </li>-->
-                            <li ng-class="{ active: isActive('/meetings')}"><a ui-sref="meetings">Mettings</a></li>
+                            <li ng-class="{ active: isActive('/meetings')}"><a ui-sref="pageDetail({slug: 'meetings' })">Mettings</a></li>
                             <li ng-class="{ active: isActive('/gallery')}"><a ui-sref="gallery">Gallery</a></li>
-                            <li ng-class="{ active: isActive('/policy')}"><a ui-sref="policy">Policy</a></li>
+                            <li ng-class="{ active: isActive('/policy')}"><a ui-sref="pageDetail({slug: 'policy' })">Policy</a></li>
                             <li ng-class="{ active: isActive('/contact-location')}"><a ui-sref="contact">Contact Us</a></li>
                         </ul>
-                        <ul class="nav navbar-nav pull-right hidden-xs booking-bag">
-                            <li title="View your bookings" ng-class="{ active: isActive('/booking/submit-your-details')}"><a ui-sref="customerDetail"><span class="lnr lnr-cart pull-right"></span></a></li>
+                        <ul class="nav navbar-nav pull-left google-translator">
+                            <li>
+                                <div id="google_translate_element" class="site-language"></div>
+                            </li>
                         </ul>
                     </div>
                     <!--/.nav-collapse -->

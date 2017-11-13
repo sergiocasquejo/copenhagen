@@ -108,6 +108,18 @@ class BookingController extends Controller
             return response()->json('Selected room is not available', 400, [], JSON_UNESCAPED_UNICODE);
         }
 
+        $disable_dates = \App\DisableDate::where('room_id', '=', $request->input('roomId'))
+        ->where('selected_date','>=', $request->input('checkIn'))
+        ->where('selected_date','<=', $request->input('checkOut'))->get();
+        
+        if ($disable_dates) {
+            $dates = '';
+            foreach($disable_dates as $item) {
+                $dates .= date('F j, Y', strtotime($item->selected_date)) . "\n";
+            }
+            return response()->json('Selected room is not available on selected dates: '. $dates, 400, [], JSON_UNESCAPED_UNICODE);
+        }
+
         
 		if ($validator->passes()) {
             // Calculate total rates
@@ -117,6 +129,14 @@ class BookingController extends Controller
                 $request->input('roomId'), 
                 $request->input('rateId')
             );
+
+            $totalAmount = ($roomRate * $request->input('noOfRooms', 1));
+            $extraPerson = $request->input('noOfAdults', 1) - $request->input('maxTotalPerson', 1);
+            $extraPersonAmount = 0;
+            if ($extraPerson > 0) {
+                $totalAmount += $extraPerson * 500;
+            }
+
             $step1Data = [
                 'roomId' => $request->input('roomId'),
                 'rateId' => $request->input('rateId'),
@@ -125,9 +145,10 @@ class BookingController extends Controller
                 'noOfRooms' => $request->input('noOfRooms'),
                 'noOfAdults' => $request->input('noOfAdults', 1),
                 'noOfChild' => $request->input('noOfChild', 0),
+                'extraPerson' => $extraPerson,
                 'noOfNights' => $totalNights,
                 'roomRate' => $roomRate,
-                'totalAmount' => $roomRate * $request->input('noOfRooms', 1)
+                'totalAmount' => $totalAmount
             ];
             //Save data to session
             $request->session()->put('booking', $step1Data);
@@ -219,6 +240,7 @@ class BookingController extends Controller
                 $booking->noOfNights = $request->session()->get('booking.noOfNights');
                 $booking->noOfAdults = $request->session()->get('booking.noOfAdults');
                 $booking->noOfChild = $request->session()->get('booking.child');
+                $booking->extraPerson = $request->session()->get('booking.extraPerson');
                 $booking->roomRate = $request->session()->get('booking.roomRate');
                 $booking->totalAmount = $request->session()->get('booking.totalAmount');
                 $booking->specialInstructions = $request->session()->get('booking.specialInstructions');

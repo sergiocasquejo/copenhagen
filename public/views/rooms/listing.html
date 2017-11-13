@@ -92,7 +92,7 @@
                                                 </div>
                                             </div>
                                             <div class="item-aminities col-md-4 hidden-xs">
-                                                <h4>Aminities</h4>
+                                                <h4>Amenities</h4>
                                                 <ul class="list-unstyled aminities">
                                                     <li ng-repeat="a in room.aminities | limitTo:8"><span class="lnr lnr-checkmark-circle"></span> {{ a.name }}</li>
                                                 </ul>
@@ -101,7 +101,7 @@
                                                 <div class="best-deals-main text-center">
                                                     <div class="best-deals-inner">
                                                         <div class="price" ng-class="{'monthly': r.isMonthly, 'nightly': !r.isMonthly}" ng-if="r.pivot.isActive==1" ng-repeat="r in room.rates">
-                                                            <span class="breakfast"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ r.isMonthly ? 'Monthly' : 'Nightly' }} rates with {{ r.mealType=='N' ? 'out' : '' }} breakfast as low as</span>
+                                                            <span class="breakfast"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Nigthly rate xmas sale as low as</span>
                                                             <strong class="item-price">‎{{ r.pivot.price | currency: '₱':0 }}</strong>
                                                         </div>
                                                     </div>

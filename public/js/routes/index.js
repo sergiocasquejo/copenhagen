@@ -22,31 +22,31 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
             }
 
         })
-        .state('meetings', {
-            url: '/meetings',
-            title: 'Meetings - Copenhagen',
-            description: 'The event space on the 7th floor (elevator accessible) features a fantastic view of Cebu and the environs. The facilities can host up to 80 people with a special area for commemorative picture taking against the backdrop of the surrounding mountains. Our kitchen can cater to all your culinary needs. Ideal for weddings, anniversaries and &hellip;',
-            views: {
-                '': {
-                    controller: 'pageCtrl',
-                    templateUrl: '/views/page/meetings.html'
-                },
-                'header@meetings': {
-                    templateUrl: '/views/_partials/header.html',
-                    controller: 'headerCtrl',
-                },
-                'bookingForm@meetings': {
-                    templateUrl: '/views/booking/booking-form.html',
-                    controller: 'bookingFormCtrl'
-                },
-                'footer@meetings': {
-                    templateUrl: '/views/_partials/footer.html',
-                    controller: 'pageCtrl',
-                }
-            }
+        // .state('meetings', {
+        //     url: '/meetings',
+        //     title: 'Meetings - Copenhagen',
+        //     description: 'The event space on the 7th floor (elevator accessible) features a fantastic view of Cebu and the environs. The facilities can host up to 80 people with a special area for commemorative picture taking against the backdrop of the surrounding mountains. Our kitchen can cater to all your culinary needs. Ideal for weddings, anniversaries and &hellip;',
+        //     views: {
+        //         '': {
+        //             controller: 'pageCtrl',
+        //             templateUrl: '/views/page/meetings.html'
+        //         },
+        //         'header@meetings': {
+        //             templateUrl: '/views/_partials/header.html',
+        //             controller: 'headerCtrl',
+        //         },
+        //         'bookingForm@meetings': {
+        //             templateUrl: '/views/booking/booking-form.html',
+        //             controller: 'bookingFormCtrl'
+        //         },
+        //         'footer@meetings': {
+        //             templateUrl: '/views/_partials/footer.html',
+        //             controller: 'pageCtrl',
+        //         }
+        //     }
 
-        })
-        .state('gallery', {
+    // })
+    .state('gallery', {
             url: '/gallery',
             views: {
                 '': {
@@ -113,51 +113,51 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
             }
 
         })
-        .state('policy', {
-            url: '/policy',
-            views: {
-                '': {
-                    controller: 'pageCtrl',
-                    templateUrl: '/views/page/policy.html'
-                },
-                'header@policy': {
-                    templateUrl: '/views/_partials/header.html',
-                    controller: 'headerCtrl',
-                },
-                'bookingForm@policy': {
-                    templateUrl: '/views/booking/booking-form.html',
-                    controller: 'bookingFormCtrl'
-                },
-                'footer@policy': {
-                    templateUrl: '/views/_partials/footer.html',
-                    controller: 'pageCtrl',
-                }
-            }
+        // .state('policy', {
+        //     url: '/policy',
+        //     views: {
+        //         '': {
+        //             controller: 'pageCtrl',
+        //             templateUrl: '/views/page/policy.html'
+        //         },
+        //         'header@policy': {
+        //             templateUrl: '/views/_partials/header.html',
+        //             controller: 'headerCtrl',
+        //         },
+        //         'bookingForm@policy': {
+        //             templateUrl: '/views/booking/booking-form.html',
+        //             controller: 'bookingFormCtrl'
+        //         },
+        //         'footer@policy': {
+        //             templateUrl: '/views/_partials/footer.html',
+        //             controller: 'pageCtrl',
+        //         }
+        //     }
 
-        })
-        .state('about', {
-            url: '/about-ironwood',
-            views: {
-                '': {
-                    controller: 'pageCtrl',
-                    templateUrl: '/views/page/about.html'
-                },
-                'header@about': {
-                    templateUrl: '/views/_partials/header.html',
-                    controller: 'headerCtrl',
-                },
-                'bookingForm@about': {
-                    templateUrl: '/views/booking/booking-form.html',
-                    controller: 'bookingFormCtrl'
-                },
-                'footer@about': {
-                    templateUrl: '/views/_partials/footer.html',
-                    controller: 'pageCtrl',
-                }
-            }
+    // })
+    // .state('about', {
+    //         url: '/about-ironwood',
+    //         views: {
+    //             '': {
+    //                 controller: 'pageCtrl',
+    //                 templateUrl: '/views/page/about.html'
+    //             },
+    //             'header@about': {
+    //                 templateUrl: '/views/_partials/header.html',
+    //                 controller: 'headerCtrl',
+    //             },
+    //             'bookingForm@about': {
+    //                 templateUrl: '/views/booking/booking-form.html',
+    //                 controller: 'bookingFormCtrl'
+    //             },
+    //             'footer@about': {
+    //                 templateUrl: '/views/_partials/footer.html',
+    //                 controller: 'pageCtrl',
+    //             }
+    //         }
 
-        })
-        .state('roomsAvailable', {
+    //     })
+    .state('roomsAvailable', {
             url: '/available-rooms-cebu-hotels',
             title: 'Cebu Hotels | Cebu Accomodation | Available Rooms',
             description: 'Cebu hotels available rooms for cebu accomodation.',
@@ -476,7 +476,63 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
                 }
             }
 
+        })
+        .state('pages', {
+            url: '/admin/pages',
+            controller: 'pagesIndexCtrl',
+            views: {
+                '': {
+                    templateUrl: '/views/admin/pages/index.html',
+                    resolve: { authenticate: authenticate }
+                },
+                'header@pages': {
+                    templateUrl: '/views/_partials/admin-header.html',
+                },
+                'footer@pages': {
+                    templateUrl: '/views/_partials/admin-footer.html',
+                }
+            }
+
+        })
+        .state('pagesCreate', {
+            url: '/admin/pages/create/:id',
+            controller: 'pagesCreateCtrl',
+            views: {
+                '': {
+                    templateUrl: '/views/admin/pages/create.html',
+                    resolve: { authenticate: authenticate }
+                },
+                'header@pagesCreate': {
+                    templateUrl: '/views/_partials/admin-header.html',
+                },
+                'footer@pagesCreate': {
+                    templateUrl: '/views/_partials/admin-footer.html',
+                }
+            }
+
+        })
+        .state('pageDetail', {
+            url: '/:slug',
+            views: {
+                '': {
+                    templateUrl: '/views/page/single.html',
+                    controller: 'pageDetailsCtrl',
+                },
+                'header@pageDetail': {
+                    templateUrl: '/views/_partials/header.html',
+                    controller: 'headerCtrl'
+                },
+                'bookingForm@pageDetail': {
+                    templateUrl: '/views/booking/booking-form.html',
+                    controller: 'bookingFormCtrl'
+                },
+                'footer@pageDetail': {
+                    templateUrl: '/views/_partials/footer.html'
+                }
+
+            }
         });
+
 
     $urlRouterProvider.otherwise('/');
     $locationProvider.html5Mode(true);

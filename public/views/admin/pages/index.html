@@ -1,0 +1,38 @@
+<div class="admin-main" ng-controller="pagesIndexCtrl">
+    <div ui-view="header"></div>
+    <section class="section-rate section">
+        <div class="row">
+            <!--/.col-md-4-->
+            <div class="col-md-8 col-md-offset-2">
+                <a ui-sref="pagesCreate" class="btn btn-success">Add New</a>
+                <table class="table table-stripe">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Slug</th>
+                            <th>Author</th>
+                            <th>Status</th>
+                            <th width="100px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="page in pages">
+                            <td>{{ page.id }}</td>
+                            <td>{{ page.title }}</td>
+                            <td>{{ page.slug }}</td>
+                            <td>{{ page.author_name }}</td>
+                            <td>{{ page.status ? 'Acitve' : 'Inactive' }}</td>
+                            <td>
+                                <a ui-sref="pageDetail({slug: page.slug })"><span class="lnr lnr-eye"></span></a>
+                                <a ui-sref="pagesCreate({id: page.id})"><span class="lnr lnr-pencil"></span></a>
+                                <a ng-click="delete(page.id)"><span class="lnr lnr-trash"></span></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div ui-view="footer"></div>
+    </section>
+</div>

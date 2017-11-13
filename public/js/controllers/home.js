@@ -324,7 +324,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
         });
 
         sc.changeCalendarViewMonth = function(viewDate) {
-            sc.showLoader();
+            // sc.showLoader();
             fetchCalendar();
 
         };
@@ -340,7 +340,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                     checkIn: sc.booking.checkIn,
                     checkOut: sc.booking.checkOut,
                     noOfRooms: sc.booking.noRooms,
-                    noOfAdults: sc.booking.adult,
+                    noOfAdults: sc.booking.adult
                 }).then(function(response) {
                     API.bookingStep({
                         roomId: sc.room.id,
@@ -350,7 +350,10 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                         noOfAdults: sc.booking.adult,
                         noOfChild: sc.booking.child,
                         noOfRooms: sc.booking.noRooms,
+                        maxTotalPerson: sc.room.totalPerson
                     }, 1).then(function(response) {
+
+
 
                         API.setBookingData({
                             checkIn: sc.booking.checkIn,
@@ -365,13 +368,15 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                                 id: sc.room.id,
                                 name: sc.room.name,
                                 building: sc.room.building,
-                                price: sc.room.minimumRate
+                                price: sc.room.minimumRate,
+                                extraPerson: response.data.extraPerson
                             }
                         });
 
                         $state.go('customerDetail');
                     }, function(error) {
                         showPopup('Error', error.data, sh);
+                        sc.buttonText = 'Book Now';
                     }).finally(function() {
                         sc.buttonText = 'Book Now';
                     });
@@ -385,16 +390,16 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
         }
 
         sc.openLightboxModal = function(photos, index, caption) {
-            var images = [];
-            for (var i = 0; i < photos.length; i++) {
-                images.push({
-                    url: photos[i].file.orig,
-                    caption: caption
-                });
+                var images = [];
+                for (var i = 0; i < photos.length; i++) {
+                    images.push({
+                        url: photos[i].file.orig,
+                        caption: caption
+                    });
+                }
+                Lightbox.openModal(images, index);
             }
-            Lightbox.openModal(images, index);
-        }
-        sc.showLoader();
+            // sc.showLoader();
 
     }
 ])
@@ -402,6 +407,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 .controller('customerDetailCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'API', 'sh',
     function($scope, $rootScope, $state, $stateParams, API, sh) {
         var data = $rootScope.booking;
+        console.log(data);
         if (data == undefined || data.room == undefined) {
             $state.go('roomsAvailable');
         }

@@ -13,11 +13,11 @@
                                     <div class="best-deals-main">
                                         <div class="best-deals-inner text-center">
                                             <div class="price" ng-repeat="r in room.rates | filter: { pivot : {isActive:1}, isMonthly: 0}" ng-init="$index == 0 ? booking.rateSelected = r : ''">
-                                                <span class="breakfast"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Nightly rates with {{ r.mealType=='N' ? 'out' : '' }} breakfast as low as</span>
+                                                <span class="breakfast"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Nigthly rate xmas sale as low as</span>
                                                 <label class="item-price">‎<input name="rate_{{ r.id }}" type="radio" ng-model="booking.rateSelected" ng-if="(room.rates | filter: { pivot : {isActive:1}, isMonthly: 0}).length > 1" ng-value="r"/> {{ r.pivot.price | currency: '₱':0 }}</label>
                                             </div>
                                             <div class="price monthly" ng-if="r.pivot.isActive==1" ng-repeat="r in result = (room.rates | filter: { pivot : {isActive:1}, isMonthly: 1})">
-                                                <span class="breakfast"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Monthly rates with {{ r.mealType=='N' ? 'out' : '' }} breakfast as low as</span>
+                                                <span class="breakfast"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Nigthly rate xmas sale as low as</span>
                                                 <label class="item-price">‎{{ r.pivot.price | currency: '₱':0 }}</label>
                                             </div>
                                         </div>
@@ -91,7 +91,7 @@
                     <div class="details-inner">
                         <div class="details-side col-md-4 col-md-push-8 no-padding room-sidebar-aminities">
                             <div class="room-sidebar-inner">
-                                <h3>Aminities</h3>
+                                <h3>Amenities</h3>
                                 <ul class="list-unstyled aminities">
                                     <li ng-repeat="a in room.aminities"><span class="lnr lnr-checkmark-circle"></span> {{ a.name }}</li>
                                 </ul>

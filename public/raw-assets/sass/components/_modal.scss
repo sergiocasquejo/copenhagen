@@ -40,3 +40,38 @@
         }
     }
 }
+
+.alert-bar {
+    background: #fda22c;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    padding: 2px;
+    overflow: hidden;
+    height: 46px;
+    z-index: 1000;
+    font-size: 14px;
+    line-height: 30px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    font-weight: 700;
+    border-radius: 0;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    z-index: 9999;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    .alert-error {
+        background: #f93d66;
+        background: linear-gradient(90deg, #f93d66, #6d47d9);
+    }
+    .alert-success {
+        background: rgba(119, 187, 27, .82);
+    }
+}

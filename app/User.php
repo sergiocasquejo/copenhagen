@@ -35,6 +35,11 @@ class User extends Authenticatable
         return $this->belongsTo('App\Customer');
     }
 
+    public function pages()
+    {
+        return $this->hasMany('App\Page');
+    }
+
     public $rules = [
         'username' => 'required|min:5|unique:users,username',
         'password2' => 'same:password',

@@ -130,8 +130,8 @@ class CalendarController extends Controller
 
         $room = \App\Room::find($request->input('roomID'));
         
-        
-        if ($hasNoRoomAvailable->count() == 0 && $room->totalPerson  >= $request->input('noOfAdults')) {
+        // && $room->totalPerson  >= $request->input('noOfAdults')
+        if ($hasNoRoomAvailable->count() == 0) {
             return response()->json('available', 200, [], JSON_UNESCAPED_UNICODE);
         }
         $errStr = '';
@@ -144,9 +144,9 @@ class CalendarController extends Controller
             $errStr .= '</table>';
         }
 
-        if ($room->totalPerson  < $request->input('noOfAdults')) {
-            $errStr .= '<p>Number of adults must not greater than '. $room->totalPerson .'.</p>';
-        }
+        // if ($room->totalPerson  < $request->input('noOfAdults')) {
+        //     $errStr .= '<p>Number of adults must not greater than '. $room->totalPerson .'.</p>';
+        // }
 
         return response()->json($errStr, 400, [], JSON_UNESCAPED_UNICODE);
     }

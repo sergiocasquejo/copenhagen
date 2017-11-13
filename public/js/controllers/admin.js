@@ -65,7 +65,7 @@ copenhagenApp.controller('profileCtrl', ['$scope', '$rootScope', '$state', 'API'
                         selected_date: moment(sc.data.selectedDate).format('YYYY-MM-DD')
                     }).then(function(response) {
                         sc.dates = response.data;
-                        sc.data.selected_date = "";
+                        sc.data = null;
                         showPopup('Success', 'Successfully saved.', sh);
                     }, function(error) {
                         showPopup('Error', error.data, sh);

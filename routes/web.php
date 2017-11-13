@@ -126,6 +126,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('aminities', 'AminitiesController', ['only' => [
             'index', 'store', 'update', 'destroy'
         ]]);
+
+       
         
         
         Route::get('{roomId}/calendar/{start}/{end}', 'CalendarController@fetchCalendarByRoomIdAndDate');
@@ -136,6 +138,12 @@ Route::group(['middleware' => 'auth'], function() {
         Route::delete('{roomId}/beds/{bedId}', 'RoomController@detachBed');
     });
 
+    
+    Route::resource('pages', 'PageController', ['only' => [
+        'index', 'store', 'update', 'destroy', 'show'
+    ]]);
+    
+    
     Route::get('rooms/lists', 'RoomController@lists');
     Route::resource('rooms', 'RoomController', ['only' => [
             'index', 'store', 'update', 'destroy'
@@ -155,6 +163,7 @@ Route::group(['middleware' => 'auth'], function() {
 
 Route::get('rooms/available', 'RoomController@showAvailable');
 Route::get('rooms/{slug}', 'RoomController@showBySlug');
+Route::get('page/{slug}', 'PageController@showBySlug');//->where('slug', '[A-Za-z]+');
 
 
 Route::any('{all}', function(){

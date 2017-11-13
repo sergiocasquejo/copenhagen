@@ -9,7 +9,7 @@ function showPopup(title, message, sh, showButton) {
 }
 
 
-var copenhagenApp = angular.module('copenhagenApp', ['ngAnimate', 'ui.router', 'ui.bootstrap', 'mwl.calendar', 'angularFileUpload', 'ui.toggle', 'moment-picker', 'countrySelect', 'rzModule', 'bootstrapLightbox', 'ngCookies'])
+var copenhagenApp = angular.module('copenhagenApp', ['ngAnimate', 'ui.router', 'ui.bootstrap', 'mwl.calendar', 'angularFileUpload', 'ui.toggle', 'moment-picker', 'countrySelect', 'rzModule', 'bootstrapLightbox', 'ngCookies', 'textAngular', 'ngSanitize'])
     .config(['$httpProvider', '$qProvider',
 
         function($httpProvider, $qProvider) {
@@ -105,4 +105,4 @@ var copenhagenApp = angular.module('copenhagenApp', ['ngAnimate', 'ui.router', '
             }
             return value.replace(/^\s+|\s+$/g, ''); // you could use .trim, but it's not going to work in IE<9
         };
-    });;
+    });

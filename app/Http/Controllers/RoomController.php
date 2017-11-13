@@ -119,10 +119,10 @@ class RoomController extends Controller
                         }
                     }
                     //Disable room if more than 1 monthly rate
-                    if ($countRegRate == 0 || $countMonthlyRate != 1) {
+                    if ($countRegRate == 0) {
                         $room->isActive  = 0;
                         $room->save();
-                        return response()->json('Must have 1 monthly rate and must have regular rate enabled.', 400, [], JSON_UNESCAPED_UNICODE);   
+                        return response()->json('Must have regular rate enabled.', 400, [], JSON_UNESCAPED_UNICODE);   
                     }
                     
                     return response()->json($this->fetchAll(), 200, [], JSON_UNESCAPED_UNICODE);   
@@ -224,10 +224,15 @@ class RoomController extends Controller
     }
 
     public function showBySlug(Request $request, $slug) {
+        $seo = \App\Seo::where(['slug' => $slug, 'seoableType' => 'room'])->first();
+        if ($seo) {
+            $room = \App\Room::lazyLoad()->where(['id' => $seo->seoableId, 'isActive' => 1])->first();
+            if ($room) {
+                return response()->json($room->toArray(), 200, [], JSON_UNESCAPED_UNICODE);
+            } 
+        }
         
-         $room = \App\Room::lazyLoad()->where(['slug' => $slug, 'isActive' => 1])->first();
-         
-         return response()->json($room->toArray(), 200, [], JSON_UNESCAPED_UNICODE);
+        return response()->json("Sorry, Room not found.", 400, [], JSON_UNESCAPED_UNICODE);
     }
 
     public function showAvailable()

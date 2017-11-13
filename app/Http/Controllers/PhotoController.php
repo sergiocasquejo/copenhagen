@@ -14,67 +14,69 @@ class PhotoController extends Controller
      */
     public function store(Request $request, $id)
     {
-
-        $photo = new \App\Photo;
-        $validator = $photo->validate($request->file());
-        if ($validator->fails()) {
-            $validationStr = '';
-            foreach ($validator->errors()->getMessages() as $k => $error) {
-                foreach ($error as $err) {
-                    $validationStr .= $err .'<br/>';
+        try {
+            $photo = new \App\Photo;
+            $validator = $photo->validate($request->file());
+            if ($validator->fails()) {
+                $validationStr = '';
+                foreach ($validator->errors()->getMessages() as $k => $error) {
+                    foreach ($error as $err) {
+                        $validationStr .= $err .'<br/>';
+                    }
+                    
                 }
+                return response()->json($validationStr, 400, [], JSON_UNESCAPED_UNICODE);
+            }
+            $roomPhoto = new \App\Photo;
+            $photo = $request->file('photo');
+            $roomID  = $request->input('roomID');
+            $filename = $photo->getClientOriginalName();
+            $name = pathinfo($filename, PATHINFO_FILENAME); // file
+            $ext = pathinfo($filename, PATHINFO_EXTENSION); // jpg
+            
+            $uploadPath = \Config::get('copenhagen.uploadsPath') .'/';
+            $path = \Config::get('copenhagen.rooms.url');// . '/' . $roomID; 
+
+            if (\File::exists(public_path(). $path .'/'. $filename))
+            {
+                $name = $name .'_'. time();
+                $filename = $name .'.'.$ext;
+            }
+
+            if ($photo->move(public_path(). $path, $filename)) {
+                $dir = public_path(). $path . '/';
+                $sizes = \Config::get('copenhagen.rooms.image.sizes');
+                $images = array(
+                    'orig' => $path .'/'. $filename
+                );
+                foreach ($sizes as $key => $size) {
+                    $img = \Image::make($dir. $filename)->fit($size['width'], $size['height']);
+                    $_n = $name. '_'. $size['width'] .'x'. $size['height'] .'.'. $ext;
+                    $images[$key]  = $path .'/'. $_n;
+                    $img->save($dir.$_n);
+                }
+
                 
-            }
-            return response()->json($validationStr, 400, [], JSON_UNESCAPED_UNICODE);
-        }
-        $roomPhoto = new \App\Photo;
-        $photo = $request->file('photo');
-        $roomID  = $request->input('roomID');
-        $filename = $photo->getClientOriginalName();
-        $name = pathinfo($filename, PATHINFO_FILENAME); // file
-        $ext = pathinfo($filename, PATHINFO_EXTENSION); // jpg
-        
-        $uploadPath = \Config::get('copenhagen.uploadsPath') .'/';
-        $path = \Config::get('copenhagen.rooms.url');// . '/' . $roomID; 
-
-        if (\File::exists(public_path(). $path .'/'. $filename))
-        {
-            $name = $name .'_'. time();
-            $filename = $name .'.'.$ext;
-        }
-
-        if ($photo->move(public_path(). $path, $filename)) {
-            $dir = public_path(). $path . '/';
-            $sizes = \Config::get('copenhagen.rooms.image.sizes');
-            $images = array(
-                'orig' => $path .'/'. $filename
-            );
-            foreach ($sizes as $key => $size) {
-                $img = \Image::make($dir. $filename)->fit($size['width'], $size['height']);
-                $_n = $name. '_'. $size['width'] .'x'. $size['height'] .'.'. $ext;
-                $images[$key]  = $path .'/'. $_n;
-                $img->save($dir.$_n);
-            }
-
+                $roomPhoto->file = $images;
+                $roomPhoto->default = 0;
+                
+                $room = \App\Room::findOrFail($id);
             
-            $roomPhoto->file = $images;
-            $roomPhoto->default = 0;
-            
-            $room = \App\Room::findOrFail($id);
-            try {
-                $room->photos()->save($roomPhoto);
-            } catch(\Exception $e) {
-                \Log::info('ERROR: '.$e->getMessage());
-                return response()->json('Oops! Error please report to administrator.', 400, [], JSON_UNESCAPED_UNICODE);
+                    $room->photos()->save($roomPhoto);
+                
+
+                $photos = $room->photos()->get();
+                foreach($photos as $i => $photo) {
+                    $photos[$i]['file'] = $photo->file;
+                }
+                return response()->json($photos, 200, [], JSON_UNESCAPED_UNICODE);
+            } else {
+                return response()->json('failed', 400);
             }
 
-            $photos = $room->photos()->get();
-            foreach($photos as $i => $photo) {
-                $photos[$i]['file'] = $photo->file;
-            }
-            return response()->json($photos, 200, [], JSON_UNESCAPED_UNICODE);
-        } else {
-            return response()->json('failed', 400);
+        } catch(\Exception $e) {
+            \Log::info('ERROR: '.$e->getMessage());
+            return response()->json('Oops! Error please report to administrator.', 400, [], JSON_UNESCAPED_UNICODE);
         }
     }
 

@@ -170,6 +170,29 @@ copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$cookies', funct
             return $http.delete(urlBase + '/disable-date/' + id);
         }
 
+
+        // Pages
+        api.getPages = function() {
+            return $http.get(urlBase + '/pages');
+        }
+
+        api.getPage = function(id) {
+            return $http.get(urlBase + '/pages/' + id);
+        }
+
+        api.savePage = function(rate, id) {
+            if (id) {
+                return $http.put(urlBase + '/pages/' + id, rate);
+            }
+            return $http.post(urlBase + '/pages', rate);
+        }
+        api.deletePage = function(id) {
+            return $http.delete(urlBase + '/pages/' + id);
+        }
+        api.getPageBySlug = function(slug) {
+            return $http.get(urlBase + '/page/' + slug);
+        }
+
         return api;
     }])
     .factory('authHttpResponseInterceptor', ['$q', '$location', function($q, $location) {
@@ -182,8 +205,7 @@ copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$cookies', funct
             },
             responseError: function(rejection) {
                 if (rejection.status === 401) {
-
-                    console.log("Response Error 401", rejection);
+                    $cookies.remove('currentUser');
 
                     $location.path('/login').search('returnTo', $location.path());
                 }

@@ -21,15 +21,17 @@
     <link rel="stylesheet" href="/lib/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.min.css" type="text/css">
     <link rel="stylesheet" href="/lib/angularjs-slider/dist/rzslider.min.css" type="text/css">
     <link rel="stylesheet" href="/lib/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.min.css" type="text/css">
+    <link rel="stylesheet" href="/lib/textangular/dist/textAngular.css" type="text/css">
     <link rel="stylesheet" href="/css/app.min.css" type="text/css">
-
+    <link type="text/css" rel="stylesheet" charset="UTF-8" href="https://translate.googleapis.com/translate_static/css/translateelement.css">
     <!-- Scripts -->
     <script>
         window.CopenhagenAppConfig = {!! json_encode([
             'csrfToken' => csrf_token(),
             'paymentMethod' => ['pesopay' => config('pesopay.enable')],
             'bedding' => config('copenhagen.bedding'),
-            'disabledDates' => json_encode(\App\DisableDate::getFutureDisabledDates())
+            'disabledDates' => json_encode(\App\DisableDate::getFutureDisabledDates()),
+            'extraPerson' => 500
         ]) !!};
     </script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -55,7 +57,10 @@
     <script src="/lib/angularjs-slider/dist/rzslider.min.js"></script>
     <script src="/lib/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.min.js"></script>
     <script src="/lib/angular-cookies/angular-cookies.min.js"></script>
-    
+    <script src="/lib/textangular/dist/textAngular-rangy.min.js"></script>
+    <script src="/lib/textangular/dist/textAngular-sanitize.min.js"></script>
+    <script src="/lib/textangular/dist/textAngular.min.js"></script>
+
     <script src="/js/app.js" type="text/javascript"></script>
     <script src="/js/routes/index.js" type="text/javascript"></script>
     <script src="/js/services/api.js" type="text/javascript"></script>
@@ -66,6 +71,22 @@
     <script src="/js/controllers/room.js" type="text/javascript"></script>
     <script src="/js/controllers/calendar.js" type="text/javascript"></script>
     <script src="/js/controllers/bookings.js" type="text/javascript"></script>
+    <script src="/js/controllers/page.js" type="text/javascript"></script>
+
+    
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            var x = document.getElementsByClassName('goog-te-banner-frame');
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'de,es,fr,id,it,ja,ko,pt,ru,zh-CN',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 </body>
 
 </html>

@@ -13,9 +13,16 @@ footer {
             }
         }
     }
+    .navbar-bottom {
+        padding-top: 10px;
+        a {
+            padding: 5px 0;
+            display: block;
+            color: #FFF;
+        }
+    }
     .footer-address {
         .address {
-            padding: 10px 0 0 0;
             a {
                 color: #747a81;
             }

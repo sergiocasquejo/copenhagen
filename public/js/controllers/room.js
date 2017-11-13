@@ -10,7 +10,7 @@ copenhagenApp
             sc.beddingLists = CopenhagenAppConfig.bedding;
             var roomListIndex = null;
             var popupModal = null;
-
+            sc.uploadButtonText = 'Upload Photo';
             API.getRooms().then(function(response) {
                 sc.roomLists = response.data;
                 sc.loaded = true;
@@ -98,7 +98,8 @@ copenhagenApp
             }
 
             uploader.onProgressAll = function(progress) {
-                sc.showLoader();
+                // sc.showLoader();
+                sc.uploadButtonText = 'Uploading...';
             };
 
 
@@ -109,8 +110,8 @@ copenhagenApp
                 if (sc.roomLists[roomListIndex]) {
                     sc.roomLists[roomListIndex].photos = response;
                 }
-
-                popupModal.dismiss('cancel');
+                sc.uploadButtonText = 'Upload Photos';
+                //popupModal.dismiss('cancel');
 
             };
 
@@ -131,7 +132,8 @@ copenhagenApp
                 popupModal.result.then(function(result) {
                     if (result == 'ok') {
                         API.deleteRoom(room.id).then(function(response) {
-                            sc.roomLists = response.data;
+                            var index = sc.roomLists.indexOf(room);
+                            sc.roomLists.splice(index, 1);
                         }, function(error) {
                             showPopup('Error', error.data, sh);
                         });
@@ -139,7 +141,8 @@ copenhagenApp
                 });
 
                 popupModal.result.then(function(roomLists) {
-                    sc.roomLists = roomLists;
+                    var index = sc.roomLists.indexOf(room);
+                    sc.roomLists.splice(index, 1);
                 }, function() {
                     $log.info('Modal dismissed at: ' + new Date());
                 });

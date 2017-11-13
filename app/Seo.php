@@ -10,7 +10,7 @@ class Seo extends Model
     protected $table = 'seos';
     public $timestamps = false;
     protected $fillable = [
-        'contentId', 'contentType', 'metaTitle', 'slug', 'metaKeywords', 'metaDescription', 'h1Tag', 'redirect301', 'canonicalLinks', 'metaRobotTag', 'metaRobotFollow'
+        'seoableId', 'seoableType', 'metaTitle', 'slug', 'metaKeywords', 'metaDescription', 'h1Tag', 'redirect301', 'canonicalLinks', 'metaRobotTag', 'metaRobotFollow'
     ];
 
     public $rules = [
@@ -69,5 +69,10 @@ class Seo extends Model
     public function room()
     {
         return $this->belongsTo('App\Room', 'seoableId', 'id');
+    }
+
+    public function page()
+    {
+        return $this->belongsTo('App\Page', 'seoableId', 'id');
     }
 }
