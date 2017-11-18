@@ -2,16 +2,6 @@ footer {
     background: $dark_blue;
     .cc-logos {
         padding: 10px 0 20px 0;
-        img {
-            -webkit-filter: grayscale(100%);
-            /* Safari 6.0 - 9.0 */
-            filter: grayscale(100%);
-            &:hover {
-                -webkit-filter: grayscale(0);
-                /* Safari 6.0 - 9.0 */
-                filter: grayscale(0);
-            }
-        }
     }
     .navbar-bottom {
         padding-top: 10px;

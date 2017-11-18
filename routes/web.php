@@ -91,6 +91,7 @@ Route::post('contact', 'PageController@contact');
 
 Route::group(['prefix' => 'booking'], function() {
     Route::post('step/{step}', 'BookingController@step')->where('id', '[0-9]+');
+    Route::post('notify', 'BookingController@notify');
 });
 
 /*

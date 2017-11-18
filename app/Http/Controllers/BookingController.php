@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Mail\Reservation;
+use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
@@ -110,11 +112,11 @@ class BookingController extends Controller
 
         $disable_dates = \App\DisableDate::where('room_id', '=', $request->input('roomId'))
         ->where('selected_date','>=', $request->input('checkIn'))
-        ->where('selected_date','<=', $request->input('checkOut'))->get();
+        ->where('selected_date','<=', $request->input('checkOut'));
         
-        if ($disable_dates) {
+        if ($disable_dates->count()) {
             $dates = '';
-            foreach($disable_dates as $item) {
+            foreach($disable_dates->get() as $item) {
                 $dates .= date('F j, Y', strtotime($item->selected_date)) . "\n";
             }
             return response()->json('Selected room is not available on selected dates: '. $dates, 400, [], JSON_UNESCAPED_UNICODE);
@@ -290,5 +292,58 @@ class BookingController extends Controller
         }
 
         return response()->json($validationStr, 400, [], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function notify(Request $request) {
+
+        $ref 			= $request->input('Ref');
+
+        $booking = \App\Booking::where(['refId' => $ref])->first();
+        if ($booking) {
+
+            $data = array(
+                'name' => 'Admin',
+                'pageHeading' => 'New Reservation',
+                'message' => 'Please see below information',
+                'amountPaid' => $booking->lastPayment ? $booking->nf($booking->lastPayment->totalAmount, true) : 0,
+                'refId' => $booking->refId,
+                'checkIn' => date('l F d Y', strtotime($booking->checkIn)) .' ' . $booking->checkInTime,
+                'checkOut' => date('l F d Y', strtotime($booking->checkOut)) .' ' .  $booking->checkOutTime,
+                'noOfAdults' => $booking->noOfAdults,
+                'extraPerson' => $booking->extraPerson,
+                'noOfChild' => $booking->noOfChild ? $booking->noOfChild : 0,
+                'roomRate' => $booking->nf($booking->roomRate, true),
+                'noOfNights' => $booking->noOfNights,
+                'noOfRooms' => $booking->noOfRooms,
+                'totalAmount' => $booking->nf($booking->totalAmount, true),
+                'status' => $booking->status,
+                'lastPayment' => $booking->lastPayment ?  true : false,
+                'paymentMethod' => $booking->lastPayment ? $booking->lastPayment->method : 0,
+                'amountPaid' => $booking->lastPayment ? $booking->lastPayment->totalAmount : 0,
+                'paymentStatus' => $booking->lastPayment ? $booking->lastPayment->status : 0,
+                'customerName' => $booking->customer->salutation .' '. $booking->customer->firstName .' '. $booking->customer->middleName .' '. $booking->customer->lastName,
+                'customerEmail' => $booking->customer->email,
+                'customerContact' => $booking->customer->contact,
+                'customerAddress1' => $booking->customer->address1,
+                'customerAddress2' => $booking->customer->address2,
+                'customerState' => $booking->customer->state,
+                'customerCity' => $booking->customer->city,
+                'customerZipcode' => $booking->customer->zipcode,
+                'customerCountryCode' => $booking->customer->countryCode,
+                'specialInstructions' => $booking->specialInstructions,
+                'billingInstructions' => $booking->billingInstructions
+            );
+
+        
+            \Mail::to(Config('mail.emails.info'))
+            ->send(new Reservation($data));
+        
+            $data['name'] = $booking->customer->firstName;
+            $data['pageHeading'] = 'You have successfully booked';
+
+            
+            \Mail::to($booking->customer->email)
+            ->send(new Reservation($data));
+        }
     }
 }

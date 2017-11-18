@@ -589,7 +589,13 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
             };
         }
     ])
-    .controller('bookingCompleteCtrl', ['$scope', '$location', function($scope, $location) {
+    .controller('bookingCompleteCtrl', ['$scope', '$location', 'API', function($scope, $location, API) {
         var sc = $scope;
         sc.step = 4;
+        var param1 = $location.search().Ref;
+        if (param1 != '') {
+            API.sendEmailNotification(param1);
+        }
+
+
     }]);

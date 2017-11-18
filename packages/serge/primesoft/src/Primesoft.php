@@ -56,10 +56,10 @@ class Primesoft {
         ];
 
         // Post booking to primesoft
-        $result = null; /*$this->postToPrimeSoftAPI(
+        $result = $this->postToPrimeSoftAPI(
             $this->apiUrl.'/transactions/hotel/newReservation', 
             $data
-        );*/
+        );
         
 
         // Logoout to primesoft

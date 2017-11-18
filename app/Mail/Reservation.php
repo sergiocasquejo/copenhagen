@@ -17,9 +17,9 @@ class Reservation extends Mailable
      *
      * @return void
      */
-    public function __construct(Booking $booking)
+    public function __construct($data)
     {
-        $this->booking = $booking;
+        $this->booking = $data;
     }
 
     /**

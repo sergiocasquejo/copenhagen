@@ -144,6 +144,10 @@ copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$cookies', funct
             return $http.get(urlBase + '/bookings');
         }
 
+        api.sendEmailNotification = function(ref) {
+            return $http.post(urlBase + '/booking/notify', { Ref: ref });
+        }
+
         api.checkRoomAvailability = function(params) {
             return $http.post(urlBase + '/rooms/availability', params);
         }

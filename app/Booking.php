@@ -64,7 +64,7 @@ class Booking extends Model
         'noOfRooms' => 'required|numeric|min:1',
         'noOfAdults' => 'required|numeric|min:1',
         'noOfChild' => 'numeric',
-        'noOfNights' => 'required|numeric|max:30'
+        'noOfNights' => 'required|numeric|max:30|min:1'
     ];
 
     public $step2Rules = [
