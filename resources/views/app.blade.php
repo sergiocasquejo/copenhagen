@@ -12,17 +12,7 @@
     <base href="/">
     <link rel="canonical" href="@{{ canonical }}"/>
     <link rel="icon" type="image/png" href="favicon.ico" />
-    <!-- Styles -->
-    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" type="text/css">
-    <!--<link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap-theme.min.css" type="text/css">-->
-    <link rel="stylesheet" href="/lib/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="/lib/angular-bootstrap-toggle/dist/angular-bootstrap-toggle.min.css" type="text/css">
-    <link rel="stylesheet" href="/lib/angular-moment-picker/dist/angular-moment-picker.min.css" type="text/css">
-    <link rel="stylesheet" href="/lib/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.min.css" type="text/css">
-    <link rel="stylesheet" href="/lib/angularjs-slider/dist/rzslider.min.css" type="text/css">
-    <link rel="stylesheet" href="/lib/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.min.css" type="text/css">
-    <link rel="stylesheet" href="/lib/textangular/dist/textAngular.css" type="text/css">
-    <link rel="stylesheet" href="/css/app.min.css" type="text/css">
+    <link rel="stylesheet" href="/dist/styles/app.min.css" type="text/css">
     <link type="text/css" rel="stylesheet" charset="UTF-8" href="https://translate.googleapis.com/translate_static/css/translateelement.css">
     <!-- Scripts -->
     <script>
@@ -44,37 +34,7 @@
 
 <body>
     <ui-view>@yield('content')</ui-view>
-    <script src="/lib/angular/angular.min.js" type="text/javascript"></script>
-    <script src="/lib/angular-ui-router/release/angular-ui-router.min.js" type="text/javascript"></script>
-    <script src="/lib/angular-file-upload/dist/angular-file-upload.min.js" type="text/javascript"></script>
-    <script src="/lib/angular-bootstrap-toggle/dist/angular-bootstrap-toggle.min.js" type="text/javascript"></script>
-    <script src="/lib/angular-bootstrap/ui-bootstrap-tpls.min.js" type="text/javascript"></script>
-    <script src="/lib/moment/moment.js" type="text/javascript"></script>
-    <script src="/lib/angular-moment-picker/dist/angular-moment-picker.min.js" type="text/javascript"></script>
-    <script src="/lib/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.min.js" type="text/javascript"></script>
-    <script src="/lib/ng-country-select/dist/ng-country-select.min.js" type="text/javascript"></script>
-    <script src="/lib/angular-animate/angular-animate.min.js"></script>
-    <script src="/lib/angularjs-slider/dist/rzslider.min.js"></script>
-    <script src="/lib/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.min.js"></script>
-    <script src="/lib/angular-cookies/angular-cookies.min.js"></script>
-    <script src="/lib/textangular/dist/textAngular-rangy.min.js"></script>
-    <script src="/lib/textangular/dist/textAngular-sanitize.min.js"></script>
-    <script src="/lib/textangular/dist/textAngular.min.js"></script>
-
-    <script src="/js/app.js" type="text/javascript"></script>
-    <script src="/js/routes/index.js" type="text/javascript"></script>
-    <script src="/js/services/api.js" type="text/javascript"></script>
-    <script src="/js/controllers/auth.js" type="text/javascript"></script>
-    <script src="/js/controllers/home.js" type="text/javascript"></script>
-    <script src="/js/controllers/admin.js" type="text/javascript"></script>
-    <script src="/js/controllers/rate.js" type="text/javascript"></script>
-    <script src="/js/controllers/room.js" type="text/javascript"></script>
-    <script src="/js/controllers/calendar.js" type="text/javascript"></script>
-    <script src="/js/controllers/bookings.js" type="text/javascript"></script>
-    <script src="/js/controllers/page.js" type="text/javascript"></script>
-
-    
-
+    <script src="/dist/scripts/app.min.js"></script>
     <script type="text/javascript">
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'de,es,fr,id,it,ja,ko,pt,ru,zh-CN',
