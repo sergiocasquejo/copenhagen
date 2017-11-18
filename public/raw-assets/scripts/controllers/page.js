@@ -6,7 +6,7 @@ copenhagenApp
             API.getPages().then(function(response) {
                 $scope.pages = response.data;
             }, function(err) {
-                if (error.status != 401) { showPopup('Error', error.data, sh); }
+                if (error.status != 400) { showPopup('Error', error.data, sh); }
             });
 
             $scope.delete = function(id) {
@@ -17,7 +17,7 @@ copenhagenApp
                             $scope.pages = response.data;
                             $scope.page = null;
                         }, function(err) {
-                            if (error.status != 401) { showPopup('Error', error.data, sh); }
+                            if (error.status == 400) { showPopup('Error', error.data, sh); }
                         });
                     }
                 });
@@ -34,8 +34,10 @@ copenhagenApp
             if (id != 0) {
                 API.getPage(id).then(function(response) {
                     $scope.page = response.data;
+
+
                 }, function(err) {
-                    if (error.status != 401) { showPopup('Error', error.data, sh); }
+                    if (error.status == 400) { showPopup('Error', error.data, sh); }
                 });
             }
 
@@ -47,7 +49,7 @@ copenhagenApp
                         }
                         showPopup('Success', 'Successfully saved.', sh);
                     }, function(error) {
-                        if (error.status != 401) { showPopup('Error', error.data, sh); }
+                        if (error.status == 400) { showPopup('Error', error.data, sh); }
                     });
                 }
             }
@@ -65,8 +67,13 @@ copenhagenApp
 
                 API.getPageBySlug(slug).then(function(response) {
                     $scope.page = response.data;
+                    $rootScope.title = $scope.page.seo.metaTitle;
+                    $rootScope.description = $scope.page.seo.metaDescription;
+                    $rootScope.keywords = $scope.page.seo.metaKeywords;
+                    $rootScope.canonical = $scope.page.seo.canonicalLinks;
                 }, function(err) {
-                    if (error.status != 401) { showPopup('Error', error.data, sh); }
+                    if (err.status == 404) $scope.page = 404;
+                    if (err.status == 400) { showPopup('Error', err.data, sh); }
                 });
             }
 

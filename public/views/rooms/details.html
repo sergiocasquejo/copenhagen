@@ -1,7 +1,7 @@
 <div class="main room-details" ng-controller="roomDetailsCtrl">
-    <div ui-view="header"></div>
-    <div ui-view="steps"></div>
-    <section class="section-rooms-details section">
+    <div ui-view="header" ng-if="room != '404'"></div>
+    <div ui-view="steps" ng-if="room != '404'"></div>
+    <section class="section-rooms-details section" ng-if="room != '404'">
         <div class="container">
             <div class="room-details-inner">
                 <div class="row">
@@ -123,7 +123,11 @@
         </div>
 </div>
 </section>
-<div ui-view="footer"></div>
+<div ui-view="footer" ng-if="room != '404'"></div>
+
+<pagenotfound ng-if="room == '404'">
+</pagenotfound>
+
 
 <script id="customMonthCell.html" type="text/ng-template">
     <div mwl-droppable on-drop="vm.handleEventDrop(dropData.event, day.date, dropData.draggedFromDate)" mwl-drag-select="!!vm.onDateRangeSelect" on-drag-select-start="vm.onDragSelectStart(day)" on-drag-select-move="vm.onDragSelectMove(day)" on-drag-select-end="vm.onDragSelectEnd(day)"

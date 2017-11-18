@@ -105,4 +105,26 @@ var copenhagenApp = angular.module('copenhagenApp', ['ngAnimate', 'ui.router', '
             }
             return value.replace(/^\s+|\s+$/g, ''); // you could use .trim, but it's not going to work in IE<9
         };
+    }).directive('pagenotfound', function() {
+        //define the directive object
+        var directive = {};
+
+        //restrict = E, signifies that directive is Element directive
+        directive.restrict = 'E';
+
+        //template replaces the complete element with its text. 
+        directive.template = '<div class="text-center box-404"><h1>404</h1><p>Sorry the page you are looking for is not found.</p><a ui-sref="home">Home Page</a></div>';
+
+        //scope is used to distinguish each student element based on criteria.
+        directive.scope = {}
+
+        //compile is called during application initialization. AngularJS calls it once when html page is loaded.
+
+        directive.compile = function(element, attributes) {
+
+            //linkFunction is linked with each element with scope to get the element specific data.
+            var linkFunction = function($scope, element, attributes) {}
+            return linkFunction;
+        }
+        return directive;
     });

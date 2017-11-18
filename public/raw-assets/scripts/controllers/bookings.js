@@ -71,7 +71,7 @@ copenhagenApp.controller('bookingsCtrl', ['$scope', '$compile', '$timeout', 'API
                 sc.bookings.push(event);
             });
         }, function(error) {
-            if (error.status != 401) { showPopup('Error', error.data, sh); }
+            if (error.status == 400) { showPopup('Error', error.data, sh); }
         });
 
 

@@ -11,7 +11,6 @@ copenhagenApp.factory('API', ['$http', '$rootScope', '$state', '$cookies', funct
     };
 
     api.isAuthenticated = function() {
-        console.log($cookies.get('currentUser'));
         if ($cookies.get('currentUser') == undefined) return false;
         return $cookies.get('currentUser');
     };

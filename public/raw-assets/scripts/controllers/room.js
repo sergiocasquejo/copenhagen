@@ -15,14 +15,14 @@ copenhagenApp
                 sc.roomLists = response.data;
                 sc.loaded = true;
             }, function(error) {
-                if (error.status != 401) { showPopup('Error', error.data, sh); }
+                if (error.status == 400) { showPopup('Error', error.data, sh); }
                 sc.loaded = true;
             });
 
             API.getRates().then(function(response) {
                 sc.rateLists = response.data;
             }, function(error) {
-                if (error.status != 401) { showPopup('Error', error.data, sh); }
+                if (error.status == 400) { showPopup('Error', error.data, sh); }
             });
 
             sc.redirectToMetaContent = function(isDirty, roomID) {
@@ -45,7 +45,7 @@ copenhagenApp
                         sc.roomLists[index].photos = response.data;
                     }
                 }, function(error) {
-                    if (error.status != 401) { showPopup('Error', error.data, sh); }
+                    if (error.status == 400) { showPopup('Error', error.data, sh); }
                 });
             }
             sc.addNewRoom = function() {
@@ -53,7 +53,7 @@ copenhagenApp
                 API.saveRoom(room).then(function(response) {
                     sc.roomLists = response.data;
                 }, function(error) {
-                    if (error.status != 401) { showPopup('Error', error.data, sh); }
+                    if (error.status == 400) { showPopup('Error', error.data, sh); }
                 });
             }
 
@@ -62,7 +62,7 @@ copenhagenApp
                     API.saveRoom(room).then(function(response) {
                         sc.roomLists = response.data;
                     }, function(error) {
-                        if (error.status != 401) { showPopup('Error', error.data, sh); }
+                        if (error.status == 400) { showPopup('Error', error.data, sh); }
                     })
                 }
             }
@@ -135,7 +135,7 @@ copenhagenApp
                             var index = sc.roomLists.indexOf(room);
                             sc.roomLists.splice(index, 1);
                         }, function(error) {
-                            if (error.status != 401) { showPopup('Error', error.data, sh); }
+                            if (error.status == 400) { showPopup('Error', error.data, sh); }
                         });
                     }
                 });
@@ -182,7 +182,7 @@ copenhagenApp
                             aminitiesModalInstance.close();
                             sc.openAminities(roomListIndex, sc.roomLists[roomListIndex]);
                         }, function(error) {
-                            if (error.status != 401) { showPopup('Error', error.data, sh); }
+                            if (error.status == 400) { showPopup('Error', error.data, sh); }
                         });
                     }
                 });
@@ -270,7 +270,7 @@ copenhagenApp
 
                     $uibModalInstance.close(data);
                 }, function(error) {
-                    if (error.status != 401) { showPopup('Error', error.data, sh); }
+                    if (error.status == 400) { showPopup('Error', error.data, sh); }
                 });
 
         };
@@ -321,7 +321,7 @@ copenhagenApp
             var b = sc.beds[index];
             if (b.id != undefined) {
                 API.deleteRoomBed(room.id, b.id).then(function(response) {}, function(error) {
-                    if (error.status != 401) { showPopup('Error', error.data, sh); }
+                    if (error.status == 400) { showPopup('Error', error.data, sh); }
                 });
             }
             sc.beds.splice(index, 1);
@@ -331,7 +331,7 @@ copenhagenApp
             API.saveRoomBed(room.id, { beds: sc.beds }).then(function(response) {
                 $uibModalInstance.close({ index: index, data: response.data });
             }, function(error) {
-                if (error.status != 401) { showPopup('Error', error.data, sh); }
+                if (error.status == 400) { showPopup('Error', error.data, sh); }
             });
 
         };

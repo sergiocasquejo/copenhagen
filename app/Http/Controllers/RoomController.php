@@ -232,7 +232,7 @@ class RoomController extends Controller
             } 
         }
         
-        return response()->json("Sorry, Room not found.", 400, [], JSON_UNESCAPED_UNICODE);
+        return response()->json("Sorry, Room not found.", 404, [], JSON_UNESCAPED_UNICODE);
     }
 
     public function showAvailable()

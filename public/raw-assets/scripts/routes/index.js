@@ -511,30 +511,45 @@ copenhagenApp.config(function($stateProvider, $urlRouterProvider, $locationProvi
             }
 
         })
-        .state('pageDetail', {
-            url: '/:slug',
+        .state('404', {
+            url: '/404',
             views: {
                 '': {
-                    templateUrl: '/views/page/single.html',
-                    controller: 'pageDetailsCtrl',
-                },
-                'header@pageDetail': {
-                    templateUrl: '/views/_partials/header.html',
-                    controller: 'headerCtrl'
-                },
-                'bookingForm@pageDetail': {
-                    templateUrl: '/views/booking/booking-form.html',
-                    controller: 'bookingFormCtrl'
-                },
-                'footer@pageDetail': {
-                    templateUrl: '/views/_partials/footer.html'
+                    templateUrl: '/views/page/404.html'
                 }
 
             }
-        });
+        })
+
+    .state('pageDetail', {
+        url: '/:slug',
+        views: {
+            '': {
+                templateUrl: '/views/page/single.html',
+                controller: 'pageDetailsCtrl',
+            },
+            'header@pageDetail': {
+                templateUrl: '/views/_partials/header.html',
+                controller: 'headerCtrl'
+            },
+            'bookingForm@pageDetail': {
+                templateUrl: '/views/booking/booking-form.html',
+                controller: 'bookingFormCtrl'
+            },
+            'footer@pageDetail': {
+                templateUrl: '/views/_partials/footer.html'
+            }
+
+        },
+        resolve: {
+            404: function() {
+                return true;
+            }
+        }
+    });
 
 
-    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('404');
     $locationProvider.html5Mode(true);
 
 

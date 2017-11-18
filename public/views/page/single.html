@@ -1,6 +1,6 @@
 <div class="main" ng-controller="pageDetailsCtrl">
-    <div ui-view="header"></div>
-    <section class="section-page section">
+    <div ui-view="header" ng-if="page != '404'"></div>
+    <section class="section-page section" ng-if="page != '404'">
         <div class="container">
             <div class="box">
                 <h1 class="text-center">{{ page.title }}</h1>
@@ -8,5 +8,7 @@
             </div>
         </div>
     </section>
-    <div ui-view="footer"></div>
+    <div ui-view="footer" ng-if="page != '404'"></div>
+    <pagenotfound ng-if="page == '404'">
+    </pagenotfound>
 </div>

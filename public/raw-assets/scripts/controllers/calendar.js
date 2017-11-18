@@ -31,14 +31,14 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
             }
             sc.loaded = true;
         }, function(error) {
-            if (error.status != 401) { showPopup('Error', error.data, sh); }
+            if (error.status == 400) { showPopup('Error', error.data, sh); }
             sc.loaded = true;
         });
 
         API.getRates().then(function(response) {
             sc.rateLists = response.data;
         }, function(error) {
-            if (error.status != 401) { showPopup('Error', error.data, sh); }
+            if (error.status == 400) { showPopup('Error', error.data, sh); }
         });
 
         sc.showLoader = function() {
@@ -73,7 +73,7 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
 
                 popupModal.dismiss('cancel');
             }, function(error) {
-                if (error.status != 401) { showPopup('Error', error.data, sh); }
+                if (error.status == 400) { showPopup('Error', error.data, sh); }
             });
         }
 
@@ -134,7 +134,7 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
                     var params = sc.getCalStartAndEndDate(sc.viewDate);
                     fetchCalendarByRoomID(sc.calendar.roomType.id, params);
                 }, function(error) {
-                    if (error.status != 401) { showPopup('Error', error.data, sh); }
+                    if (error.status == 400) { showPopup('Error', error.data, sh); }
                 });
             }
         }

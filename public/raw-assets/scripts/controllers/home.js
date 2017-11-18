@@ -240,7 +240,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
             sc.getMinAndMaxPrice(sc.roomLists);
             sc.loaded = true;
         }, function(error) {
-            if (error.status != 401) { showPopup('Error', error.data, sh); }
+            if (error.status == 400) { showPopup('Error', error.data, sh); }
             sc.loaded = true;
         });
     }
@@ -300,7 +300,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
                 popupModal.dismiss('cancel');
             }, function(error) {
-                if (error.status != 401) { showPopup('Error', error.data, sh); }
+                if (error.status == 400) { showPopup('Error', error.data, sh); }
             });
         }
 
@@ -319,8 +319,10 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
             fetchCalendar();
         }, function(error) {
-            if (error.status != 401) { showPopup('Error', error.data, sh); }
-            $state.go('home');
+            if (error.status == 400) { showPopup('Error', error.data, sh); }
+            if (error.status == 404) {
+                sc.room = 404;
+            }
         });
 
         sc.changeCalendarViewMonth = function(viewDate) {
@@ -375,7 +377,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
 
                         $state.go('customerDetail');
                     }, function(error) {
-                        if (error.status != 401) { showPopup('Error', error.data, sh); }
+                        if (error.status == 400) { showPopup('Error', error.data, sh); }
                         sc.buttonText = 'Book Now';
                     }).finally(function() {
                         sc.buttonText = 'Book Now';
@@ -437,7 +439,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                     API.setBookingData(data);
                     $state.go('paymentDetail');
                 }, function(error) {
-                    if (error.status != 401) { showPopup('Error', error.data, sh); }
+                    if (error.status == 400) { showPopup('Error', error.data, sh); }
                 });
             }
         }
@@ -464,7 +466,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                             $state.go('bookingComplete');
                         }
                     }, function(error) {
-                        if (error.status != 401) { showPopup('Error', error.data, sh); }
+                        if (error.status == 400) { showPopup('Error', error.data, sh); }
                     });
 
                 }
@@ -529,7 +531,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
                         sc.contact = null;
                         showPopup('Sent', response.data, sh);
                     }, function(error) {
-                        if (error.status != 401) { showPopup('Error', error.data, sh); }
+                        if (error.status == 400) { showPopup('Error', error.data, sh); }
 
                     }).finally(function() {
                         sc.contactButtonText = 'SEND';

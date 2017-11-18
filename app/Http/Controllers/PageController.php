@@ -101,6 +101,6 @@ class PageController extends Controller
             } 
         }
         
-        return response()->json("Sorry, Page not found.", 400, [], JSON_UNESCAPED_UNICODE);
+        return response()->json("Sorry, Page not found.", 404, [], JSON_UNESCAPED_UNICODE);
     }
 }

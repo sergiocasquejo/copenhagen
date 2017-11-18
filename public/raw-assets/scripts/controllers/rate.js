@@ -6,7 +6,7 @@ copenhagenApp
             API.getRates().then(function(response) {
                 $scope.rates = response.data;
             }, function(err) {
-                if (error.status != 401) { showPopup('Error', error.data, sh); }
+                if (error.status == 400) { showPopup('Error', error.data, sh); }
             });
 
             $scope.save = function(isValid) {
@@ -15,7 +15,7 @@ copenhagenApp
                         $scope.rates = response.data;
                         $scope.rate = null;
                     }, function(err) {
-                        if (error.status != 401) { showPopup('Error', error.data, sh); }
+                        if (error.status == 400) { showPopup('Error', error.data, sh); }
                     });
                 }
             }
@@ -33,7 +33,7 @@ copenhagenApp
                             $scope.rates = response.data;
                             $scope.rate = null;
                         }, function(err) {
-                            if (error.status != 401) { showPopup('Error', error.data, sh); }
+                            if (error.status == 400) { showPopup('Error', error.data, sh); }
                         });
                     }
                 });

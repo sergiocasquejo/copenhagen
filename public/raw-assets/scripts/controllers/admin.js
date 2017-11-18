@@ -14,7 +14,7 @@ copenhagenApp.controller('profileCtrl', ['$scope', '$rootScope', '$state', 'API'
                         showPopup('Success', 'Account successfully updated. system will be logout.', sh);
                         $state.go('logout');
                     }, function(error) {
-                        if (error.status != 401) { showPopup('Error', error.data, sh); }
+                        if (error.status == 400) { showPopup('Error', error.data, sh); }
                     });
                 }
             }
@@ -49,13 +49,13 @@ copenhagenApp.controller('profileCtrl', ['$scope', '$rootScope', '$state', 'API'
             API.getDisabledDates().then(function(response) {
                 sc.dates = response.data;
             }, function(err) {
-                if (error.status != 401) { showPopup('Error', error.data, sh); }
+                if (error.status == 400) { showPopup('Error', error.data, sh); }
             });
 
             API.getRoomsLists().then(function(response) {
                 sc.rooms = response.data;
             }, function(err) {
-                if (error.status != 401) { showPopup('Error', error.data, sh); }
+                if (error.status == 400) { showPopup('Error', error.data, sh); }
             });
 
             sc.save = function(isValid) {
@@ -68,7 +68,7 @@ copenhagenApp.controller('profileCtrl', ['$scope', '$rootScope', '$state', 'API'
                         sc.data = null;
                         showPopup('Success', 'Successfully saved.', sh);
                     }, function(error) {
-                        if (error.status != 401) { showPopup('Error', error.data, sh); }
+                        if (error.status == 400) { showPopup('Error', error.data, sh); }
                     });
                 }
             }
@@ -80,7 +80,7 @@ copenhagenApp.controller('profileCtrl', ['$scope', '$rootScope', '$state', 'API'
                         API.deleteDisabledDate(id).then(function(response) {
                             sc.dates = response.data;
                         }, function(err) {
-                            if (error.status != 401) { showPopup('Error', error.data, sh); }
+                            if (error.status == 400) { showPopup('Error', error.data, sh); }
                         });
                     }
                 });
@@ -95,14 +95,14 @@ copenhagenApp.controller('profileCtrl', ['$scope', '$rootScope', '$state', 'API'
             API.seoMeta($stateParams.type, $stateParams.id).then(function(response) {
                 sc.seo = response.data;
             }, function(error) {
-                if (error.status != 401) { showPopup('Error', error.data, sh); }
+                if (error.status == 400) { showPopup('Error', error.data, sh); }
             });
             sc.save = function(isValid) {
                 if (isValid) {
                     API.saveSeoMeta(sc.seo).then(function(response) {
                         showPopup('Success', response.data, sh);
                     }, function(error) {
-                        if (error.status != 401) { showPopup('Error', error.data, sh); }
+                        if (error.status == 400) { showPopup('Error', error.data, sh); }
                     });
                 }
             }
