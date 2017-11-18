@@ -5,42 +5,42 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="navbar-header">
+                        <a class="navbar-brand" ui-sref="home"></a>
+                    </div>
+                    <div class="navbar-right">
+                        <ul class="nav navbar-nav pull-left">
+                            <li>
+                                <div id="google_translate_element" class="site-language"></div>
+                            </li>
+                        </ul>
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" ng-init="isCollapsed=true" ng-click="isCollapsed = !isCollapsed">
                             <span class="sr-only">Toggle navigation</span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" ui-sref="home"></a>
-
-                        <ul class="list-unstyled pull-right booking-bag visible-xs">
-                            <li title="View your bookings" ng-class="{ active: isActive('/booking/submit-your-details')}"><a ui-sref="customerDetail"><span class="lnr lnr-cart pull-right"></span></a></li>
-                        </ul>
                     </div>
-                    <div id="navbar" class="collapse navbar-collapse no-animate" uib-collapse="isCollapsed">
-                        <ul class="nav navbar-nav">
-                            <li ng-class="{ active: isActive('/')}"><a ui-sref="home">Home</a></li>
-                            <li ng-class="{ active: isActive('/available-rooms-cebu-hotels')}"><a ui-sref="roomsAvailable">Rooms &amp; Suites</a></li>
-                            <li ng-class="{ active: isActive('/about-ironwood')}"><a ui-sref="pageDetail({slug: 'about-ironwood' })">About Us</a></li>
-                            <!--<li ng-class="{ active: isActive('/accommodations')}"><a ui-sref="roomsAvailable">Accommodations <span class="lnr lnr-chevron-down"></span></a></li>-->
-                            <!--<li ng-class="{ active: isActive('/dining')}" uib-dropdown is-open="status.isopen">
-                                <a uib-dropdown-toggle>Dining <span class="lnr lnr-chevron-down"></span></a>
-                                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                                    <li role="menuitem"><a href="#">Chips Cafe</a></li>
-                                </ul>
-                            </li>-->
-                            <li ng-class="{ active: isActive('/meetings')}"><a ui-sref="pageDetail({slug: 'meetings' })">Mettings</a></li>
-                            <li ng-class="{ active: isActive('/gallery')}"><a ui-sref="gallery">Gallery</a></li>
-                            <li ng-class="{ active: isActive('/policy')}"><a ui-sref="pageDetail({slug: 'policy' })">Policy</a></li>
-                            <li ng-class="{ active: isActive('/contact-location')}"><a ui-sref="contact">Contact Us</a></li>
-                        </ul>
-                        <ul class="nav navbar-nav pull-left google-translator">
-                            <li>
-                                <div id="google_translate_element" class="site-language"></div>
-                            </li>
-                        </ul>
+                    <div class="navbar-left">
+                        <div id="navbar" class="collapse navbar-collapse no-animate" uib-collapse="isCollapsed">
+                            <ul class="nav navbar-nav">
+                                <li ng-class="{ active: isActive('/')}"><a ui-sref="home">Home</a></li>
+                                <li ng-class="{ active: isActive('/available-rooms-cebu-hotels')}"><a ui-sref="roomsAvailable">Rooms &amp; Suites</a></li>
+                                <li ng-class="{ active: isActive('/about-ironwood')}"><a ui-sref="pageDetail({slug: 'about-ironwood' })">About Us</a></li>
+                                <!--<li ng-class="{ active: isActive('/accommodations')}"><a ui-sref="roomsAvailable">Accommodations <span class="lnr lnr-chevron-down"></span></a></li>-->
+                                <!--<li ng-class="{ active: isActive('/dining')}" uib-dropdown is-open="status.isopen">
+                                    <a uib-dropdown-toggle>Dining <span class="lnr lnr-chevron-down"></span></a>
+                                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                        <li role="menuitem"><a href="#">Chips Cafe</a></li>
+                                    </ul>
+                                </li>-->
+                                <li ng-class="{ active: isActive('/meetings')}"><a ui-sref="pageDetail({slug: 'meetings' })">Mettings</a></li>
+                                <li ng-class="{ active: isActive('/gallery')}"><a ui-sref="gallery">Gallery</a></li>
+                                <li ng-class="{ active: isActive('/policy')}"><a ui-sref="pageDetail({slug: 'policy' })">Policy</a></li>
+                                <li ng-class="{ active: isActive('/contact-location')}"><a ui-sref="contact">Contact Us</a></li>
+                            </ul>
+                        </div>
+                        <!--/.nav-collapse -->
                     </div>
-                    <!--/.nav-collapse -->
                 </div>
             </div>
         </div>

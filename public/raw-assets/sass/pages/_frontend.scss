@@ -479,3 +479,32 @@
     padding: 30px 0;
     text-align: center;
 }
+
+div#google_translate_element {
+    margin-top: 10px;
+}
+
+@media (max-width:480px) {
+    div#google_translate_element {
+        margin-top: 0;
+    }
+    .navbar-header {
+        float: left;
+    }
+    .navbar-right {
+        float: right;
+        width: 120px;
+    }
+    .goog-te-gadget-simple {
+        .goog-te-menu-value {
+            padding-left: 0!important;
+            padding-right: 0!important;
+            >span:first-child {
+                display: none;
+            }
+        }
+    }
+    #navbar {
+        width: 100%;
+    }
+}
