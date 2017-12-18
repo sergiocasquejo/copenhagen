@@ -13,13 +13,15 @@ class CreateDisabledDatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('disabled_dates', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('room_id')->unsigned();
-            $table->date('selected_date');
-            $table->timestamps();
-            $table->foreign('room_id')->references('id')->on('rooms');
-        });
+        if (!Schema::hasTable('disabled_dates')) {
+            Schema::create('disabled_dates', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('room_id')->unsigned();
+                $table->date('selected_date');
+                $table->timestamps();
+                $table->foreign('room_id')->references('id')->on('rooms');
+            });
+        }
     }
 
     /**

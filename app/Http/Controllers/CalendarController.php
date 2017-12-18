@@ -44,7 +44,8 @@ class CalendarController extends Controller
                         if ($rates) {
                             foreach($rates as $rateID => $r) {
                                 if ($r) {
-                                    $a[$rateID] = array('price' => (float)$r['price'], 'active'  => $r['active'] == true );
+                                    $active = isset($r['isActive']) ?  $r['isActive'] : $r['active'];
+                                    $a[$rateID] = array('price' => (float)$r['price'], 'active'  => $active == true );
                                     $calendar->rates()->sync($a);
                                 }
                             }
@@ -122,7 +123,7 @@ class CalendarController extends Controller
         $hasNoRoomAvailable = \App\Calendar::where([
             'roomID' => $request->input('roomID'), 
             ['selectedDate', '>=', date('Y-m-d', strtotime($request->input('checkIn')))],
-            ['selectedDate', '<=', date('Y-m-d', strtotime($request->input('checkOut')))]
+            ['selectedDate', '<=', date('Y-m-d', strtotime($request->input('checkOut') ))]
         ])->where(function($q) use($noOfRooms) {
             $q->where('availability', '<', $noOfRooms)
                 ->orWhere('isActive', 0);

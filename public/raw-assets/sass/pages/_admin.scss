@@ -130,3 +130,10 @@
         }
     }
 }
+
+mwl-calendar {
+    .cal-day-notavailable {
+        color: $white;
+        background-color: $dark_blue;
+    }
+}

@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Validator;
 
 class Booking extends Model
 {   
-    public $bookingStatusSuccess = 'success';
+    public $bookingStatusSuccess = 'completed';
     public $bookingStatusPending = 'pending';
     public $bookingStatusCancel = 'cancel';
-    public $bookingCheckInTime = '2:00:00 pm';
-    public $bookingCheckOutTime = '2:00:00 pm';
+    public $bookingCheckInTime = '2:00 PM';
+    public $bookingCheckOutTime = '12:00 NN';
     
     protected $table = 'bookings';
     protected $appends = [

@@ -69,31 +69,31 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
         sc.search = function(isValid) {
             var checkIn = moment($rootScope.booking.checkIn).format('YYYY-MM-DD');
             var checkOut = moment($rootScope.booking.checkOut).format('YYYY-MM-DD');
-            if (window.CopenhagenAppConfig.disabledDates.indexOf(checkIn) > -1) {
-                isValid = false;
-                sh.openModal('globalPopup.html', 'Oops: ' + checkIn, 'Selected check in was disabled by admin');
-            }
-            if (window.CopenhagenAppConfig.disabledDates.indexOf(checkOut) > -1) {
-                isValid = false;
-                sh.openModal('globalPopup.html', 'Oops: ' + checkOut, 'Selected check out was disabled by admin');
-            }
+            // if (window.CopenhagenAppConfig.disabledDates.indexOf(checkIn) > -1) {
+            //     isValid = false;
+            //     sh.openModal('globalPopup.html', 'Oops: ' + checkIn, 'Selected check in was disabled by admin');
+            // }
+            // if (window.CopenhagenAppConfig.disabledDates.indexOf(checkOut) > -1) {
+            //     isValid = false;
+            //     sh.openModal('globalPopup.html', 'Oops: ' + checkOut, 'Selected check out was disabled by admin');
+            // }
 
-            if (isValid) {
-
-
+            // if (isValid) {
 
 
 
 
-                API.setBookingData({
-                    checkIn: $rootScope.booking.checkIn,
-                    checkOut: $rootScope.booking.checkOut,
-                    noRooms: $rootScope.booking.noRooms,
-                    adult: $rootScope.booking.adult,
-                    child: $rootScope.booking.child
-                });
-                $state.go('roomsAvailable');
-            }
+
+
+            API.setBookingData({
+                checkIn: $rootScope.booking.checkIn,
+                checkOut: $rootScope.booking.checkOut,
+                noRooms: $rootScope.booking.noRooms,
+                adult: $rootScope.booking.adult,
+                child: $rootScope.booking.child
+            });
+            $state.go('roomsAvailable');
+            // }
         }
         sc.dateDisable = function(date, type) {
             return type != 'day' || window.CopenhagenAppConfig.disabledDates.indexOf(date.format('YYYY-MM-DD')) == -1;
@@ -326,6 +326,7 @@ copenhagenApp.controller('homeCtrl', ['$scope', '$rootScope', '$state', 'API', f
         });
 
         sc.changeCalendarViewMonth = function(viewDate) {
+            sc.viewDate = viewDate;
             // sc.showLoader();
             fetchCalendar();
 

@@ -8,7 +8,8 @@
 <h3 style="Margin-top: 20px;Margin-bottom: 0;font-style: normal;font-weight: normal;color: #44a8c7;font-size: 18px;line-height: 20px;text-align: left;">
           <font color="#60666d">Details</font></h3>          
           <p class="size-14" style="Margin-top: 10px;Margin-bottom: 0;font-size: 14px;line-height: 14px;text-align: left;" lang="x-size-14"><span style="display:inline-block;width:120px;">Reference Id</span> : {{ $booking['refId'] }}</p>
-<p class="size-14" style="Margin-top: 10px;Margin-bottom: 0;font-size: 14px;line-height: 14px;text-align: left;" lang="x-size-14"><span style="display:inline-block;width:120px;">Building</span> : Main</p>
+          <p class="size-14" style="Margin-top: 10px;Margin-bottom: 0;font-size: 14px;line-height: 14px;text-align: left;" lang="x-size-14"><span style="display:inline-block;width:120px;">Room</span> : {{ $booking['room_name'] }}</p>
+<p class="size-14" style="Margin-top: 10px;Margin-bottom: 0;font-size: 14px;line-height: 14px;text-align: left;" lang="x-size-14"><span style="display:inline-block;width:120px;">Building</span> : {{ $booking['building'] }}</p>
 <p class="size-14" style="Margin-top: 10px;Margin-bottom: 0;font-size: 14px;line-height: 14px;text-align: left;" lang="x-size-14"><span style="display:inline-block;width:120px;">Check In</span> : {{ $booking['checkIn'] }}</p>
 <p class="size-14" style="Margin-top: 10px;Margin-bottom: 0;font-size: 14px;line-height: 14px;text-align: left;" lang="x-size-14"><span style="display:inline-block;width:120px;">Check Out</span> : {{ $booking['checkOut'] }}</p>
 <p class="size-14" style="Margin-top: 10px;Margin-bottom: 0;font-size: 14px;line-height: 14px;text-align: left;" lang="x-size-14"><span style="display:inline-block;width:120px;">Guest</span> : {{ $booking['noOfAdults'] }} Adult(s), {{ $booking['noOfChild'] }} Child</p>

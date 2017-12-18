@@ -13,15 +13,17 @@ class CreatePagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('pages', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('title', 255);
-            $table->longText('content');
-            $table->integer('author')->unsigned();
-            $table->integer('status');
-            $table->timestamps();
-            $table->foreign('author')->references('id')->on('users');
-        });
+        if (!Schema::hasTable('pages')) {
+            Schema::create('pages', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('title', 255);
+                $table->longText('content');
+                $table->integer('author')->unsigned();
+                $table->integer('status');
+                $table->timestamps();
+                $table->foreign('author')->references('id')->on('users');
+            });
+        }
     }
 
     /**

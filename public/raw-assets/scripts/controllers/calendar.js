@@ -75,6 +75,32 @@ copenhagenApp.controller('calendarCtrl', ['$scope', '$compile', '$timeout', 'API
             }, function(error) {
                 if (error.status == 400) { showPopup('Error', error.data, sh); }
             });
+
+
+
+            API.fetchUnavailableCalendarByRoomId(
+                roomID,
+                params.start,
+                params.end
+            ).then(function(response) {
+                angular.forEach(response.data, function(data) {
+                    var event = {
+                        title: 'NOT AVAILABLE', //data.calendarTitle,
+                        startsAt: new Date(data.startsAt * 1000),
+                        cssClass: 'cal-day-notavailable',
+                        info: data,
+                        allDay: true
+                    };
+                    sc.events.push(event);
+
+                });
+
+                popupModal.dismiss('cancel');
+            }, function(error) {
+                if (error.status == 400) { showPopup('Error', error.data, sh); }
+            });
+
+
         }
 
 

@@ -172,6 +172,8 @@ class PaymentController extends Controller {
                     'pageHeading' => 'New Reservation',
                     'message' => 'Please see below information',
                     'amountPaid' => $booking->nf($booking->lastPayment->totalAmount, true),
+                    'room_name' => $booking->room->name,
+                    'building' => ucwords($booking->room->building),
                     'refId' => $booking->refId,
                     'checkIn' => date('l F d Y', strtotime($booking->checkIn)) .' ' . $booking->checkInTime,
                     'checkOut' => date('l F d Y', strtotime($booking->checkOut)) .' ' .  $booking->checkOutTime,

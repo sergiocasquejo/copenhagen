@@ -297,53 +297,74 @@ class BookingController extends Controller
     public function notify(Request $request) {
 
         $ref 			= $request->input('Ref');
-
-        $booking = \App\Booking::where(['refId' => $ref])->first();
+        
+        $booking = \App\Booking::where(['refId' => $ref, 'email_sent' => 0])->first();
+        
         if ($booking) {
-
-            $data = array(
-                'name' => 'Admin',
-                'pageHeading' => 'New Reservation',
-                'message' => 'Please see below information',
-                'amountPaid' => $booking->lastPayment ? $booking->nf($booking->lastPayment->totalAmount, true) : 0,
-                'refId' => $booking->refId,
-                'checkIn' => date('l F d Y', strtotime($booking->checkIn)) .' ' . $booking->checkInTime,
-                'checkOut' => date('l F d Y', strtotime($booking->checkOut)) .' ' .  $booking->checkOutTime,
-                'noOfAdults' => $booking->noOfAdults,
-                'extraPerson' => $booking->extraPerson,
-                'noOfChild' => $booking->noOfChild ? $booking->noOfChild : 0,
-                'roomRate' => $booking->nf($booking->roomRate, true),
-                'noOfNights' => $booking->noOfNights,
-                'noOfRooms' => $booking->noOfRooms,
-                'totalAmount' => $booking->nf($booking->totalAmount, true),
-                'status' => $booking->status,
-                'lastPayment' => $booking->lastPayment ?  true : false,
-                'paymentMethod' => $booking->lastPayment ? $booking->lastPayment->method : 0,
-                'amountPaid' => $booking->lastPayment ? $booking->lastPayment->totalAmount : 0,
-                'paymentStatus' => $booking->lastPayment ? $booking->lastPayment->status : 0,
-                'customerName' => $booking->customer->salutation .' '. $booking->customer->firstName .' '. $booking->customer->middleName .' '. $booking->customer->lastName,
-                'customerEmail' => $booking->customer->email,
-                'customerContact' => $booking->customer->contact,
-                'customerAddress1' => $booking->customer->address1,
-                'customerAddress2' => $booking->customer->address2,
-                'customerState' => $booking->customer->state,
-                'customerCity' => $booking->customer->city,
-                'customerZipcode' => $booking->customer->zipcode,
-                'customerCountryCode' => $booking->customer->countryCode,
-                'specialInstructions' => $booking->specialInstructions,
-                'billingInstructions' => $booking->billingInstructions
-            );
-
-        
-            \Mail::to(Config('mail.emails.info'))
-            ->send(new Reservation($data));
-        
-            $data['name'] = $booking->customer->firstName;
-            $data['pageHeading'] = 'You have successfully booked';
-
+            $booking->status = $booking->bookingStatusSuccess;
+            $booking->save();
             
-            \Mail::to($booking->customer->email)
-            ->send(new Reservation($data));
+            try {
+                $data = array(
+                    'name' => 'Admin',
+                    'pageHeading' => 'New Reservation',
+                    'message' => 'Please see below information',
+                    'amountPaid' => $booking->lastPayment ? $booking->nf($booking->lastPayment->totalAmount, true) : 0,
+                    'refId' => $booking->refId,
+                    'room_name' => $booking->room->name,
+                    'building' => ucwords($booking->room->building),
+                    'checkIn' => date('l F d Y', strtotime($booking->checkIn)) .' ' . $booking->checkInTime,
+                    'checkOut' => date('l F d Y', strtotime($booking->checkOut)) .' ' .  $booking->checkOutTime,
+                    'noOfAdults' => $booking->noOfAdults,
+                    'extraPerson' => $booking->extraPerson,
+                    'noOfChild' => $booking->noOfChild ? $booking->noOfChild : 0,
+                    'roomRate' => $booking->nf($booking->roomRate, true),
+                    'noOfNights' => $booking->noOfNights,
+                    'noOfRooms' => $booking->noOfRooms,
+                    'totalAmount' => $booking->nf($booking->totalAmount, true),
+                    'status' => $booking->status,
+                    'lastPayment' => $booking->lastPayment ?  true : false,
+                    'paymentMethod' => $booking->lastPayment ? $booking->lastPayment->method : 0,
+                    'amountPaid' => $booking->lastPayment ? $booking->lastPayment->totalAmount : 0,
+                    'paymentStatus' => $booking->lastPayment ? $booking->lastPayment->status : 0,
+                    'customerName' => $booking->customer->salutation .' '. $booking->customer->firstName .' '. $booking->customer->middleName .' '. $booking->customer->lastName,
+                    'customerEmail' => $booking->customer->email,
+                    'customerContact' => $booking->customer->contact,
+                    'customerAddress1' => $booking->customer->address1,
+                    'customerAddress2' => $booking->customer->address2,
+                    'customerState' => $booking->customer->state,
+                    'customerCity' => $booking->customer->city,
+                    'customerZipcode' => $booking->customer->zipcode,
+                    'customerCountryCode' => $booking->customer->countryCode,
+                    'specialInstructions' => $booking->specialInstructions,
+                    'billingInstructions' => $booking->billingInstructions
+                );
+
+
+                $room = \App\Room::find($booking->roomID);
+
+                $remaining = $room->totalRooms - $booking->noOfRooms;
+                $room->totalRooms = $remaining <= 0 ? 0 : $remaining;
+                $room->save();
+
+                $booking->email_sent = 1;
+                $booking->save();
+
+                \Mail::to(Config('mail.emails.info'))
+                ->send(new Reservation($data));
+            
+                $data['name'] = $booking->customer->firstName;
+                $data['pageHeading'] = 'You have successfully booked';
+
+                
+                \Mail::to($booking->customer->email)
+                ->send(new Reservation($data));
+
+                return response()->json('Email notification successfully sent!', 200, [], JSON_UNESCAPED_UNICODE);
+
+            } catch(\Exception $e) {
+                return response()->json($e->getMessage(), 400, [], JSON_UNESCAPED_UNICODE);
+            }
         }
     }
 }
