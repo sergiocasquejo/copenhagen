@@ -111,6 +111,12 @@
                                         <input type="text" name="location" ng-model="room.location" class="form-control" ng-required="true" required>
                                     </div>
                                 </div>
+                                <div class="form-group" ng-class="{ 'has-error': roomForm.promoCaption.$touched && roomForm.promoCaption.$invalid }">
+                                    <label class="control-label col-sm-4" for="promoCaption">Promo Caption <span class="req">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="promoCaption" ng-model="room.promoCaption" class="form-control" placeholder="Promo rate sale as low as" ng-required="true" required>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Amenities</label>
                                     <div class="col-md-8">
@@ -134,6 +140,12 @@
                                     <label for="" class="control-label col-sm-4">Available</label>
                                     <div class="col-sm-8">
                                         <toggle ng-model="room.isAvailable" ng-change="changed()" on="Yes" off="No" onstyle="btn-success" size="btn-sm"></toggle>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="control-label col-sm-4">With Breakfast</label>
+                                    <div class="col-sm-8">
+                                        <toggle ng-model="room.withBreakfast" ng-change="changed()" on="Yes" off="No" onstyle="btn-success" size="btn-sm"></toggle>
                                     </div>
                                 </div>
                                 <div class="form-group">

@@ -52,6 +52,8 @@ class RoomController extends Controller
         $room->building = $request->input('building', 0);
         $room->isActive = $request->input('isActive', 0);
         $room->isAvailable = $request->input('isAvailable', 1);
+        $room->promoCaption = $request->input('promoCaption', 'Promo rate sale as low as');
+        $room->withBreakfast = $request->input('withBreakfast', 0);
         $room->sort = $request->input('sort', 0);
         try {
             if ($room->save()) {
@@ -95,6 +97,8 @@ class RoomController extends Controller
 			$room->building = $request->input('building', 0);
 			$room->isActive = $request->input('isActive', 0);
             $room->isAvailable = $request->input('isAvailable', 1);
+            $room->promoCaption = $request->input('promoCaption', 'Promo rate sale as low as');
+            $room->withBreakfast = $request->input('withBreakfast', 0);
 			$room->sort = $request->input('sort', 0);
 			try {
                 if ($room->save()) {
